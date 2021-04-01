@@ -21,6 +21,7 @@ import pygame
 import constants
 from player import Player
 import demon
+from potion import Potion
 
 
 def create_enemies(min_number_enemies, max_number_enemies):
