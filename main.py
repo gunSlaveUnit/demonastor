@@ -19,7 +19,7 @@ import random
 import pygame
 
 import constants
-import player
+from player import Player
 import demon
 
 
@@ -56,15 +56,15 @@ def draw_bar(surface, x, y, color, value):
     bar_height = 6
 
     fill = (value / 100) * bar_length
-    if fill > 100:
-        fill = 100
+    if fill > bar_length:
+        fill = bar_length
     outline_rect = pygame.Rect(x, y, bar_length, bar_height)
     fill_rect = pygame.Rect(x, y, fill, bar_height)
     pygame.draw.rect(surface, color, fill_rect)
     pygame.draw.rect(surface, (255, 255, 255), outline_rect, 1)
 
 
-if __name__ == '__main__':
+def main():
     pygame.init()
 
     main_game_window = pygame.display.set_mode((constants.GAME_WINDOW_WIDTH,
@@ -73,8 +73,8 @@ if __name__ == '__main__':
     icon = pygame.image.load('Icon.png')
     pygame.display.set_icon(icon)
 
-    player = player.Player(constants.GAME_WINDOW_WIDTH // 2,
-                           constants.GAME_WINDOW_HEIGHT // 2)
+    player = Player(constants.GAME_WINDOW_WIDTH // 2,
+                    constants.GAME_WINDOW_HEIGHT // 2)
 
     shells_player = []
     enemies = create_enemies(2, 10)
@@ -85,14 +85,14 @@ if __name__ == '__main__':
     while not is_game_exit:
         delta = clock.tick(constants.FPS_LOCKING)
         pygame.event.pump()
-        if time_to_count_attack < 1000:
+        if time_to_count_attack < 500:
             time_to_count_attack += delta
 
         for enemy in enemies:
             if pygame.sprite.collide_rect(player, enemy):
-                if time_to_count_attack >= 1000:
+                if time_to_count_attack >= 500:
                     time_to_count_attack = 0
-                    player.set_amount_health(player.get_amount_health()-enemy.get_amount_damage())
+                    player.set_amount_health(player.get_amount_health() - enemy.get_amount_damage())
                 if player.get_amount_health() < 1:
                     is_game_exit = True
 
@@ -127,18 +127,25 @@ if __name__ == '__main__':
                         enemies.remove(enemy)
 
         for enemy in enemies:
-            draw_bar(main_game_window, enemy.get_rect().centerx-35,
-                     enemy.get_rect().centery-enemy.get_rect().height//2-7,
+            draw_bar(main_game_window, enemy.get_rect().centerx - 35,
+                     enemy.get_rect().centery - enemy.get_rect().height // 2 - 7,
                      (255, 0, 0),
                      enemy.get_amount_health())
             draw_text(main_game_window, enemy.get_name(), 15,
                       enemy.get_rect().centerx,
-                      enemy.get_rect().centery-enemy.get_rect().height//2-18)
+                      enemy.get_rect().centery - enemy.get_rect().height // 2 - 18)
 
-        draw_bar(main_game_window, player.get_rect().centerx-35,
-                 player.get_rect().centery+player.get_rect().height//2+10,
+        draw_bar(main_game_window, player.get_rect().centerx - 35,
+                 player.get_rect().centery + player.get_rect().height // 2 + 15,
                  (255, 0, 0), player.get_amount_health())
+        draw_text(main_game_window, player.get_name(), 15,
+                  player.get_rect().centerx,
+                  player.get_rect().centery + player.get_rect().height // 2 + 5)
 
         pygame.display.flip()  # for double buffering
         clock.tick(constants.FPS_LOCKING)
     pygame.quit()
+
+
+if __name__ == '__main__':
+    main()

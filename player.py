@@ -9,7 +9,7 @@ File contains a description of Player class
 # -*- coding: utf8 -*-
 
 # TODO: It's necessary to link the player's movement speed and animation speed to the FPS limit
-# TODO: stop animation when moving keys aren't pressed
+# TODO: change animation speed of moving
 
 import random
 
@@ -57,7 +57,8 @@ class Player(pygame.sprite.Sprite):
         ]
         self._amount_images_in_animation = len(self._tile_set[0])
         self._current_number_image_in_animation = 0
-        self._current_direction_moving = Player._DIRECTIONS_MOVING['DOWN']
+        self._current_direction_moving = Player._DIRECTIONS_MOVING['UP']
+        self._last_pressed_key = pygame.K_w
 
         self._name = 'Nickname'
 
@@ -102,6 +103,9 @@ class Player(pygame.sprite.Sprite):
             self._current_direction_moving = self._DIRECTIONS_MOVING['DOWN']
             self._speed_y = self._speed_changing
 
+        if self._speed_x == 0 and self._speed_y == 0:
+            self._current_number_image_in_animation = 0
+
         self._rect.centerx += self._speed_x
         self._rect.centery += self._speed_y
 
@@ -122,3 +126,6 @@ class Player(pygame.sprite.Sprite):
 
     def set_amount_health(self, new_value_health):
         self._amount_health = new_value_health
+
+    def get_name(self):
+        return self._name
