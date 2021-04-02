@@ -12,11 +12,13 @@ In this file the program is started
 # TODO: bind different characteristics to each other
 # TODO: lots of numeric constants, we should to remove it
 # TODO: use properties in classes
+# TODO: _ -> __
 
 import sys
 import random
 
 import pygame
+from PIL import ImageFont
 
 import constants
 from player import Player
@@ -65,6 +67,29 @@ def draw_bar(surface, x, y, color, value):
     pygame.draw.rect(surface, (255, 255, 255), outline_rect, 1)
 
 
+def get_text_length_in_pixels(text, size, font):
+    font = ImageFont.truetype(font, size)
+    length_pixels = font.getsize(text)
+    return length_pixels
+
+
+def show_pause_menu():
+    clock = pygame.time.Clock()
+    is_pause_over = False
+    while not is_pause_over:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                is_pause_over = True
+                sys.exit()
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    is_pause_over = True
+
+        pygame.display.update()
+        clock.tick(constants.FPS_LOCKING)
+
+
 def main():
     pygame.init()
 
@@ -99,10 +124,18 @@ def main():
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                pygame.quit()
                 is_game_exit = True
+                pygame.quit()
                 sys.exit()
             if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    # TODO: we don't need to calculate it, it's not good
+                    text_length_pixels = get_text_length_in_pixels('Pause. Press <Escape> To Continue',
+                                                                   30, 'samson_font.ttf')
+                    print(text_length_pixels)
+                    draw_text(main_game_window, 'Pause. Press <Escape> To Continue', 30,
+                              constants.GAME_WINDOW_WIDTH//2-text_length_pixels[0]//2, 50)
+                    show_pause_menu()
                 if event.key == pygame.K_SPACE:
                     shell = player.attack()
                     shells_player.append(shell)
@@ -144,6 +177,7 @@ def main():
                   player.get_rect().centery + player.get_rect().height // 2 + 5)
 
         pygame.display.flip()  # for double buffering
+        pygame.display.update()
         clock.tick(constants.FPS_LOCKING)
     pygame.quit()
 
