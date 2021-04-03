@@ -13,6 +13,8 @@ In this file the program is started
 # TODO: lots of numeric constants, we should to remove it
 # TODO: use properties in classes
 # TODO: _ -> __
+# TODO: make collisions
+# TODO: change draw_text function. It need to paste a text into left down corner
 
 import sys
 import random
@@ -24,6 +26,133 @@ import constants
 from player import Player
 import demon
 from potion import Potion
+
+
+def run_game():
+    global main_game_window
+    player = Player(constants.GAME_WINDOW_WIDTH // 2,
+                    constants.GAME_WINDOW_HEIGHT // 2)
+
+    shells_player = []
+    enemies = create_enemies(2, 10)
+
+    time_to_count_attack = 0
+    clock = pygame.time.Clock()
+    is_game_exit = False
+    while not is_game_exit:
+        delta = clock.tick(constants.FPS_LOCKING)
+        pygame.event.pump()
+        if time_to_count_attack < 500:
+            time_to_count_attack += delta
+
+        for enemy in enemies:
+            if pygame.sprite.collide_rect(player, enemy):
+                if time_to_count_attack >= 500:
+                    time_to_count_attack = 0
+                    player.set_amount_health(player.get_amount_health() - enemy.get_amount_damage())
+                if player.get_amount_health() < 1:
+                    return game_over()
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    show_pause_menu()
+                if event.key == pygame.K_SPACE:
+                    shell = player.attack()
+                    shells_player.append(shell)
+
+        main_game_window.fill(int())
+
+        player.update(main_game_window)
+
+        for shell in shells_player:
+            shell.update(main_game_window)
+
+        for enemy in enemies:
+            enemy.update(main_game_window)
+            enemy.attack(player.get_rect().centerx, player.get_rect().centery)
+
+        for enemy in enemies:
+            for shell in shells_player:
+                if pygame.sprite.collide_rect(enemy, shell):
+                    shells_player.remove(shell)
+                    enemy.set_amount_health(enemy.get_amount_health() - player.get_amount_damage()
+                                            - shell.get_amount_additional_damage())
+                    if enemy.get_amount_health() < 0:
+                        enemies.remove(enemy)
+
+        for enemy in enemies:
+            draw_bar(main_game_window, enemy.get_rect().centerx - 35,
+                     enemy.get_rect().centery - enemy.get_rect().height // 2 - 7,
+                     (255, 0, 0),
+                     enemy.get_amount_health())
+            draw_text(main_game_window, enemy.get_name(), 15,
+                      enemy.get_rect().centerx,
+                      enemy.get_rect().centery - enemy.get_rect().height // 2 - 18)
+
+        draw_bar(main_game_window, player.get_rect().centerx - 35,
+                 player.get_rect().centery + player.get_rect().height // 2 + 15,
+                 (255, 0, 0), player.get_amount_health())
+        draw_text(main_game_window, player.get_name(), 15,
+                  player.get_rect().centerx,
+                  player.get_rect().centery + player.get_rect().height // 2 + 5)
+
+        pygame.display.flip()  # for double buffering
+        pygame.display.update()
+        clock.tick(constants.FPS_LOCKING)
+    pygame.quit()
+
+
+def show_pause_menu():
+    # TODO: we don't need to calculate it, it's not good
+    text_length_pixels = get_text_length_in_pixels('Pause. Press <Escape> To Continue',
+                                                   30, 'samson_font.ttf')
+    draw_text(main_game_window, 'Pause. Press <Escape> To Continue', 30,
+              constants.GAME_WINDOW_WIDTH//2-text_length_pixels[0]//2, 10)
+
+    print(text_length_pixels[0]//2)
+
+    clock = pygame.time.Clock()
+    is_pause_over = False
+    while not is_pause_over:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    is_pause_over = True
+
+        pygame.display.update()
+        clock.tick(constants.FPS_LOCKING)
+
+
+def game_over():
+    # TODO: we don't need to calculate it, it's not good
+    text_length_pixels = get_text_length_in_pixels('You died. Press <Enter> To Restart Or <Escape> To Exit',
+                                                   30, 'samson_font.ttf')
+    print(constants.GAME_WINDOW_WIDTH//2)
+    print(text_length_pixels[0]//2)
+    draw_text(main_game_window, 'You died. Press <Enter> To Restart Or <Escape> To Exit', 30,
+              text_length_pixels[0]//2-85, 10)
+
+    clock = pygame.time.Clock()
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_RETURN:
+                    return True
+                if event.key == pygame.K_ESCAPE:
+                    return False
+
+        pygame.display.update()
+        clock.tick(constants.FPS_LOCKING)
 
 
 def create_enemies(min_number_enemies, max_number_enemies):
@@ -73,113 +202,21 @@ def get_text_length_in_pixels(text, size, font):
     return length_pixels
 
 
-def show_pause_menu():
-    clock = pygame.time.Clock()
-    is_pause_over = False
-    while not is_pause_over:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                is_pause_over = True
-                sys.exit()
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_ESCAPE:
-                    is_pause_over = True
-
-        pygame.display.update()
-        clock.tick(constants.FPS_LOCKING)
+main_game_window = None
 
 
 def main():
     pygame.init()
 
+    global main_game_window
     main_game_window = pygame.display.set_mode((constants.GAME_WINDOW_WIDTH,
                                                 constants.GAME_WINDOW_HEIGHT))
     pygame.display.set_caption(constants.GAME_WINDOW_TITLE)
     icon = pygame.image.load('Icon.png')
     pygame.display.set_icon(icon)
 
-    player = Player(constants.GAME_WINDOW_WIDTH // 2,
-                    constants.GAME_WINDOW_HEIGHT // 2)
-
-    shells_player = []
-    enemies = create_enemies(2, 10)
-
-    time_to_count_attack = 0
-    clock = pygame.time.Clock()
-    is_game_exit = False
-    while not is_game_exit:
-        delta = clock.tick(constants.FPS_LOCKING)
-        pygame.event.pump()
-        if time_to_count_attack < 500:
-            time_to_count_attack += delta
-
-        for enemy in enemies:
-            if pygame.sprite.collide_rect(player, enemy):
-                if time_to_count_attack >= 500:
-                    time_to_count_attack = 0
-                    player.set_amount_health(player.get_amount_health() - enemy.get_amount_damage())
-                if player.get_amount_health() < 1:
-                    is_game_exit = True
-
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                is_game_exit = True
-                pygame.quit()
-                sys.exit()
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_ESCAPE:
-                    # TODO: we don't need to calculate it, it's not good
-                    text_length_pixels = get_text_length_in_pixels('Pause. Press <Escape> To Continue',
-                                                                   30, 'samson_font.ttf')
-                    print(text_length_pixels)
-                    draw_text(main_game_window, 'Pause. Press <Escape> To Continue', 30,
-                              constants.GAME_WINDOW_WIDTH//2-text_length_pixels[0]//2, 50)
-                    show_pause_menu()
-                if event.key == pygame.K_SPACE:
-                    shell = player.attack()
-                    shells_player.append(shell)
-
-        main_game_window.fill(int())
-
-        player.update(main_game_window)
-
-        for shell in shells_player:
-            shell.update(main_game_window)
-
-        for enemy in enemies:
-            enemy.update(main_game_window)
-            enemy.attack(player.get_rect().centerx, player.get_rect().centery)
-
-        for enemy in enemies:
-            for shell in shells_player:
-                if pygame.sprite.collide_rect(enemy, shell):
-                    shells_player.remove(shell)
-                    enemy.set_amount_health(enemy.get_amount_health() - player.get_amount_damage()
-                                            - shell.get_amount_additional_damage())
-                    if enemy.get_amount_health() < 0:
-                        enemies.remove(enemy)
-
-        for enemy in enemies:
-            draw_bar(main_game_window, enemy.get_rect().centerx - 35,
-                     enemy.get_rect().centery - enemy.get_rect().height // 2 - 7,
-                     (255, 0, 0),
-                     enemy.get_amount_health())
-            draw_text(main_game_window, enemy.get_name(), 15,
-                      enemy.get_rect().centerx,
-                      enemy.get_rect().centery - enemy.get_rect().height // 2 - 18)
-
-        draw_bar(main_game_window, player.get_rect().centerx - 35,
-                 player.get_rect().centery + player.get_rect().height // 2 + 15,
-                 (255, 0, 0), player.get_amount_health())
-        draw_text(main_game_window, player.get_name(), 15,
-                  player.get_rect().centerx,
-                  player.get_rect().centery + player.get_rect().height // 2 + 5)
-
-        pygame.display.flip()  # for double buffering
-        pygame.display.update()
-        clock.tick(constants.FPS_LOCKING)
-    pygame.quit()
+    while run_game():
+        pass
 
 
 if __name__ == '__main__':
