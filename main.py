@@ -15,6 +15,8 @@ In this file the program is started
 # TODO: _ -> __
 # TODO: make collisions
 # TODO: change draw_text function. It need to paste a text into left down corner
+# TODO: draw_text need to receive color
+# TODO: we should to add default params
 
 import sys
 import random
@@ -89,14 +91,14 @@ def run_game():
                      enemy.get_rect().centery - enemy.get_rect().height // 2 - 7,
                      (255, 0, 0),
                      enemy.get_amount_health())
-            draw_text(main_game_window, enemy.get_name(), 15,
+            draw_text(main_game_window, enemy.get_name(), 15, (255, 255, 255),
                       enemy.get_rect().centerx,
                       enemy.get_rect().centery - enemy.get_rect().height // 2 - 18)
 
         draw_bar(main_game_window, player.get_rect().centerx - 35,
                  player.get_rect().centery + player.get_rect().height // 2 + 15,
                  (255, 0, 0), player.get_amount_health())
-        draw_text(main_game_window, player.get_name(), 15,
+        draw_text(main_game_window, player.get_name(), 15, (255, 255, 255),
                   player.get_rect().centerx,
                   player.get_rect().centery + player.get_rect().height // 2 + 5)
 
@@ -110,7 +112,7 @@ def show_pause_menu():
     # TODO: we don't need to calculate it, it's not good
     text_length_pixels = get_text_length_in_pixels('Pause. Press <Escape> To Continue',
                                                    30, 'samson_font.ttf')
-    draw_text(main_game_window, 'Pause. Press <Escape> To Continue', 30,
+    draw_text(main_game_window, 'Pause. Press <Escape> To Continue', 30, (255, 255, 255),
               constants.GAME_WINDOW_WIDTH//2-text_length_pixels[0]//2, 10)
 
     clock = pygame.time.Clock()
@@ -129,17 +131,70 @@ def show_pause_menu():
 
 
 def show_start_menu():
-    is_menu_show = True
+    # Можно попробовать менять не цвет выбранного пункта, а его размер, чтобы просто побольше был
+    # TODO: add mouse menu control
+    def set_color_active_menu_item(index_active_menu_item, color):
+        if index_active_menu_item == 0:
+            menu_items['New Game'] = color
+        if index_active_menu_item == 1:
+            menu_items['Load Game'] = color
+        if index_active_menu_item == 2:
+            menu_items['Settings'] = color
+        if index_active_menu_item == 3:
+            menu_items['Exit'] = color
+
     menu_background = pygame.image.load('menu_background.png')
+
+    menu_items = {
+        'New Game': (255, 255, 255),
+        'Load Game': (255, 255, 255),
+        'Settings': (255, 255, 255),
+        'Exit': (255, 255, 255)
+    }
+    index_selected_menu_item = -1
+
+    is_menu_show = True
     clock = pygame.time.Clock()
     while is_menu_show:
+        draw_text(main_game_window, constants.GAME_WINDOW_TITLE, 80, (255, 255, 255),
+                  constants.GAME_WINDOW_WIDTH // 2, 30)
+
+        x_to_paste_menu_item = 200
+        for menu_item in menu_items.keys():
+            draw_text(main_game_window, menu_item, 50, menu_items[menu_item],
+                      constants.GAME_WINDOW_WIDTH//2, x_to_paste_menu_item)
+            x_to_paste_menu_item += 60
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
             if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_DOWN or event.key == pygame.K_s:
+                    index_previous_selected_item = index_selected_menu_item
+                    index_selected_menu_item += 1
+                    if index_selected_menu_item > 3:
+                        index_selected_menu_item = 0
+                        index_previous_selected_item = 3
+                    set_color_active_menu_item(index_previous_selected_item, (255, 255, 255))
+                    set_color_active_menu_item(index_selected_menu_item, (255, 140, 0))
+                if event.key == pygame.K_UP or event.key == pygame.K_w:
+                    index_previous_selected_item = index_selected_menu_item
+                    index_selected_menu_item -= 1
+                    if index_selected_menu_item < 0:
+                        index_selected_menu_item = 3
+                    set_color_active_menu_item(index_previous_selected_item, (255, 255, 255))
+                    set_color_active_menu_item(index_selected_menu_item, (255, 140, 0))
                 if event.key == pygame.K_RETURN:
-                    is_menu_show = False
+                    if index_selected_menu_item == 0:
+                        is_menu_show = False
+                    if index_selected_menu_item == 1:
+                        pass
+                    if index_selected_menu_item == 2:
+                        pass
+                    if index_selected_menu_item == 3:
+                        pygame.quit()
+                        sys.exit()
 
         pygame.display.update()
         main_game_window.blit(menu_background, (0, 0))
@@ -151,7 +206,7 @@ def game_over():
     text_length_pixels = get_text_length_in_pixels('You died. Press <Enter> To Restart Or <Escape> To Exit',
                                                    30, 'samson_font.ttf')
 
-    draw_text(main_game_window, 'You died. Press <Enter> To Restart Or <Escape> To Exit', 30,
+    draw_text(main_game_window, 'You died. Press <Enter> To Restart Or <Escape> To Exit', 30, (255, 255, 255),
               text_length_pixels[0]//2-85, 10)
 
     clock = pygame.time.Clock()
@@ -186,10 +241,10 @@ def create_enemies(min_number_enemies, max_number_enemies):
     return enemies_local
 
 
-def draw_text(surface, text, size, x, y):
+def draw_text(surface, text, size, color, x, y):
     font_name = pygame.font.match_font('samson_font.ttf')
     font = pygame.font.Font(font_name, size)
-    text_surface = font.render(text, True, (255, 255, 255))
+    text_surface = font.render(text, True, color)
     text_rect = text_surface.get_rect()
     text_rect.midtop = (x, y)
     surface.blit(text_surface, text_rect)
@@ -217,15 +272,15 @@ def get_text_length_in_pixels(text, size, font):
     return length_pixels
 
 
-main_game_window = None
+main_game_window = pygame.display.set_mode((constants.GAME_WINDOW_WIDTH,
+                                            constants.GAME_WINDOW_HEIGHT))
 
 
 def main():
     pygame.init()
 
     global main_game_window
-    main_game_window = pygame.display.set_mode((constants.GAME_WINDOW_WIDTH,
-                                                constants.GAME_WINDOW_HEIGHT))
+
     pygame.display.set_caption(constants.GAME_WINDOW_TITLE)
     icon = pygame.image.load('Icon.png')
     pygame.display.set_icon(icon)
