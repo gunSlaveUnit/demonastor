@@ -113,8 +113,6 @@ def show_pause_menu():
     draw_text(main_game_window, 'Pause. Press <Escape> To Continue', 30,
               constants.GAME_WINDOW_WIDTH//2-text_length_pixels[0]//2, 10)
 
-    print(text_length_pixels[0]//2)
-
     clock = pygame.time.Clock()
     is_pause_over = False
     while not is_pause_over:
@@ -130,12 +128,29 @@ def show_pause_menu():
         clock.tick(constants.FPS_LOCKING)
 
 
+def show_start_menu():
+    is_menu_show = True
+    menu_background = pygame.image.load('menu_background.png')
+    clock = pygame.time.Clock()
+    while is_menu_show:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_RETURN:
+                    is_menu_show = False
+
+        pygame.display.update()
+        main_game_window.blit(menu_background, (0, 0))
+        clock.tick(constants.FPS_LOCKING)
+
+
 def game_over():
     # TODO: we don't need to calculate it, it's not good
     text_length_pixels = get_text_length_in_pixels('You died. Press <Enter> To Restart Or <Escape> To Exit',
                                                    30, 'samson_font.ttf')
-    print(constants.GAME_WINDOW_WIDTH//2)
-    print(text_length_pixels[0]//2)
+
     draw_text(main_game_window, 'You died. Press <Enter> To Restart Or <Escape> To Exit', 30,
               text_length_pixels[0]//2-85, 10)
 
@@ -214,6 +229,8 @@ def main():
     pygame.display.set_caption(constants.GAME_WINDOW_TITLE)
     icon = pygame.image.load('Icon.png')
     pygame.display.set_icon(icon)
+
+    show_start_menu()
 
     while run_game():
         pass

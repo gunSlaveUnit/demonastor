@@ -10,6 +10,6 @@ This file describes program constants
 
 GAME_WINDOW_WIDTH = 800
 GAME_WINDOW_HEIGHT = 600
-GAME_WINDOW_TITLE = 'Demonastor'
+GAME_WINDOW_TITLE = 'DEMONASTOR'
 
 FPS_LOCKING = 60
