@@ -18,6 +18,9 @@ In this file the program is started
 # TODO: draw_text need to receive color
 # TODO: we should to add default params
 
+# TODO: для сохранения мы можем просто пихать в качестве аргумента при создании объекта словарь
+# TODO: можно добавить скриншоты и запись видео
+
 import sys
 import random
 
