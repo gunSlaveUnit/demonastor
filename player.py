@@ -9,9 +9,6 @@ File contains a description of Player class
 # ! usr/bin/env python3
 # -*- coding: utf8 -*-
 
-# TODO: It's necessary to link the player's movement speed and animation speed to the FPS limit
-# TODO: change animation speed of moving
-
 import random
 
 import pygame
@@ -61,9 +58,9 @@ class Player(pygame.sprite.Sprite):
         self.__current_direction_moving = self.__DIRECTIONS_MOVING['UP']
         self.__last_pressed_key = pygame.K_w
 
-        self.__name = 'Booba'
+        self.__name = 'Bonobo'
 
-        self.__speed_changing = 2
+        self.__speed_changing = 3
         self.__speed_x = 0
         self.__speed_y = 0
 
@@ -78,11 +75,13 @@ class Player(pygame.sprite.Sprite):
         self.__amount_damage = random.randint(10, 20)
 
     def __draw(self, surface):
-        if self.__current_number_image_in_animation == constants.FPS_LOCKING:
+        multiplier_change_animation_speed = 15
+        if self.__current_number_image_in_animation == self.__amount_images_in_animation * constants.FPS_LOCKING // \
+                multiplier_change_animation_speed:
             self.__current_number_image_in_animation = 0
 
         self.__image = self.__tile_set[self.__current_direction_moving][
-            self.__current_number_image_in_animation // (constants.FPS_LOCKING // self.__amount_images_in_animation)]
+            self.__current_number_image_in_animation // (constants.FPS_LOCKING // multiplier_change_animation_speed)]
         surface.blit(self.__image, self.__rect)
         self.__current_number_image_in_animation += 1
 
