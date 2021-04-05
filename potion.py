@@ -21,23 +21,28 @@ class Potion(pygame.sprite.Sprite):
         super().__init__()
         determining_type_potion = random.randint(0, 101)
         if determining_type_potion in range(0, 36):
-            self._image = pygame.image.load(os.path.realpath('Potions/Health/small_health_potion.png')).convert()
+            self._image = pygame.image.load(os.path.realpath(
+                'resources/images/potions/health/small_health_potion.png')).convert()
             self._name = 'Small\nHealth\nPotion'
             self._regen_amount = 5
         if determining_type_potion in range(36, 61):
-            self._image = pygame.image.load(os.path.realpath('Potions/Health/lesser_health_potion.png')).convert()
+            self._image = pygame.image.load(os.path.realpath(
+                'resources/images/potions/health/lesser_health_potion.png')).convert()
             self._name = 'Lesser\nHealth\nPotion'
             self._regen_amount = 15
         if determining_type_potion in range(61, 81):
-            self._image = pygame.image.load(os.path.realpath('Potions/Health/medium_health_potion.png')).convert()
+            self._image = pygame.image.load(os.path.realpath(
+                'resources/images/potions/health/medium_health_potion.png')).convert()
             self._name = 'Medium\nHealth\nPotion'
             self._regen_amount = 20
         if determining_type_potion in range(81, 96):
-            self._image = pygame.image.load(os.path.realpath('Potions/Health/greater_health_potion.png')).convert()
+            self._image = pygame.image.load(os.path.realpath(
+                'resources/images/potions/health/greater_health_potion.png')).convert()
             self._name = 'Greater\nHealth\nPotion'
             self._regen_amount = 25
         if determining_type_potion in range(96, 101):
-            self._image = pygame.image.load(os.path.realpath('Potions/Health/huge_health_potion.png')).convert()
+            self._image = pygame.image.load(os.path.realpath(
+                'resources/images/potions/health/huge_health_potion.png')).convert()
             self._name = 'Huge\nHealth\nPotion'
             self._regen_amount = 35
         self._rect = self.rect = self._image.get_rect()

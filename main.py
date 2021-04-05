@@ -30,7 +30,6 @@ from PIL import ImageFont
 import constants
 from player import Player
 import demon
-from potion import Potion
 
 
 def run_game():
@@ -114,7 +113,7 @@ def run_game():
 def show_pause_menu():
     # TODO: we don't need to calculate it, it's not good
     text_length_pixels = get_text_length_in_pixels('Pause. Press <Escape> To Continue',
-                                                   30, 'samson_font.ttf')
+                                                   30, 'resources/fonts/samson_font.ttf')
     draw_text(main_game_window, 'Pause. Press <Escape> To Continue', 30, (255, 255, 255),
               constants.GAME_WINDOW_WIDTH//2-text_length_pixels[0]//2, 10)
 
@@ -146,15 +145,15 @@ def show_start_menu():
         if index_active_menu_item == 3:
             menu_items['Exit'] = color
 
-    menu_background = pygame.image.load('menu_background.png')
+    menu_background = pygame.image.load('resources/images/backgrounds/menu_background.png')
 
     menu_items = {
-        'New Game': (255, 255, 255),
+        'New Game': (255, 140, 0),
         'Load Game': (255, 255, 255),
         'Settings': (255, 255, 255),
         'Exit': (255, 255, 255)
     }
-    index_selected_menu_item = -1
+    index_selected_menu_item = 0
 
     is_menu_show = True
     clock = pygame.time.Clock()
@@ -207,7 +206,7 @@ def show_start_menu():
 def game_over():
     # TODO: we don't need to calculate it, it's not good
     text_length_pixels = get_text_length_in_pixels('You died. Press <Enter> To Restart Or <Escape> To Exit',
-                                                   30, 'samson_font.ttf')
+                                                   30, 'resources/fonts/samson_font.ttf')
 
     draw_text(main_game_window, 'You died. Press <Enter> To Restart Or <Escape> To Exit', 30, (255, 255, 255),
               text_length_pixels[0]//2-85, 10)
@@ -245,7 +244,7 @@ def create_enemies(min_number_enemies, max_number_enemies):
 
 
 def draw_text(surface, text, size, color, x, y):
-    font_name = pygame.font.match_font('samson_font.ttf')
+    font_name = pygame.font.match_font('resources/fonts/samson_font.ttf')
     font = pygame.font.Font(font_name, size)
     text_surface = font.render(text, True, color)
     text_rect = text_surface.get_rect()
@@ -285,7 +284,7 @@ def main():
     global main_game_window
 
     pygame.display.set_caption(constants.GAME_WINDOW_TITLE)
-    icon = pygame.image.load('Icon.png')
+    icon = pygame.image.load('resources/images/icons/icon.png')
     pygame.display.set_icon(icon)
 
     show_start_menu()

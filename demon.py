@@ -19,22 +19,22 @@ class Demon(pygame.sprite.Sprite):
 
     def __init__(self, init_center_x, init_center_y):
         super().__init__()
-        self._image = pygame.image.load('Enemy/EnemyMovingDown.png').convert()
+        self._image = pygame.image.load('resources/images/enemy/enemy_moving_down.png').convert()
         self._rect = self.rect = self._image.get_rect()
         self._rect.centerx = init_center_x
         self._rect.centery = init_center_y
         self._tile_set = [
             [
-                pygame.image.load('Enemy/EnemyMovingLeft.png').convert()
+                pygame.image.load('resources/images/enemy/enemy_moving_left.png').convert()
             ],
             [
-                pygame.image.load('Enemy/EnemyMovingRight.png').convert()
+                pygame.image.load('resources/images/enemy/enemy_moving_right.png').convert()
             ],
             [
-                pygame.image.load('Enemy/EnemyMovingUp.png').convert()
+                pygame.image.load('resources/images/enemy/enemy_moving_up.png').convert()
             ],
             [
-                pygame.image.load('Enemy/EnemyMovingDown.png').convert()
+                pygame.image.load('resources/images/enemy/enemy_moving_down.png').convert()
             ]
 
         ]

@@ -24,34 +24,34 @@ class Player(pygame.sprite.Sprite):
 
     def __init__(self, init_center_x, init_center_y):
         super().__init__()
-        self._image = pygame.image.load('Player/PlayerDownMoving0.png').convert()
+        self._image = pygame.image.load('resources/images/player/player_down_moving_0.png').convert()
         self._rect = self.rect = self._image.get_rect()
         self._rect.centerx = init_center_x
         self._rect.centery = init_center_y
         self._tile_set = [
             [
-                pygame.image.load('Player/PlayerLeftMoving0.png').convert(),
-                pygame.image.load('Player/PlayerLeftMoving1.png').convert(),
-                pygame.image.load('Player/PlayerLeftMoving2.png').convert(),
-                pygame.image.load('Player/PlayerLeftMoving3.png').convert()
+                pygame.image.load('resources/images/player/player_left_moving_0.png').convert(),
+                pygame.image.load('resources/images/player/player_left_moving_1.png').convert(),
+                pygame.image.load('resources/images/player/player_left_moving_2.png').convert(),
+                pygame.image.load('resources/images/player/player_left_moving_3.png').convert()
             ],
             [
-                pygame.image.load('Player/PlayerRightMoving0.png').convert(),
-                pygame.image.load('Player/PlayerRightMoving1.png').convert(),
-                pygame.image.load('Player/PlayerRightMoving2.png').convert(),
-                pygame.image.load('Player/PlayerRightMoving3.png').convert()
+                pygame.image.load('resources/images/player/player_right_moving_0.png').convert(),
+                pygame.image.load('resources/images/player/player_right_moving_1.png').convert(),
+                pygame.image.load('resources/images/player/player_right_moving_2.png').convert(),
+                pygame.image.load('resources/images/player/player_right_moving_3.png').convert()
             ],
             [
-                pygame.image.load('Player/PlayerUpMoving0.png').convert(),
-                pygame.image.load('Player/PlayerUpMoving1.png').convert(),
-                pygame.image.load('Player/PlayerUpMoving2.png').convert(),
-                pygame.image.load('Player/PlayerUpMoving3.png').convert()
+                pygame.image.load('resources/images/player/player_up_moving_0.png').convert(),
+                pygame.image.load('resources/images/player/player_up_moving_1.png').convert(),
+                pygame.image.load('resources/images/player/player_up_moving_2.png').convert(),
+                pygame.image.load('resources/images/player/player_up_moving_3.png').convert()
             ],
             [
-                pygame.image.load('Player/PlayerDownMoving0.png').convert(),
-                pygame.image.load('Player/PlayerDownMoving1.png').convert(),
-                pygame.image.load('Player/PlayerDownMoving2.png').convert(),
-                pygame.image.load('Player/PlayerDownMoving3.png').convert()
+                pygame.image.load('resources/images/player/player_down_moving_0.png').convert(),
+                pygame.image.load('resources/images/player/player_down_moving_1.png').convert(),
+                pygame.image.load('resources/images/Player/player_down_moving_2.png').convert(),
+                pygame.image.load('resources/images/Player/player_down_moving_3.png').convert()
             ],
 
         ]

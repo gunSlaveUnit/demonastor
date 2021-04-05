@@ -21,7 +21,7 @@ import constants
 class Fireball(pygame.sprite.Sprite):
     def __init__(self, init_center_x, init_center_y, shooting_direction):
         super().__init__()
-        self._image = pygame.image.load('Fireball.png').convert()
+        self._image = pygame.image.load('resources/images/shells/fireball.png').convert()
         self._rect = self.rect = self._image.get_rect()
         self._rect.centerx = init_center_x
         self._rect.centery = init_center_y
