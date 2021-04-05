@@ -3,6 +3,7 @@ Project started at 19.02.2021
 The Game for a programming course.
 Author: Alexander Tyamin
 Python 3.9.2
+
 In this file the program is started
 """
 
@@ -12,7 +13,6 @@ In this file the program is started
 # TODO: bind different characteristics to each other
 # TODO: lots of numeric constants, we should to remove it
 # TODO: use properties in classes
-# TODO: _ -> __
 # TODO: make collisions
 # TODO: change draw_text function. It need to paste a text into left down corner
 # TODO: draw_text need to receive color

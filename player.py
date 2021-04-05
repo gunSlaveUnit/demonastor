@@ -2,6 +2,7 @@
 The Game for a programming course.
 Author: Alexander Tyamin
 Python 3.9.2
+
 File contains a description of Player class
 """
 
@@ -20,15 +21,15 @@ import fireball
 
 
 class Player(pygame.sprite.Sprite):
-    _DIRECTIONS_MOVING = {'LEFT': 0, 'RIGHT': 1, 'UP': 2, 'DOWN': 3}
+    __DIRECTIONS_MOVING = {'LEFT': 0, 'RIGHT': 1, 'UP': 2, 'DOWN': 3}
 
     def __init__(self, init_center_x, init_center_y):
         super().__init__()
-        self._image = pygame.image.load('resources/images/player/player_down_moving_0.png').convert()
-        self._rect = self.rect = self._image.get_rect()
-        self._rect.centerx = init_center_x
-        self._rect.centery = init_center_y
-        self._tile_set = [
+        self.__image = pygame.image.load('resources/images/player/player_down_moving_0.png').convert()
+        self.__rect = self.rect = self.__image.get_rect()
+        self.__rect.centerx = init_center_x
+        self.__rect.centery = init_center_y
+        self.__tile_set = [
             [
                 pygame.image.load('resources/images/player/player_left_moving_0.png').convert(),
                 pygame.image.load('resources/images/player/player_left_moving_1.png').convert(),
@@ -55,77 +56,77 @@ class Player(pygame.sprite.Sprite):
             ],
 
         ]
-        self._amount_images_in_animation = len(self._tile_set[0])
-        self._current_number_image_in_animation = 0
-        self._current_direction_moving = Player._DIRECTIONS_MOVING['UP']
-        self._last_pressed_key = pygame.K_w
+        self.__amount_images_in_animation = len(self.__tile_set[0])
+        self.__current_number_image_in_animation = 0
+        self.__current_direction_moving = self.__DIRECTIONS_MOVING['UP']
+        self.__last_pressed_key = pygame.K_w
 
-        self._name = 'Nickname'
+        self.__name = 'Booba'
 
-        self._speed_changing = 2
-        self._speed_x = 0
-        self._speed_y = 0
+        self.__speed_changing = 2
+        self.__speed_x = 0
+        self.__speed_y = 0
 
-        self._amount_damage = random.randint(10, 20)
-        self._amount_health = 100
+        self.__amount_damage = random.randint(10, 20)
+        self.__amount_health = 100
 
     def update(self, surface):
         super().update()
-        self._draw(surface)
-        self._move()
+        self.__draw(surface)
+        self.__move()
 
-        self._amount_damage = random.randint(10, 20)
+        self.__amount_damage = random.randint(10, 20)
 
-    def _draw(self, surface):
-        if self._current_number_image_in_animation == constants.FPS_LOCKING:
-            self._current_number_image_in_animation = 0
+    def __draw(self, surface):
+        if self.__current_number_image_in_animation == constants.FPS_LOCKING:
+            self.__current_number_image_in_animation = 0
 
-        self._image = self._tile_set[self._current_direction_moving][
-            self._current_number_image_in_animation // (constants.FPS_LOCKING // self._amount_images_in_animation)]
-        surface.blit(self._image, self._rect)
-        self._current_number_image_in_animation += 1
+        self.__image = self.__tile_set[self.__current_direction_moving][
+            self.__current_number_image_in_animation // (constants.FPS_LOCKING // self.__amount_images_in_animation)]
+        surface.blit(self.__image, self.__rect)
+        self.__current_number_image_in_animation += 1
 
-    def _move(self):
-        self._speed_x = 0
-        self._speed_y = 0
+    def __move(self):
+        self.__speed_x = 0
+        self.__speed_y = 0
 
         key_state = pygame.key.get_pressed()
         if key_state[pygame.K_a]:
-            self._current_direction_moving = self._DIRECTIONS_MOVING['LEFT']
-            self._speed_x = -self._speed_changing
+            self.__current_direction_moving = self.__DIRECTIONS_MOVING['LEFT']
+            self.__speed_x = -self.__speed_changing
         if key_state[pygame.K_d]:
-            self._current_direction_moving = self._DIRECTIONS_MOVING['RIGHT']
-            self._speed_x = self._speed_changing
+            self.__current_direction_moving = self.__DIRECTIONS_MOVING['RIGHT']
+            self.__speed_x = self.__speed_changing
         if key_state[pygame.K_w]:
-            self._current_direction_moving = self._DIRECTIONS_MOVING['UP']
-            self._speed_y = -self._speed_changing
+            self.__current_direction_moving = self.__DIRECTIONS_MOVING['UP']
+            self.__speed_y = -self.__speed_changing
         if key_state[pygame.K_s]:
-            self._current_direction_moving = self._DIRECTIONS_MOVING['DOWN']
-            self._speed_y = self._speed_changing
+            self.__current_direction_moving = self.__DIRECTIONS_MOVING['DOWN']
+            self.__speed_y = self.__speed_changing
 
-        if self._speed_x == 0 and self._speed_y == 0:
-            self._current_number_image_in_animation = 0
+        if self.__speed_x == 0 and self.__speed_y == 0:
+            self.__current_number_image_in_animation = 0
 
-        self._rect.centerx += self._speed_x
-        self._rect.centery += self._speed_y
+        self.__rect.centerx += self.__speed_x
+        self.__rect.centery += self.__speed_y
 
     def attack(self):
-        shell = fireball.Fireball(self._rect.centerx, self._rect.centery,
-                                      (float(pygame.mouse.get_pos()[0] - self._rect.centerx),
-                                       float(pygame.mouse.get_pos()[1] - self._rect.centery)))
+        shell = fireball.Fireball(self.__rect.centerx, self.__rect.centery,
+                                  (float(pygame.mouse.get_pos()[0] - self.__rect.centerx),
+                                   float(pygame.mouse.get_pos()[1] - self.__rect.centery)))
         return shell
 
     def get_rect(self):
-        return self._rect
+        return self.__rect
 
     def get_amount_damage(self):
-        return self._amount_damage
+        return self.__amount_damage
 
     def get_amount_health(self):
-        return self._amount_health
+        return self.__amount_health
 
     def set_amount_health(self, new_value_health):
-        self._amount_health = new_value_health
+        self.__amount_health = new_value_health
 
     def get_name(self):
-        return self._name
+        return self.__name

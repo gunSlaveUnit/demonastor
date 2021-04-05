@@ -2,7 +2,8 @@
 The Game for a programming course.
 Author: Alexander Tyamin
 Python 3.9.2
-This file describes program constants
+
+The file contains constants for the main program settings, windows, various names.
 """
 
 # ! usr/bin/env python3

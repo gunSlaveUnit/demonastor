@@ -2,56 +2,57 @@
 The Game for a programming course.
 Author: Alexander Tyamin
 Python 3.9.2
-File contains a description of Potion class
+
+The file contains a class description for all playable potions that enhance or weaken,
+decrease or increase any characteristics/.
 """
 
 # ! usr/bin/env python3
 # -*- coding: utf8 -*-
 
-# TODO: pygame.sprite.Sprite -> Sprite in all files
-
 import random
 import os
 
-import pygame
+from pygame.sprite import Sprite
+from pygame import image
 
 
-class Potion(pygame.sprite.Sprite):
+class Potion(Sprite):
     def __init__(self, init_center_x, init_center_y):
         super().__init__()
         determining_type_potion = random.randint(0, 101)
         if determining_type_potion in range(0, 36):
-            self._image = pygame.image.load(os.path.realpath(
+            self.__image = image.load(os.path.realpath(
                 'resources/images/potions/health/small_health_potion.png')).convert()
-            self._name = 'Small\nHealth\nPotion'
-            self._regen_amount = 5
+            self.__name = 'Small\nHealth\nPotion'
+            self.__regen_amount = 5
         if determining_type_potion in range(36, 61):
-            self._image = pygame.image.load(os.path.realpath(
+            self.__image = image.load(os.path.realpath(
                 'resources/images/potions/health/lesser_health_potion.png')).convert()
-            self._name = 'Lesser\nHealth\nPotion'
-            self._regen_amount = 15
+            self.__name = 'Lesser\nHealth\nPotion'
+            self.__regen_amount = 15
         if determining_type_potion in range(61, 81):
-            self._image = pygame.image.load(os.path.realpath(
+            self.__image = image.load(os.path.realpath(
                 'resources/images/potions/health/medium_health_potion.png')).convert()
-            self._name = 'Medium\nHealth\nPotion'
-            self._regen_amount = 20
+            self.__name = 'Medium\nHealth\nPotion'
+            self.__regen_amount = 20
         if determining_type_potion in range(81, 96):
-            self._image = pygame.image.load(os.path.realpath(
+            self.__image = image.load(os.path.realpath(
                 'resources/images/potions/health/greater_health_potion.png')).convert()
-            self._name = 'Greater\nHealth\nPotion'
-            self._regen_amount = 25
+            self.__name = 'Greater\nHealth\nPotion'
+            self.__regen_amount = 25
         if determining_type_potion in range(96, 101):
-            self._image = pygame.image.load(os.path.realpath(
+            self.__image = image.load(os.path.realpath(
                 'resources/images/potions/health/huge_health_potion.png')).convert()
-            self._name = 'Huge\nHealth\nPotion'
-            self._regen_amount = 35
-        self._rect = self.rect = self._image.get_rect()
-        self._rect.centerx = init_center_x
-        self._rect.centery = init_center_y
+            self.__name = 'Huge\nHealth\nPotion'
+            self.__regen_amount = 35
+        self.__rect = self.rect = self.__image.get_rect()
+        self.__rect.centerx = init_center_x
+        self.__rect.centery = init_center_y
 
     def update(self, surface):
         super().update()
-        self._draw(surface)
+        self.__draw(surface)
 
-    def _draw(self, surface):
-        surface.blit(self._image, (self._rect.centerx, self._rect.centery))
+    def __draw(self, surface):
+        surface.blit(self.__image, (self.__rect.centerx, self.__rect.centery))
