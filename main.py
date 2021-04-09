@@ -15,11 +15,12 @@ In this file the program is started
 # TODO: use properties in classes
 # TODO: make collisions
 # TODO: change draw_text function. It need to paste a text into left down corner
-# TODO: draw_text need to receive color
-# TODO: we should to add default params
+# TODO: we need to add exceptions
 
 # TODO: для сохранения мы можем просто пихать в качестве аргумента при создании объекта словарь
 # TODO: можно добавить скриншоты и запись видео
+
+# TODO: убрать pillow, в pygame есть ширина текста
 
 import sys
 import random
