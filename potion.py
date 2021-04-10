@@ -56,3 +56,6 @@ class Potion(Sprite):
 
     def __draw(self, surface):
         surface.blit(self.__image, (self.__rect.centerx, self.__rect.centery))
+
+    def get_rect(self):
+        return self.__rect

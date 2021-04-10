@@ -29,14 +29,20 @@ import pygame
 from PIL import ImageFont
 
 import constants
+from camera import Camera
 from player import Player
 import demon
+from potion import Potion
 
 
 def run_game():
     global main_game_window
     player = Player(constants.GAME_WINDOW_WIDTH // 2,
                     constants.GAME_WINDOW_HEIGHT // 2)
+
+    camera = Camera((800, 600))
+
+    potion = Potion(200, 200)
 
     shells_player = []
     enemies = create_enemies(2, 10)
@@ -71,12 +77,18 @@ def run_game():
 
         main_game_window.fill(int())
 
+        camera.update(player)
         player.update(main_game_window)
 
+        potion.update(main_game_window)
+        camera.apply(potion)
+
         for shell in shells_player:
+            camera.apply(shell)
             shell.update(main_game_window)
 
         for enemy in enemies:
+            camera.apply(enemy)
             enemy.update(main_game_window)
             enemy.attack(player.get_rect().centerx, player.get_rect().centery)
 
@@ -106,7 +118,6 @@ def run_game():
                   player.get_rect().centery + player.get_rect().height // 2 + 5)
 
         pygame.display.flip()  # for double buffering
-        pygame.display.update()
         clock.tick(constants.FPS_LOCKING)
     pygame.quit()
 

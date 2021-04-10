@@ -60,7 +60,6 @@ class Demon(pygame.sprite.Sprite):
         self.__amount_damage = random.randint(40, 50)
 
     def __draw(self, surface):
-        print(self.__current_direction_moving)
         self.__image = self.__tile_set[self.__current_direction_moving][
             self.__current_number_image_in_animation]
         surface.blit(self.__image, self.__rect)

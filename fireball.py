@@ -58,3 +58,6 @@ class Fireball(pygame.sprite.Sprite):
 
     def get_amount_additional_damage(self):
         return self.__amount_damage
+
+    def get_rect(self):
+        return self.__rect
