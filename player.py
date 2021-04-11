@@ -68,7 +68,6 @@ class Player(pygame.sprite.Sprite):
         self.__amount_health = 100
 
     def update(self, surface):
-        super().update()
         self.__draw(surface)
         self.__move()
 

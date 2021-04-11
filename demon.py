@@ -53,7 +53,6 @@ class Demon(pygame.sprite.Sprite):
         self.__amount_health = random.randint(80, 170)
 
     def update(self, surface):
-        super().update()
         self.__draw(surface)
         self.__move()
 

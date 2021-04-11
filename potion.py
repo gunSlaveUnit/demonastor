@@ -51,7 +51,6 @@ class Potion(Sprite):
         self.__rect.centery = init_center_y
 
     def update(self, surface):
-        super().update()
         self.__draw(surface)
 
     def __draw(self, surface):
