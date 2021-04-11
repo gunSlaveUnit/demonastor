@@ -20,13 +20,10 @@ In this file the program is started
 # TODO: для сохранения мы можем просто пихать в качестве аргумента при создании объекта словарь
 # TODO: можно добавить скриншоты и запись видео
 
-# TODO: убрать pillow, в pygame есть ширина текста
-
 import sys
 import random
 
 import pygame
-from PIL import ImageFont
 
 import constants
 from camera import Camera
