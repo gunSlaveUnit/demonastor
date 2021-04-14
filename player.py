@@ -15,6 +15,7 @@ import pygame
 
 import constants
 import fireball
+import inventory
 
 
 class Player(pygame.sprite.Sprite):
@@ -67,6 +68,8 @@ class Player(pygame.sprite.Sprite):
         self.__amount_damage = random.randint(10, 20)
         self.__amount_health = 100
 
+        self.__inventory = inventory.Inventory()
+
     def update(self, surface):
         self.__draw(surface)
         self.__move()
@@ -113,6 +116,9 @@ class Player(pygame.sprite.Sprite):
                                   (float(pygame.mouse.get_pos()[0] - self.__rect.centerx),
                                    float(pygame.mouse.get_pos()[1] - self.__rect.centery)))
         return shell
+
+    def show_inventory(self, surface):
+        self.__inventory.draw_inventory(surface)
 
     def get_rect(self):
         return self.__rect

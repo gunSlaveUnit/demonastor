@@ -71,6 +71,8 @@ def run_game():
                 if event.key == pygame.K_SPACE:
                     shell = player.attack()
                     shells_player.append(shell)
+                if event.key == pygame.K_i:
+                    player.show_inventory(main_game_window)
 
         main_game_window.fill(int())
 
