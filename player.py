@@ -66,13 +66,15 @@ class Player(pygame.sprite.Sprite):
         self.__speed_y = 0
 
         self.__amount_damage = random.randint(10, 20)
-        self.__amount_health = 100
+        self.__amount_health = 70
+        self.__passive_amount_regeneration = 0.003
 
         self.__inventory = inventory.Inventory()
 
     def update(self, surface):
         self.__draw(surface)
         self.__move()
+        self.regeneration()
 
         self.__amount_damage = random.randint(10, 20)
 
@@ -116,6 +118,17 @@ class Player(pygame.sprite.Sprite):
                                   (float(pygame.mouse.get_pos()[0] - self.__rect.centerx),
                                    float(pygame.mouse.get_pos()[1] - self.__rect.centery)))
         return shell
+
+    def regeneration(self, potion=None):
+        if potion is None:
+            if self.__amount_health < 70:
+                self.__amount_health += self.__passive_amount_regeneration
+        else:
+            clock = pygame.time.Clock()
+            while self.__amount_health < 70:
+                self.__amount_health += potion.get_regen_amount()
+                clock.tick(constants.FPS_LOCKING*100000)
+                print(self.__amount_health)
 
     def show_inventory(self, surface):
         self.__inventory.draw_inventory(surface)

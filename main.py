@@ -39,7 +39,7 @@ def run_game():
 
     camera = Camera((800, 600))
 
-    potion = Potion(200, 200)
+    potions = [Potion(200, 200)]
 
     shells_player = []
     enemies = create_enemies(2, 10)
@@ -79,8 +79,13 @@ def run_game():
         camera.update(player)
         player.update(main_game_window)
 
-        potion.update(main_game_window)
-        camera.apply(potion)
+        for potion in potions:
+            potion.update(main_game_window)
+            camera.apply(potion)
+
+            if pygame.sprite.collide_rect(player, potion):
+                player.regeneration(potion)
+                potions.remove(potion)
 
         for shell in shells_player:
             camera.apply(shell)

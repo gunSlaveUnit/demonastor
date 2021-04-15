@@ -58,3 +58,6 @@ class Potion(Sprite):
 
     def get_rect(self):
         return self.__rect
+
+    def get_regen_amount(self):
+        return self.__regen_amount
