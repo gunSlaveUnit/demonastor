@@ -21,31 +21,37 @@ class Potion(Sprite):
     def __init__(self, init_center_x, init_center_y):
         super().__init__()
         determining_type_potion = random.randint(0, 101)
+        self.__amount_health_regen_yet = 0
         if determining_type_potion in range(0, 36):
             self.__image = image.load(os.path.realpath(
                 'resources/images/potions/health/small_health_potion.png')).convert()
             self.__name = 'Small\nHealth\nPotion'
             self.__regen_amount = 5
+            self.__max_amount_health_for_regeneration = 5
         if determining_type_potion in range(36, 61):
             self.__image = image.load(os.path.realpath(
                 'resources/images/potions/health/lesser_health_potion.png')).convert()
             self.__name = 'Lesser\nHealth\nPotion'
-            self.__regen_amount = 15
+            self.__regen_amount = 10
+            self.__max_amount_health_for_regeneration = 15
         if determining_type_potion in range(61, 81):
             self.__image = image.load(os.path.realpath(
                 'resources/images/potions/health/medium_health_potion.png')).convert()
             self.__name = 'Medium\nHealth\nPotion'
-            self.__regen_amount = 20
+            self.__regen_amount = 15
+            self.__max_amount_health_for_regeneration = 20
         if determining_type_potion in range(81, 96):
             self.__image = image.load(os.path.realpath(
                 'resources/images/potions/health/greater_health_potion.png')).convert()
             self.__name = 'Greater\nHealth\nPotion'
-            self.__regen_amount = 25
+            self.__regen_amount = 20
+            self.__max_amount_health_for_regeneration = 25
         if determining_type_potion in range(96, 101):
             self.__image = image.load(os.path.realpath(
                 'resources/images/potions/health/huge_health_potion.png')).convert()
             self.__name = 'Huge\nHealth\nPotion'
-            self.__regen_amount = 35
+            self.__regen_amount = 25
+            self.__max_amount_health_for_regeneration = 35
         self.__rect = self.rect = self.__image.get_rect()
         self.__rect.centerx = init_center_x
         self.__rect.centery = init_center_y
@@ -61,3 +67,12 @@ class Potion(Sprite):
 
     def get_regen_amount(self):
         return self.__regen_amount
+
+    def get_amount_health_regen_yet(self):
+        return self.__amount_health_regen_yet
+
+    def set_amount_health_regen_yet(self, new_value):
+        self.__amount_health_regen_yet = new_value
+
+    def get_max_amount_health_for_regen(self):
+        return self.__max_amount_health_for_regeneration

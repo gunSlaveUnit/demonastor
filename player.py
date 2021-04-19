@@ -71,6 +71,8 @@ class Player(pygame.sprite.Sprite):
 
         self.__inventory = inventory.Inventory()
 
+        self.__active_effects = []
+
     def update(self, surface):
         self.__draw(surface)
         self.__move()
@@ -121,14 +123,9 @@ class Player(pygame.sprite.Sprite):
 
     def regeneration(self, potion=None):
         if potion is None:
-            if self.__amount_health < 70:
-                self.__amount_health += self.__passive_amount_regeneration
+            self.__amount_health += self.__passive_amount_regeneration
         else:
-            clock = pygame.time.Clock()
-            while self.__amount_health < 70:
-                self.__amount_health += potion.get_regen_amount()
-                clock.tick(constants.FPS_LOCKING*100000)
-                print(self.__amount_health)
+            self.__amount_health += potion.get_regen_amount()
 
     def show_inventory(self, surface):
         self.__inventory.draw_inventory(surface)
