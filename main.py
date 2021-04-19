@@ -29,7 +29,8 @@ import constants
 from camera import Camera
 from player import Player
 import demon
-from potion import Potion
+from healthpotion import HealthPotion
+from manapotion import ManaPotion
 
 
 def run_game():
@@ -39,7 +40,10 @@ def run_game():
 
     camera = Camera((800, 600))
 
-    potions = [Potion(200, 200)]
+    potions = [HealthPotion(random.randint(0, constants.GAME_WINDOW_WIDTH),
+                            random.randint(0, constants.GAME_WINDOW_HEIGHT)),
+               ManaPotion(random.randint(0, constants.GAME_WINDOW_WIDTH),
+                          random.randint(0, constants.GAME_WINDOW_HEIGHT))]
 
     shells_player = []
     enemies = create_enemies(2, 10)
@@ -88,8 +92,9 @@ def run_game():
                 potions.remove(potion)
 
         for shell in shells_player:
-            camera.apply(shell)
-            shell.update(main_game_window)
+            if shell:
+                camera.apply(shell)
+                shell.update(main_game_window)
 
         for enemy in enemies:
             enemy.attack(player.get_rect().centerx, player.get_rect().centery)
@@ -99,12 +104,13 @@ def run_game():
 
         for enemy in enemies:
             for shell in shells_player:
-                if pygame.sprite.collide_rect(enemy, shell):
-                    shells_player.remove(shell)
-                    enemy.set_amount_health(enemy.get_amount_health() - player.get_amount_damage()
-                                            - shell.get_amount_additional_damage())
-                    if enemy.get_amount_health() < 0:
-                        enemies.remove(enemy)
+                if shell:
+                    if pygame.sprite.collide_rect(enemy, shell):
+                        shells_player.remove(shell)
+                        enemy.set_amount_health(enemy.get_amount_health() - player.get_amount_damage()
+                                                - shell.get_amount_additional_damage())
+                        if enemy.get_amount_health() < 0:
+                            enemies.remove(enemy)
 
         for enemy in enemies:
             draw_bar(main_game_window, enemy.get_rect().centerx - 35,
@@ -118,6 +124,9 @@ def run_game():
         draw_bar(main_game_window, player.get_rect().centerx - 35,
                  player.get_rect().centery + player.get_rect().height // 2 + 15,
                  constants.CARMINE_RED_COLOR_HEALTH_BAR, player.get_amount_health())
+        draw_bar(main_game_window, player.get_rect().centerx - 35,
+                 player.get_rect().centery + player.get_rect().height // 2 + 20,
+                 constants.MEDIUM_BLUE_COLOR_MANA_BAR, player.get_amount_mana())
         draw_text(main_game_window, player.get_name(), 15, constants.WHITE_COLOR_TITLE_BLOCKS,
                   player.get_rect().centerx,
                   player.get_rect().centery + player.get_rect().height // 2 + 5)
