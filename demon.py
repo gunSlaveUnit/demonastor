@@ -54,7 +54,6 @@ class Demon(pygame.sprite.Sprite):
 
     def update(self, surface):
         self.__draw(surface)
-        self.__move()
 
         self.__amount_damage = random.randint(40, 50)
 
@@ -82,11 +81,27 @@ class Demon(pygame.sprite.Sprite):
         self.__rect.centery += self.__speed_y
 
     def attack(self, current_x_player, current_y_player):
-        distance_reaction = random.randint(30, 150)
+        distance_reaction = random.randint(100, 170)
         current_distance_between_player_enemy = math.sqrt((current_x_player-self.__rect.centerx)**2 +
                                                           (current_y_player-self.__rect.centery)**2)
         if current_distance_between_player_enemy < distance_reaction:
-            pass
+            dx = float(current_x_player - self.__rect.centerx)
+            dy = float(current_y_player - self.__rect.centery)
+            length = float(math.sqrt(dx**2 + dy**2))
+            if length == 0:
+                length = 1
+            direction_to_player = (float(dx/length), float(dy/length))
+            if direction_to_player[0] < 0.0:
+                self.__current_direction_moving = self.__DIRECTIONS_MOVING['LEFT']
+            if direction_to_player[0] > 0.0:
+                self.__current_direction_moving = self.__DIRECTIONS_MOVING['RIGHT']
+            if direction_to_player[1] < 0.0:
+                self.__current_direction_moving = self.__DIRECTIONS_MOVING['UP']
+            if direction_to_player[1] > 0.0:
+                self.__current_direction_moving = self.__DIRECTIONS_MOVING['DOWN']
+
+            self.__rect.centerx += direction_to_player[0]
+            self.__rect.centery += direction_to_player[1]
         else:
             self.__move()
 

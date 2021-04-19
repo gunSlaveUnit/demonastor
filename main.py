@@ -92,6 +92,7 @@ def run_game():
             shell.update(main_game_window)
 
         for enemy in enemies:
+            enemy.attack(player.get_rect().centerx, player.get_rect().centery)
             camera.apply(enemy)
             enemy.update(main_game_window)
             enemy.attack(player.get_rect().centerx, player.get_rect().centery)
