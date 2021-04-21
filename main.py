@@ -25,6 +25,7 @@ import random
 
 import pygame
 
+import map
 import constants
 from camera import Camera
 from player import Player
@@ -35,6 +36,9 @@ from manapotion import ManaPotion
 
 def run_game():
     global main_game_window
+
+    game_map = map.Map()
+
     player = Player(constants.GAME_WINDOW_WIDTH // 2,
                     constants.GAME_WINDOW_HEIGHT // 2)
 
@@ -79,6 +83,10 @@ def run_game():
                     player.show_inventory(main_game_window)
 
         main_game_window.fill(int())
+
+        game_map.update(main_game_window)
+        for tile in game_map.get_map_tiles():
+            camera.apply(tile)
 
         camera.update(player)
         player.update(main_game_window)
