@@ -14,6 +14,8 @@ import sys
 import pygame
 
 import constants
+import game_enums
+import coin
 
 
 class Inventory:
@@ -30,6 +32,27 @@ class Inventory:
                                             constants.GAME_WINDOW_HEIGHT//2-self.__height//2,
                                             self.__width, self.__height)
 
+        self.__player_money = [
+            [
+                coin.Coin(constants.GAME_WINDOW_WIDTH//2-self.__width//2+20,
+                          constants.GAME_WINDOW_HEIGHT//2+self.__height//2-15,
+                          game_enums.CoinTypes.GOLD),
+                0
+            ],
+            [
+                coin.Coin(constants.GAME_WINDOW_WIDTH//2 - 30,
+                          constants.GAME_WINDOW_HEIGHT//2+self.__height//2-15,
+                          game_enums.CoinTypes.SILVER),
+                0
+            ],
+            [
+                coin.Coin(constants.GAME_WINDOW_WIDTH//2+self.__width//2-70,
+                          constants.GAME_WINDOW_HEIGHT//2+self.__height//2-15,
+                          game_enums.CoinTypes.BRONZE),
+                0
+            ]
+        ]
+
     def append_resource(self, resource_name):
         if resource_name in self.__resources:
             self.__resources[resource_name] += 1
@@ -40,10 +63,39 @@ class Inventory:
 
         pygame.draw.line(surface, constants.DARK_ORANGE_HIGHLIGHTED_MENU_ITEM,
                          (constants.GAME_WINDOW_WIDTH//2-self.__width//2,
-                          constants.GAME_WINDOW_HEIGHT//2+self.__height//2-self.__height//10),
+                          constants.GAME_WINDOW_HEIGHT//2+self.__height//2-self.__height//10-7),
                          (constants.GAME_WINDOW_WIDTH//2+self.__width//2,
-                          constants.GAME_WINDOW_HEIGHT//2+self.__height//2-self.__height//10),
+                          constants.GAME_WINDOW_HEIGHT//2+self.__height//2-self.__height//10-7),
                          3)
+
+        x_up, y_up, x_down, y_down = (constants.GAME_WINDOW_WIDTH//2-self.__width//2+20,
+                                      constants.GAME_WINDOW_HEIGHT//2-self.__height//2+2,
+                                      constants.GAME_WINDOW_WIDTH//2-self.__width//2+20,
+                                      constants.GAME_WINDOW_HEIGHT//2+self.__height//2-42)
+
+        for _ in range(0, 23):
+            pygame.draw.line(surface, constants.TEST_COLOR,
+                             (x_up, y_up),
+                             (x_down, y_down), 1)
+            x_up += 20
+            x_down += 20
+
+        x_left, y_left, x_right, y_right = (
+            constants.GAME_WINDOW_WIDTH // 2 - self.__width // 2+2,
+            constants.GAME_WINDOW_HEIGHT//2-self.__height//2+20,
+            constants.GAME_WINDOW_WIDTH // 2 + self.__width // 2-4,
+            constants.GAME_WINDOW_HEIGHT // 2 - self.__height // 2+20
+        )
+
+        for _ in range(0, 13):
+            pygame.draw.line(surface, constants.TEST_COLOR,
+                             (x_left, y_left),
+                             (x_right, y_right), 1)
+            y_left += 20
+            y_right += 20
+
+        for coins in self.__player_money:
+            coins[0].update(surface)
 
         clock = pygame.time.Clock()
         is_inventory_showed = True
