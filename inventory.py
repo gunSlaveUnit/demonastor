@@ -20,11 +20,7 @@ import coin
 
 class Inventory:
     def __init__(self):
-        self.__resources = {
-            'bronze_coin': 0,
-            'silver_coin': 0,
-            'gold_coin': 0
-        }
+        self.__resources = {}
         self.__width = 480
         self.__height = 320
         self.__frame_thickness = 3
