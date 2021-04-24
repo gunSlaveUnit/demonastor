@@ -13,9 +13,11 @@ import random
 
 import pygame
 
+import game_enums
 import constants
 import fireball
 import inventory
+import bar
 
 
 class Player(pygame.sprite.Sprite):
@@ -65,14 +67,25 @@ class Player(pygame.sprite.Sprite):
         self.__speed_x = 0
         self.__speed_y = 0
 
+        self.__max_health = 100
+        self.__current_health = 100
+        self.__passive_amount_regeneration = 0.1
+        self.__max_mana = 100
+        self.__current_mana = 100
+
         self.__amount_damage = random.randint(10, 20)
-        self.__amount_health = 100
-        self.__amount_mana = 100
-        self.__passive_amount_regeneration = 0.003
 
         self.__inventory = inventory.Inventory()
 
         self.__active_effects = []
+
+        self.__health_bar = bar.Bar(constants.GAME_WINDOW_WIDTH//2-constants.GAME_WINDOW_WIDTH//4,
+                                    constants.GAME_WINDOW_HEIGHT - 96,
+                                    game_enums.PlayerBarTypes.HEALTH.value)
+
+        self.__mana_bar = bar.Bar(constants.GAME_WINDOW_WIDTH * 0.75-96,
+                                  constants.GAME_WINDOW_HEIGHT - 96,
+                                  game_enums.PlayerBarTypes.MANA.value)
 
     def update(self, surface):
         self.__draw(surface)
@@ -91,6 +104,9 @@ class Player(pygame.sprite.Sprite):
             self.__current_number_image_in_animation // (constants.FPS_LOCKING // multiplier_change_animation_speed)]
         surface.blit(self.__image, self.__rect)
         self.__current_number_image_in_animation += 1
+
+        self.__health_bar.update(surface, self.__current_health, self.__max_health)
+        self.__mana_bar.update(surface, self.__current_mana, self.__max_mana)
 
     def __move(self):
         self.__speed_x = 0
@@ -117,21 +133,22 @@ class Player(pygame.sprite.Sprite):
         self.__rect.centery += self.__speed_y
 
     def attack(self):
-        if self.__amount_mana > 0:
+        if self.__current_mana > 0:
             shell = fireball.Fireball(self.__rect.centerx, self.__rect.centery,
                                       (float(pygame.mouse.get_pos()[0] - self.__rect.centerx),
                                        float(pygame.mouse.get_pos()[1] - self.__rect.centery)))
-            self.__amount_mana -= 8
+            self.__current_mana -= 8
             return shell
 
     def regeneration(self, potion=None):
         if potion is None:
-            self.__amount_health += self.__passive_amount_regeneration
+            self.__current_health += self.__passive_amount_regeneration
+            self.__current_mana += self.__passive_amount_regeneration
         else:
             if potion.get_type() == 'health':
-                self.__amount_health += potion.get_regen_amount()
+                self.__current_health += potion.get_regen_amount()
             elif potion.get_type() == 'mana':
-                self.__amount_mana += potion.get_regen_amount()
+                self.__current_mana += potion.get_regen_amount()
 
     def show_inventory(self, surface):
         self.__inventory.draw_inventory(surface)
@@ -140,16 +157,16 @@ class Player(pygame.sprite.Sprite):
         return self.__rect
 
     def get_amount_mana(self):
-        return self.__amount_mana
+        return self.__current_mana
 
     def get_amount_damage(self):
         return self.__amount_damage
 
     def get_amount_health(self):
-        return self.__amount_health
+        return self.__current_health
 
     def set_amount_health(self, new_value_health):
-        self.__amount_health = new_value_health
+        self.__current_health = new_value_health
 
     def get_name(self):
         return self.__name

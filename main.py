@@ -129,12 +129,6 @@ def run_game():
                       enemy.get_rect().centerx,
                       enemy.get_rect().centery - enemy.get_rect().height // 2 - 18)
 
-        draw_bar(main_game_window, player.get_rect().centerx - 35,
-                 player.get_rect().centery + player.get_rect().height // 2 + 15,
-                 constants.CARMINE_RED_COLOR_HEALTH_BAR, player.get_amount_health())
-        draw_bar(main_game_window, player.get_rect().centerx - 35,
-                 player.get_rect().centery + player.get_rect().height // 2 + 20,
-                 constants.MEDIUM_BLUE_COLOR_MANA_BAR, player.get_amount_mana())
         draw_text(main_game_window, player.get_name(), 15, constants.WHITE_COLOR_TITLE_BLOCKS,
                   player.get_rect().centerx,
                   player.get_rect().centery + player.get_rect().height // 2 + 5)
