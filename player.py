@@ -150,6 +150,9 @@ class Player(pygame.sprite.Sprite):
             elif potion.get_type() == 'mana':
                 self.__current_mana += potion.get_regen_amount()
 
+    def append_thing_to_inventory(self, thing):
+        self.__inventory.append_resource(thing)
+
     def show_inventory(self, surface):
         self.__inventory.draw_inventory(surface)
 

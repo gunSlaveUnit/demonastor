@@ -96,7 +96,7 @@ def run_game():
             camera.apply(potion)
 
             if pygame.sprite.collide_rect(player, potion):
-                player.regeneration(potion)
+                player.append_thing_to_inventory(potion)
                 potions.remove(potion)
 
         for shell in shells_player:

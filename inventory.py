@@ -52,6 +52,8 @@ class Inventory:
     def append_resource(self, resource_name):
         if resource_name in self.__resources:
             self.__resources[resource_name] += 1
+        else:
+            self.__resources[resource_name] = 1
 
     def draw_inventory(self, surface):
         pygame.draw.rect(surface, constants.DARK_ORANGE_HIGHLIGHTED_MENU_ITEM,
