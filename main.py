@@ -44,10 +44,15 @@ def run_game():
 
     camera = Camera((800, 600))
 
-    potions = [HealthPotion(random.randint(0, constants.GAME_WINDOW_WIDTH),
-                            random.randint(0, constants.GAME_WINDOW_HEIGHT)),
-               ManaPotion(random.randint(0, constants.GAME_WINDOW_WIDTH),
-                          random.randint(0, constants.GAME_WINDOW_HEIGHT))]
+    potions = []
+    health_potions = [HealthPotion(random.randint(0, constants.GAME_WINDOW_WIDTH),
+                                   random.randint(0, constants.GAME_WINDOW_HEIGHT)) for i in range(random.randint(5, 10))]
+
+    mana_potions = [ManaPotion(random.randint(0, constants.GAME_WINDOW_WIDTH),
+                               random.randint(0, constants.GAME_WINDOW_HEIGHT)) for i in range(random.randint(5, 10))]
+
+    potions.extend(health_potions)
+    potions.extend(mana_potions)
 
     shells_player = []
     enemies = create_enemies(2, 10)
@@ -95,7 +100,7 @@ def run_game():
             potion.update(main_game_window)
             camera.apply(potion)
 
-            if pygame.sprite.collide_rect(player, potion):
+            if pygame.sprite.collide_rect(player, potion) and pygame.key.get_pressed()[pygame.K_e]:
                 player.append_thing_to_inventory(potion)
                 potions.remove(potion)
 
