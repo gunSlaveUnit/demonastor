@@ -19,6 +19,7 @@ In this file the program is started
 
 # TODO: для сохранения мы можем просто пихать в качестве аргумента при создании объекта словарь
 # TODO: можно добавить скриншоты и запись видео
+# TODO: i don't like money icons in inventory
 
 import sys
 import random
@@ -32,6 +33,9 @@ from player import Player
 import demon
 from healthpotion import HealthPotion
 from manapotion import ManaPotion
+from coin import Coin
+import game_enums
+from chest import Chest
 
 
 def run_game():
@@ -42,14 +46,21 @@ def run_game():
     player = Player(constants.GAME_WINDOW_WIDTH // 2,
                     constants.GAME_WINDOW_HEIGHT // 2)
 
+    coin = Coin(random.randint(0, constants.GAME_WINDOW_WIDTH), random.randint(0, constants.GAME_WINDOW_HEIGHT),
+                game_enums.CoinTypes.GOLD)
+
+    chest = Chest(random.randint(0, constants.GAME_WINDOW_WIDTH), random.randint(0, constants.GAME_WINDOW_HEIGHT),
+                  is_chest_need_key=False)
+
     camera = Camera((800, 600))
 
     potions = []
     health_potions = [HealthPotion(random.randint(0, constants.GAME_WINDOW_WIDTH),
-                                   random.randint(0, constants.GAME_WINDOW_HEIGHT)) for i in range(random.randint(5, 10))]
+                                   random.randint(0, constants.GAME_WINDOW_HEIGHT)) for _ in
+                      range(random.randint(5, 10))]
 
     mana_potions = [ManaPotion(random.randint(0, constants.GAME_WINDOW_WIDTH),
-                               random.randint(0, constants.GAME_WINDOW_HEIGHT)) for i in range(random.randint(5, 10))]
+                               random.randint(0, constants.GAME_WINDOW_HEIGHT)) for _ in range(random.randint(5, 10))]
 
     potions.extend(health_potions)
     potions.extend(mana_potions)
@@ -93,8 +104,16 @@ def run_game():
         for tile in game_map.get_map_tiles():
             camera.apply(tile)
 
+        camera.apply(chest)
+        chest.update(main_game_window)
+        if pygame.sprite.collide_rect(player, chest) and pygame.key.get_pressed()[pygame.K_e]:
+            chest.open()
+
         camera.update(player)
         player.update(main_game_window)
+
+        camera.apply(coin)
+        coin.update(main_game_window)
 
         for potion in potions:
             potion.update(main_game_window)
@@ -145,7 +164,7 @@ def run_game():
 
 def show_pause_menu():
     draw_text(main_game_window, 'Pause. Press <Escape> To Continue', 30, constants.WHITE_COLOR_TITLE_BLOCKS,
-              constants.GAME_WINDOW_WIDTH//2, constants.GAME_WINDOW_HEIGHT//2)
+              constants.GAME_WINDOW_WIDTH // 2, constants.GAME_WINDOW_HEIGHT // 2)
 
     clock = pygame.time.Clock()
     is_pause_over = False
@@ -193,7 +212,7 @@ def show_start_menu():
         x_to_paste_menu_item = 200
         for menu_item in menu_items.keys():
             draw_text(main_game_window, menu_item, 50, menu_items[menu_item],
-                      constants.GAME_WINDOW_WIDTH//2, x_to_paste_menu_item)
+                      constants.GAME_WINDOW_WIDTH // 2, x_to_paste_menu_item)
             x_to_paste_menu_item += 60
 
         for event in pygame.event.get():
@@ -235,7 +254,7 @@ def show_start_menu():
 def game_over():
     draw_text(main_game_window, 'You died. Press <Enter> To Restart Or <Escape> To Exit', 30,
               constants.WHITE_COLOR_TITLE_BLOCKS,
-              constants.GAME_WINDOW_WIDTH//2, constants.GAME_WINDOW_HEIGHT//2)
+              constants.GAME_WINDOW_WIDTH // 2, constants.GAME_WINDOW_HEIGHT // 2)
 
     clock = pygame.time.Clock()
     while True:
