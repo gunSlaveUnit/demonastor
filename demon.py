@@ -50,7 +50,8 @@ class Demon(pygame.sprite.Sprite):
         self.__speed_y = 0
 
         self.__amount_damage = random.randint(40, 50)
-        self.__amount_health = random.randint(80, 170)
+        self.__max_amount_health = random.randint(80, 170)
+        self.__current_amount_health = self.__max_amount_health
 
     def update(self, surface):
         self.__draw(surface)
@@ -111,11 +112,14 @@ class Demon(pygame.sprite.Sprite):
     def get_amount_damage(self):
         return self.__amount_damage
 
-    def get_amount_health(self):
-        return self.__amount_health
+    def get_current_amount_health(self):
+        return self.__current_amount_health
+
+    def get_max_amount_health(self):
+        return self.__max_amount_health
 
     def set_amount_health(self, new_value_health):
-        self.__amount_health = new_value_health
+        self.__current_amount_health = new_value_health
 
     def get_name(self):
         return self.__name

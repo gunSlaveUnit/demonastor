@@ -68,6 +68,10 @@ def run_game():
     shells_player = []
     enemies = create_enemies(2, 10)
 
+    text = None
+    test_cur = None
+    test_max = None
+
     time_to_count_attack = 0
     clock = pygame.time.Clock()
     is_game_exit = False
@@ -139,19 +143,22 @@ def run_game():
                 if shell:
                     if pygame.sprite.collide_rect(enemy, shell):
                         shells_player.remove(shell)
-                        enemy.set_amount_health(enemy.get_amount_health() - player.get_amount_damage()
+                        enemy.set_amount_health(enemy.get_current_amount_health() - player.get_amount_damage()
                                                 - shell.get_amount_additional_damage())
-                        if enemy.get_amount_health() < 0:
+                        text = enemy.get_name()
+                        test_cur = enemy.get_current_amount_health()
+                        test_max = enemy.get_max_amount_health()
+                        if enemy.get_current_amount_health() < 0:
                             enemies.remove(enemy)
+                            text = None
+                            test_cur = None
+                            test_max = None
 
-        for enemy in enemies:
-            draw_bar(main_game_window, enemy.get_rect().centerx - 35,
-                     enemy.get_rect().centery - enemy.get_rect().height // 2 - 7,
-                     constants.CARMINE_RED_COLOR_HEALTH_BAR,
-                     enemy.get_amount_health())
-            draw_text(main_game_window, enemy.get_name(), 15, constants.WHITE_COLOR_TITLE_BLOCKS,
-                      enemy.get_rect().centerx,
-                      enemy.get_rect().centery - enemy.get_rect().height // 2 - 18)
+        if text is not None:
+            draw_bar(main_game_window, constants.GAME_WINDOW_WIDTH // 2, 10,
+                     constants.UNNAMED_COLOR_HEALTH_BAR,
+                     test_cur, test_max)
+            draw_text(main_game_window, text, 25, constants.WHITE_COLOR_TITLE_BLOCKS, constants.GAME_WINDOW_WIDTH//2, 9)
 
         draw_text(main_game_window, player.get_name(), 15, constants.WHITE_COLOR_TITLE_BLOCKS,
                   player.get_rect().centerx,
@@ -297,20 +304,18 @@ def draw_text(surface, text, size, color, x, y):
     surface.blit(text_surface, text_rect)
 
 
-def draw_bar(surface, x, y, color, value):
-    if value < 0:
-        value = 0
+def draw_bar(surface, center_x, center_y, color, current_value, max_value):
+    if current_value < 0:
+        current_value = 0
 
-    bar_length = 70
-    bar_height = 6
+    bar_length = 150
+    bar_height = 15
 
-    fill = (value / 70) * bar_length  # расчитываем заполнение
+    fill = (current_value * bar_length) // max_value
     if fill > bar_length:
         fill = bar_length
-    outline_rect = pygame.Rect(x, y, bar_length, bar_height)
-    fill_rect = pygame.Rect(x, y, fill, bar_height)
+    fill_rect = pygame.Rect(center_x-bar_length//2, center_y, fill, bar_height)
     pygame.draw.rect(surface, color, fill_rect)
-    pygame.draw.rect(surface, constants.WHITE_COLOR_TITLE_BLOCKS, outline_rect, 1)
 
 
 main_game_window = pygame.display.set_mode((constants.GAME_WINDOW_WIDTH,
