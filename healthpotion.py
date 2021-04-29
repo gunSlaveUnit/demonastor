@@ -20,42 +20,32 @@ from pygame import image
 class HealthPotion(Sprite):
     def __init__(self, init_center_x, init_center_y):
         super().__init__()
-        determining_type_potion = random.randint(0, 101)
         self.__amount_health_regen_yet = 0
         self.__type = 'health'
-        if determining_type_potion in range(0, 36):
-            self.__image = image.load(os.path.realpath(
-                'resources/images/potions/health/small_health_potion.png')).convert()
-            self.__name = 'Small\nHealth\nPotion'
-            self.__regen_amount = 5
-            self.__max_amount_for_regeneration = 5
-        if determining_type_potion in range(36, 61):
-            self.__image = image.load(os.path.realpath(
-                'resources/images/potions/health/lesser_health_potion.png')).convert()
-            self.__name = 'Lesser\nHealth\nPotion'
-            self.__regen_amount = 10
-            self.__max_amount_for_regeneration = 15
-        if determining_type_potion in range(61, 81):
-            self.__image = image.load(os.path.realpath(
-                'resources/images/potions/health/medium_health_potion.png')).convert()
-            self.__name = 'Medium\nHealth\nPotion'
-            self.__regen_amount = 15
-            self.__max_amount_for_regeneration = 20
-        if determining_type_potion in range(81, 96):
-            self.__image = image.load(os.path.realpath(
-                'resources/images/potions/health/greater_health_potion.png')).convert()
-            self.__name = 'Greater\nHealth\nPotion'
-            self.__regen_amount = 20
-            self.__max_amount_for_regeneration = 25
-        if determining_type_potion in range(96, 101):
-            self.__image = image.load(os.path.realpath(
-                'resources/images/potions/health/huge_health_potion.png')).convert()
-            self.__name = 'Huge\nHealth\nPotion'
-            self.__regen_amount = 25
-            self.__max_amount_for_regeneration = 35
+        self.__image, self.__name, self.__regen_amount, self.__max_amount_for_regeneration = \
+            self.__get_potion_values_depend_on_type()
+
         self.__rect = self.rect = self.__image.get_rect()
         self.__rect.centerx = init_center_x
         self.__rect.centery = init_center_y
+
+    def __get_potion_values_depend_on_type(self):
+        determining_type_potion = random.randint(0, 101)
+        if determining_type_potion in range(0, 36):
+            return (image.load(os.path.realpath(
+                'resources/images/potions/health/small_health_potion.png')).convert(), 'Small\nHealth\nPotion', 5, 5)
+        if determining_type_potion in range(36, 61):
+            return (image.load(os.path.realpath(
+                'resources/images/potions/health/lesser_health_potion.png')).convert(), 'Lesser\nHealth\nPotion', 10, 15)
+        if determining_type_potion in range(61, 81):
+            return (image.load(os.path.realpath(
+                'resources/images/potions/health/medium_health_potion.png')).convert(), 'Medium\nHealth\nPotion', 15, 20)
+        if determining_type_potion in range(81, 96):
+            return (image.load(os.path.realpath(
+                'resources/images/potions/health/greater_health_potion.png')).convert(), 'Greater\nHealth\nPotion', 20, 25)
+        if determining_type_potion in range(96, 101):
+            return (image.load(os.path.realpath(
+                'resources/images/potions/health/huge_health_potion.png')).convert(), 'Huge\nHealth\nPotion', 25, 35)
 
     def update(self, surface):
         self.__draw(surface)
