@@ -67,6 +67,10 @@ class Player(pygame.sprite.Sprite):
         self.__speed_x = 0
         self.__speed_y = 0
 
+        self.__level = 1
+        self.__experience_to_up_level = 1000 * pow(1.1, self.__level)
+        self.__current_experience = 0
+
         self.__max_health = 100
         self.__current_health = 100
         self.__passive_amount_regeneration = 0.1
@@ -93,6 +97,10 @@ class Player(pygame.sprite.Sprite):
         self.regeneration()
 
         self.__amount_damage = random.randint(10, 20)
+
+        if self.__current_experience >= self.__experience_to_up_level:
+            self.__level += 1
+            self.__current_experience = self.__current_experience - self.__experience_to_up_level
 
     def __draw(self, surface):
         multiplier_change_animation_speed = 15
@@ -137,7 +145,7 @@ class Player(pygame.sprite.Sprite):
             shell = fireball.Fireball(self.__rect.centerx, self.__rect.centery,
                                       (float(pygame.mouse.get_pos()[0] - self.__rect.centerx),
                                        float(pygame.mouse.get_pos()[1] - self.__rect.centery)))
-            self.__current_mana -= 8
+            self.__current_mana -= 0
             return shell
 
     def regeneration(self, potion=None):
@@ -173,3 +181,15 @@ class Player(pygame.sprite.Sprite):
 
     def get_name(self):
         return self.__name
+
+    def get_current_experience(self):
+        return self.__current_experience
+
+    def set_current_experience(self, new_value):
+        self.__current_experience = new_value
+
+    def get_experience_to_up_level(self):
+        return self.__experience_to_up_level
+
+    def get_level(self):
+        return self.__level

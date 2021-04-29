@@ -18,7 +18,7 @@ import pygame
 class Demon(pygame.sprite.Sprite):
     __DIRECTIONS_MOVING = {'LEFT': 0, 'RIGHT': 1, 'UP': 2, 'DOWN': 3}
 
-    def __init__(self, init_center_x, init_center_y):
+    def __init__(self, init_center_x, init_center_y, player_level):
         super().__init__()
         self.__image = pygame.image.load('resources/images/enemy/enemy_moving_down.png').convert()
         self.__rect = self.rect = self.__image.get_rect()
@@ -52,6 +52,9 @@ class Demon(pygame.sprite.Sprite):
         self.__amount_damage = random.randint(40, 50)
         self.__max_amount_health = random.randint(80, 170)
         self.__current_amount_health = self.__max_amount_health
+
+        self.__level = player_level
+        self.__experience_for_killing = 100 * (10 + self.__level - player_level)/(10 + player_level)
 
     def update(self, surface):
         self.__draw(surface)
@@ -123,3 +126,6 @@ class Demon(pygame.sprite.Sprite):
 
     def get_name(self):
         return self.__name
+
+    def get_experience_for_killing(self):
+        return self.__experience_for_killing

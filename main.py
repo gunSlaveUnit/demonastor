@@ -66,7 +66,7 @@ def run_game():
     potions.extend(mana_potions)
 
     shells_player = []
-    enemies = create_enemies(2, 10)
+    enemies = create_enemies(2, 40, player.get_level())
 
     text = None
     test_cur = None
@@ -149,6 +149,9 @@ def run_game():
                         test_cur = enemy.get_current_amount_health()
                         test_max = enemy.get_max_amount_health()
                         if enemy.get_current_amount_health() < 0:
+                            player.set_current_experience(player.get_current_experience() +
+                                                          enemy.get_experience_for_killing())
+
                             enemies.remove(enemy)
                             text = None
                             test_cur = None
@@ -157,12 +160,15 @@ def run_game():
         if text is not None:
             draw_bar(main_game_window, constants.GAME_WINDOW_WIDTH // 2, 10,
                      constants.UNNAMED_COLOR_HEALTH_BAR,
-                     test_cur, test_max)
+                     test_cur, test_max, 150, 15)
             draw_text(main_game_window, text, 25, constants.WHITE_COLOR_TITLE_BLOCKS, constants.GAME_WINDOW_WIDTH//2, 9)
 
         draw_text(main_game_window, player.get_name(), 15, constants.WHITE_COLOR_TITLE_BLOCKS,
                   player.get_rect().centerx,
                   player.get_rect().centery + player.get_rect().height // 2 + 5)
+        draw_bar(main_game_window, constants.GAME_WINDOW_WIDTH//2, constants.GAME_WINDOW_HEIGHT//2+220,
+                 constants.WHITE_COLOR_TITLE_BLOCKS,
+                 player.get_current_experience(), player.get_experience_to_up_level(), 210, 5)
 
         pygame.display.flip()  # for double buffering
         clock.tick(constants.FPS_LOCKING)
@@ -279,18 +285,19 @@ def game_over():
         clock.tick(constants.FPS_LOCKING)
 
 
-def create_enemies(min_number_enemies, max_number_enemies):
+def create_enemies(min_number_enemies, max_number_enemies, player_level):
     """
     Function creates enemies within the visible part of the screen
     :param min_number_enemies: lower limit of the number of enemies
     :param max_number_enemies: upper limit of the number of enemies
+    :param player_level: need to set amount experience for killing
     :return: list of enemies
     """
     enemies_local = list()
     for i in range(min_number_enemies, max_number_enemies):
         x_for_appear_demon = random.randint(0, constants.GAME_WINDOW_WIDTH)
         y_for_appear_demon = random.randint(0, constants.GAME_WINDOW_HEIGHT)
-        enemy_local = demon.Demon(x_for_appear_demon, y_for_appear_demon)
+        enemy_local = demon.Demon(x_for_appear_demon, y_for_appear_demon, player_level)
         enemies_local.append(enemy_local)
     return enemies_local
 
@@ -304,18 +311,17 @@ def draw_text(surface, text, size, color, x, y):
     surface.blit(text_surface, text_rect)
 
 
-def draw_bar(surface, center_x, center_y, color, current_value, max_value):
+def draw_bar(surface, center_x, center_y, color, current_value, max_value, bar_length, bar_height):
     if current_value < 0:
         current_value = 0
-
-    bar_length = 150
-    bar_height = 15
 
     fill = (current_value * bar_length) // max_value
     if fill > bar_length:
         fill = bar_length
+    outline_rect = pygame.Rect(center_x-bar_length//2, center_y, bar_length, bar_height)
     fill_rect = pygame.Rect(center_x-bar_length//2, center_y, fill, bar_height)
     pygame.draw.rect(surface, color, fill_rect)
+    pygame.draw.rect(surface, constants.WHITE_COLOR_TITLE_BLOCKS, outline_rect, 1)
 
 
 main_game_window = pygame.display.set_mode((constants.GAME_WINDOW_WIDTH,
