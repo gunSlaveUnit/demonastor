@@ -168,7 +168,10 @@ def run_game():
                   player.get_rect().centery + player.get_rect().height // 2 + 5)
         draw_bar(main_game_window, constants.GAME_WINDOW_WIDTH//2, constants.GAME_WINDOW_HEIGHT//2+220,
                  constants.WHITE_COLOR_TITLE_BLOCKS,
-                 player.get_current_experience(), player.get_experience_to_up_level(), 210, 5)
+                 player.get_current_experience(), player.get_experience_to_up_level(), 204, 5)
+        draw_bar(main_game_window, constants.GAME_WINDOW_WIDTH//2-52, constants.GAME_WINDOW_HEIGHT-70,
+                 constants.STAMINA_BAR_COLOR, player.get_current_stamina(),
+                 player.get_max_stamina(), 50, 10)
 
         pygame.display.flip()  # for double buffering
         clock.tick(constants.FPS_LOCKING)

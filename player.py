@@ -63,7 +63,9 @@ class Player(pygame.sprite.Sprite):
 
         self.__name = 'Bonobo'
 
-        self.__speed_changing = 3
+        self.__walking_speed = 3
+        self.__running_speed = 4.5
+        self.__speed_changing = self.__walking_speed
         self.__speed_x = 0
         self.__speed_y = 0
 
@@ -76,6 +78,8 @@ class Player(pygame.sprite.Sprite):
         self.__passive_amount_regeneration = 0.1
         self.__max_mana = 100
         self.__current_mana = 100
+        self.__max_stamina = 100
+        self.__current_stamina = self.__max_stamina
 
         self.__amount_damage = random.randint(10, 20)
 
@@ -119,8 +123,12 @@ class Player(pygame.sprite.Sprite):
     def __move(self):
         self.__speed_x = 0
         self.__speed_y = 0
+        self.__speed_changing = self.__walking_speed
 
         key_state = pygame.key.get_pressed()
+        if key_state[pygame.K_LSHIFT] and self.__current_stamina >= 0:
+            self.__speed_changing = self.__running_speed
+            self.__current_stamina -= 0.5
         if key_state[pygame.K_a]:
             self.__current_direction_moving = self.__DIRECTIONS_MOVING['LEFT']
             self.__speed_x = -self.__speed_changing
@@ -145,7 +153,7 @@ class Player(pygame.sprite.Sprite):
             shell = fireball.Fireball(self.__rect.centerx, self.__rect.centery,
                                       (float(pygame.mouse.get_pos()[0] - self.__rect.centerx),
                                        float(pygame.mouse.get_pos()[1] - self.__rect.centery)))
-            self.__current_mana -= 0
+            self.__current_mana -= 4
             return shell
 
     def regeneration(self, potion=None):
@@ -157,6 +165,10 @@ class Player(pygame.sprite.Sprite):
                 self.__current_health += potion.get_regen_amount()
             elif potion.get_type() == 'mana':
                 self.__current_mana += potion.get_regen_amount()
+        if self.__current_stamina < 100:
+            self.__current_stamina += 0.2
+        if self.__current_stamina <= 0:
+            self.__current_stamina = 0
 
     def append_thing_to_inventory(self, thing):
         self.__inventory.append_resource(thing)
@@ -193,3 +205,9 @@ class Player(pygame.sprite.Sprite):
 
     def get_level(self):
         return self.__level
+
+    def get_current_stamina(self):
+        return self.__current_stamina
+
+    def get_max_stamina(self):
+        return self.__max_stamina
