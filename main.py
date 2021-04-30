@@ -31,10 +31,6 @@ import constants
 from camera import Camera
 from player import Player
 import demon
-from healthpotion import HealthPotion
-from manapotion import ManaPotion
-from coin import Coin
-import game_enums
 from chest import Chest
 
 
@@ -46,27 +42,19 @@ def run_game():
     player = Player(constants.GAME_WINDOW_WIDTH // 2,
                     constants.GAME_WINDOW_HEIGHT // 2)
 
-    coin = Coin(random.randint(0, constants.GAME_WINDOW_WIDTH), random.randint(0, constants.GAME_WINDOW_HEIGHT),
-                game_enums.CoinTypes.GOLD)
-
     chest = Chest(random.randint(0, constants.GAME_WINDOW_WIDTH), random.randint(0, constants.GAME_WINDOW_HEIGHT),
                   is_chest_need_key=False)
 
     camera = Camera((800, 600))
 
     potions = []
-    health_potions = [HealthPotion(random.randint(0, constants.GAME_WINDOW_WIDTH),
-                                   random.randint(0, constants.GAME_WINDOW_HEIGHT)) for _ in
-                      range(random.randint(5, 10))]
-
-    mana_potions = [ManaPotion(random.randint(0, constants.GAME_WINDOW_WIDTH),
-                               random.randint(0, constants.GAME_WINDOW_HEIGHT)) for _ in range(random.randint(5, 10))]
-
+    health_potions = []
+    mana_potions = []
     potions.extend(health_potions)
     potions.extend(mana_potions)
 
     shells_player = []
-    enemies = create_enemies(2, 40, player.get_level())
+    enemies = create_enemies(2, 4, player.get_level())
 
     text = None
     test_cur = None
@@ -111,13 +99,11 @@ def run_game():
         camera.apply(chest)
         chest.update(main_game_window)
         if pygame.sprite.collide_rect(player, chest) and pygame.key.get_pressed()[pygame.K_e]:
-            chest.open()
-
-        camera.update(player)
-        player.update(main_game_window)
-
-        camera.apply(coin)
-        coin.update(main_game_window)
+            additional_potions = chest.open()
+            if additional_potions is not None:
+                for additional_thing in additional_potions:
+                    if additional_thing != 0:
+                        potions.append(additional_thing)
 
         for potion in potions:
             potion.update(main_game_window)
@@ -156,6 +142,9 @@ def run_game():
                             text = None
                             test_cur = None
                             test_max = None
+
+        camera.update(player)
+        player.update(main_game_window)
 
         if text is not None:
             draw_bar(main_game_window, constants.GAME_WINDOW_WIDTH // 2, 10,
