@@ -31,19 +31,19 @@ class Inventory:
         self.__player_money = [
             [
                 coin.Coin(constants.GAME_WINDOW_WIDTH//2-self.__width//2+20,
-                          constants.GAME_WINDOW_HEIGHT//2+self.__height//2-15,
+                          constants.GAME_WINDOW_HEIGHT//2+self.__height//2-20,
                           game_enums.CoinTypes.GOLD),
                 0
             ],
             [
                 coin.Coin(constants.GAME_WINDOW_WIDTH//2 - 30,
-                          constants.GAME_WINDOW_HEIGHT//2+self.__height//2-15,
+                          constants.GAME_WINDOW_HEIGHT//2+self.__height//2-20,
                           game_enums.CoinTypes.SILVER),
                 0
             ],
             [
                 coin.Coin(constants.GAME_WINDOW_WIDTH//2+self.__width//2-70,
-                          constants.GAME_WINDOW_HEIGHT//2+self.__height//2-15,
+                          constants.GAME_WINDOW_HEIGHT//2+self.__height//2-20,
                           game_enums.CoinTypes.BRONZE),
                 0
             ]

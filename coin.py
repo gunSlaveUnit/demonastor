@@ -13,11 +13,14 @@ class Coin(pygame.sprite.Sprite):
         """
         super().__init__()
         if init_coin_type == CoinTypes.GOLD:
-            self.__image = pygame.image.load('resources/images/coins/gold_coin.png').convert()
+            self.__image = pygame.image.load('resources/images/coins/gold_coin.png')
+            self.__image = pygame.transform.scale(self.__image, (25, 25))
         elif init_coin_type == CoinTypes.SILVER:
-            self.__image = pygame.image.load('resources/images/coins/silver_coin.png').convert()
+            self.__image = pygame.image.load('resources/images/coins/silver_coin.png')
+            self.__image = pygame.transform.scale(self.__image, (25, 25))
         elif init_coin_type == CoinTypes.BRONZE:
-            self.__image = pygame.image.load('resources/images/coins/bronze_coin.png').convert()
+            self.__image = pygame.image.load('resources/images/coins/bronze_coin.png')
+            self.__image = pygame.transform.scale(self.__image, (25, 25))
 
         self.__rect = self.__image.get_rect()
         self.__rect.centerx = init_center_x
