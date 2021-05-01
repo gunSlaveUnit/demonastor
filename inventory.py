@@ -20,7 +20,11 @@ import coin
 
 class Inventory:
     def __init__(self):
-        self.__resources = {}
+        self.__resources = {
+            'gold_coin': 0,
+            'silver_coin': 0,
+            'bronze_coin': 0
+        }
         self.__width = 480
         self.__height = 320
         self.__frame_thickness = 3
@@ -32,28 +36,26 @@ class Inventory:
             [
                 coin.Coin(constants.GAME_WINDOW_WIDTH//2-self.__width//2+20,
                           constants.GAME_WINDOW_HEIGHT//2+self.__height//2-20,
-                          game_enums.CoinTypes.GOLD),
-                0
+                          game_enums.CoinTypes.GOLD)
             ],
             [
                 coin.Coin(constants.GAME_WINDOW_WIDTH//2 - 30,
                           constants.GAME_WINDOW_HEIGHT//2+self.__height//2-20,
-                          game_enums.CoinTypes.SILVER),
-                0
+                          game_enums.CoinTypes.SILVER)
             ],
             [
                 coin.Coin(constants.GAME_WINDOW_WIDTH//2+self.__width//2-70,
                           constants.GAME_WINDOW_HEIGHT//2+self.__height//2-20,
-                          game_enums.CoinTypes.BRONZE),
-                0
+                          game_enums.CoinTypes.BRONZE)
             ]
         ]
 
-    def append_resource(self, resource_name):
-        if resource_name in self.__resources:
-            self.__resources[resource_name] += 1
+    def append_resource(self, resource_to_add):
+        if resource_to_add.get_resource_name() in self.__resources:
+            self.__resources[resource_to_add.get_resource_name()] += 1
         else:
-            self.__resources[resource_name] = 1
+            self.__resources[resource_to_add.get_resource_name()] = 1
+        print(self.__resources)
 
     def draw_inventory(self, surface):
         pygame.draw.rect(surface, constants.DARK_ORANGE_HIGHLIGHTED_MENU_ITEM,

@@ -22,7 +22,7 @@ class HealthPotion(Sprite):
         super().__init__()
         self.__amount_health_regen_yet = 0
         self.__type = 'health'
-        self.__image, self.__name, self.__regen_amount, self.__max_amount_for_regeneration = \
+        self.__image, self.__name, self.__regen_amount, self.__max_amount_for_regeneration, self.__resource_name = \
             self.__get_potion_values_depend_on_type()
 
         self.__rect = self.rect = self.__image.get_rect()
@@ -33,19 +33,19 @@ class HealthPotion(Sprite):
         determining_type_potion = random.randint(0, 101)
         if determining_type_potion in range(0, 36):
             return (image.load(os.path.realpath(
-                'resources/images/potions/health/small_health_potion.png')).convert(), 'Small\nHealth\nPotion', 5, 5)
+                'resources/images/potions/health/small_health_potion.png')).convert(), 'Small\nHealth\nPotion', 5, 5, 'small_health_potion')
         if determining_type_potion in range(36, 61):
             return (image.load(os.path.realpath(
-                'resources/images/potions/health/lesser_health_potion.png')).convert(), 'Lesser\nHealth\nPotion', 10, 15)
+                'resources/images/potions/health/lesser_health_potion.png')).convert(), 'Lesser\nHealth\nPotion', 10, 15, 'lesser_health_potion')
         if determining_type_potion in range(61, 81):
             return (image.load(os.path.realpath(
-                'resources/images/potions/health/medium_health_potion.png')).convert(), 'Medium\nHealth\nPotion', 15, 20)
+                'resources/images/potions/health/medium_health_potion.png')).convert(), 'Medium\nHealth\nPotion', 15, 20, 'medium_health_potion')
         if determining_type_potion in range(81, 96):
             return (image.load(os.path.realpath(
-                'resources/images/potions/health/greater_health_potion.png')).convert(), 'Greater\nHealth\nPotion', 20, 25)
+                'resources/images/potions/health/greater_health_potion.png')).convert(), 'Greater\nHealth\nPotion', 20, 25, 'greater_health_potion')
         if determining_type_potion in range(96, 101):
             return (image.load(os.path.realpath(
-                'resources/images/potions/health/huge_health_potion.png')).convert(), 'Huge\nHealth\nPotion', 25, 35)
+                'resources/images/potions/health/huge_health_potion.png')).convert(), 'Huge\nHealth\nPotion', 25, 35, 'huge_health_potion')
 
     def update(self, surface):
         self.__draw(surface)
@@ -70,3 +70,6 @@ class HealthPotion(Sprite):
 
     def get_type(self):
         return self.__type
+
+    def get_resource_name(self):
+        return self.__resource_name

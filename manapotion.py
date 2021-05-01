@@ -22,7 +22,7 @@ class ManaPotion(Sprite):
         super().__init__()
         self.__amount_health_regen_yet = 0
         self.__type = 'mana'
-        self.__image, self.__name, self.__regen_amount, self.__max_amount_for_regeneration = \
+        self.__image, self.__name, self.__regen_amount, self.__max_amount_for_regeneration, self.__resource_name = \
             self.__get_potion_values_depend_on_type()
 
         self.__rect = self.rect = self.__image.get_rect()
@@ -33,19 +33,19 @@ class ManaPotion(Sprite):
         determining_type_potion = random.randint(0, 101)
         if determining_type_potion in range(0, 36):
             return (image.load(os.path.realpath(
-                'resources/images/potions/mana/small_mana_potion.png')).convert(), 'Small\nMana\nPotion', 5, 5)
+                'resources/images/potions/mana/small_mana_potion.png')).convert(), 'Small\nMana\nPotion', 5, 5, 'small_mana_potion')
         if determining_type_potion in range(36, 61):
             return (image.load(os.path.realpath(
-                'resources/images/potions/mana/lesser_mana_potion.png')).convert(), 'Lesser\nMana\nPotion', 10, 15)
+                'resources/images/potions/mana/lesser_mana_potion.png')).convert(), 'Lesser\nMana\nPotion', 10, 15, 'lesser_mana_potion')
         if determining_type_potion in range(61, 81):
             return (image.load(os.path.realpath(
-                'resources/images/potions/mana/medium_mana_potion.png')).convert(), 'Medium\nMana\nPotion', 15, 20)
+                'resources/images/potions/mana/medium_mana_potion.png')).convert(), 'Medium\nMana\nPotion', 15, 20, 'medium_mana_potion')
         if determining_type_potion in range(81, 96):
             return (image.load(os.path.realpath(
-                'resources/images/potions/mana/greater_mana_potion.png')).convert(), 'Greater\nMana\nPotion', 20, 25)
+                'resources/images/potions/mana/greater_mana_potion.png')).convert(), 'Greater\nMana\nPotion', 20, 25, 'greater_mana_potion')
         if determining_type_potion in range(96, 101):
             return (image.load(os.path.realpath(
-                'resources/images/potions/mana/huge_mana_potion.png')).convert(), 'Huge\nMana\nPotion', 25, 35)
+                'resources/images/potions/mana/huge_mana_potion.png')).convert(), 'Huge\nMana\nPotion', 25, 35, 'huge_mana_potion')
 
     def update(self, surface):
         self.__draw(surface)
@@ -70,3 +70,6 @@ class ManaPotion(Sprite):
 
     def get_type(self):
         return self.__type
+
+    def get_resource_name(self):
+        return self.__resource_name

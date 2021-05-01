@@ -4,7 +4,8 @@ import pygame
 
 from healthpotion import HealthPotion
 from manapotion import ManaPotion
-import constants
+import coin
+import game_enums
 
 
 class Chest(pygame.sprite.Sprite):
@@ -15,7 +16,7 @@ class Chest(pygame.sprite.Sprite):
         self.__rect = self.rect = self.__image.get_rect()
         self.__rect.centerx = init_center_x
         self.__rect.centery = init_center_y
-        self.__amount_things_in_chest = random.randint(0, 3)
+        self.__amount_things_in_chest = random.randint(0, 10)
         self.__is_chest_opened = False
         self.__need_key = is_chest_need_key
         self.__sound_creaking = pygame.mixer.Sound('resources/sounds/chest_creak.wav')
@@ -40,7 +41,7 @@ class Chest(pygame.sprite.Sprite):
     def __create_random_content(self):
         content_local = []
         for _ in range(self.__amount_things_in_chest):
-            random_thing = random.randint(0, 2)
+            random_thing = random.randint(1, 20)
             random_x = random.randint(self.__rect.centerx - 20, self.__rect.centerx + 20)
             random_y = random.randint(self.__rect.centery + 10, self.__rect.centery + 30)
             thing = 0
@@ -48,6 +49,12 @@ class Chest(pygame.sprite.Sprite):
                 thing = HealthPotion(random_x, random_y)
             if random_thing == 1:
                 thing = ManaPotion(random_x, random_y)
+            if random_thing == 3:
+                thing = coin.Coin(random_x, random_y, game_enums.CoinTypes.GOLD)
+            if random_thing == 4:
+                thing = coin.Coin(random_x, random_y, game_enums.CoinTypes.SILVER)
+            if random_thing == 5:
+                thing = coin.Coin(random_x, random_y, game_enums.CoinTypes.BRONZE)
             content_local.append(thing)
         return content_local
 

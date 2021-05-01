@@ -42,10 +42,14 @@ def run_game():
     player = Player(constants.GAME_WINDOW_WIDTH // 2,
                     constants.GAME_WINDOW_HEIGHT // 2)
 
-    chest = Chest(random.randint(0, constants.GAME_WINDOW_WIDTH), random.randint(0, constants.GAME_WINDOW_HEIGHT),
-                  is_chest_need_key=False)
+    chests = [Chest(random.randint(0, constants.GAME_WINDOW_WIDTH), random.randint(0, constants.GAME_WINDOW_HEIGHT),
+                  is_chest_need_key=False), Chest(random.randint(0, constants.GAME_WINDOW_WIDTH), random.randint(0, constants.GAME_WINDOW_HEIGHT),
+                  is_chest_need_key=False), Chest(random.randint(0, constants.GAME_WINDOW_WIDTH), random.randint(0, constants.GAME_WINDOW_HEIGHT),
+                  is_chest_need_key=False), Chest(random.randint(0, constants.GAME_WINDOW_WIDTH), random.randint(0, constants.GAME_WINDOW_HEIGHT),
+                  is_chest_need_key=False), Chest(random.randint(0, constants.GAME_WINDOW_WIDTH), random.randint(0, constants.GAME_WINDOW_HEIGHT),
+                  is_chest_need_key=False)]
 
-    camera = Camera((800, 600))
+    camera = Camera((constants.GAME_WINDOW_WIDTH, constants.GAME_WINDOW_HEIGHT))
 
     potions = []
     health_potions = []
@@ -96,14 +100,15 @@ def run_game():
         for tile in game_map.get_map_tiles():
             camera.apply(tile)
 
-        camera.apply(chest)
-        chest.update(main_game_window)
-        if pygame.sprite.collide_rect(player, chest) and pygame.key.get_pressed()[pygame.K_e]:
-            additional_potions = chest.open()
-            if additional_potions is not None:
-                for additional_thing in additional_potions:
-                    if additional_thing != 0:
-                        potions.append(additional_thing)
+        for chest in chests:
+            camera.apply(chest)
+            chest.update(main_game_window)
+            if pygame.sprite.collide_rect(player, chest) and pygame.key.get_pressed()[pygame.K_e]:
+                additional_potions = chest.open()
+                if additional_potions is not None:
+                    for additional_thing in additional_potions:
+                        if additional_thing != 0:
+                            potions.append(additional_thing)
 
         for potion in potions:
             potion.update(main_game_window)
