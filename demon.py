@@ -56,6 +56,8 @@ class Demon(pygame.sprite.Sprite):
         self.__level = player_level
         self.__experience_for_killing = 100 * (10 + self.__level - player_level)/(10 + player_level)
 
+        self.__is_angry = False
+
     def update(self, surface):
         self.__draw(surface)
 
@@ -91,21 +93,23 @@ class Demon(pygame.sprite.Sprite):
         length = math.sqrt(dx**2 + dy**2)
         if length == 0:
             length = 1
-        if length <= distance_reaction:
-            direction_to_player = (dx/length, dy/length)
-            if direction_to_player[0] < 0.0:
-                self.__current_direction_moving = self.__DIRECTIONS_MOVING['LEFT']
-            if direction_to_player[0] > 0.0:
-                self.__current_direction_moving = self.__DIRECTIONS_MOVING['RIGHT']
-            if direction_to_player[1] < 0.0:
-                self.__current_direction_moving = self.__DIRECTIONS_MOVING['UP']
-            if direction_to_player[1] > 0.0:
-                self.__current_direction_moving = self.__DIRECTIONS_MOVING['DOWN']
-
-            self.__rect.centerx += direction_to_player[0] * random.randint(2, 3)
-            self.__rect.centery += direction_to_player[1] * random.randint(2, 3)
+        if length <= distance_reaction or self.__is_angry:
+            self.show_aggression_to_attack_player(dx, dy, length)
         else:
             self.__move()
+
+    def show_aggression_to_attack_player(self, dx, dy, length):
+        direction_to_player = (dx / length, dy / length)
+        if direction_to_player[0] < 0.0:
+            self.__current_direction_moving = self.__DIRECTIONS_MOVING['LEFT']
+        if direction_to_player[0] > 0.0:
+            self.__current_direction_moving = self.__DIRECTIONS_MOVING['RIGHT']
+        if direction_to_player[1] < 0.0:
+            self.__current_direction_moving = self.__DIRECTIONS_MOVING['UP']
+        if direction_to_player[1] > 0.0:
+            self.__current_direction_moving = self.__DIRECTIONS_MOVING['DOWN']
+        self.__rect.centerx += direction_to_player[0] * random.randint(2, 3)
+        self.__rect.centery += direction_to_player[1] * random.randint(2, 3)
 
     def get_rect(self):
         return self.__rect
@@ -127,3 +131,6 @@ class Demon(pygame.sprite.Sprite):
 
     def get_experience_for_killing(self):
         return self.__experience_for_killing
+
+    def set_is_enemy_angry(self, new_value):
+        self.__is_angry = new_value

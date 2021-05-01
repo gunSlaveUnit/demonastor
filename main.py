@@ -23,6 +23,7 @@ In this file the program is started
 
 import sys
 import random
+import math
 
 import pygame
 
@@ -136,6 +137,13 @@ def run_game():
                         shells_player.remove(shell)
                         enemy.set_amount_health(enemy.get_current_amount_health() - player.get_amount_damage()
                                                 - shell.get_amount_additional_damage())
+
+                        dx = float(player.get_rect().centerx - enemy.get_rect().centerx)
+                        dy = float(player.get_rect().centery - enemy.get_rect().centery)
+                        length = math.sqrt(dx ** 2 + dy ** 2)
+                        enemy.set_is_enemy_angry(True)
+                        enemy.show_aggression_to_attack_player(dx, dy, length)
+
                         text = enemy.get_name()
                         test_cur = enemy.get_current_amount_health()
                         test_max = enemy.get_max_amount_health()
