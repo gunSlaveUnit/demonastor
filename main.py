@@ -58,7 +58,7 @@ def run_game():
     potions.extend(mana_potions)
 
     shells_player = []
-    enemies = create_enemies(2, 4, player.get_level())
+    enemies = create_enemies(1, 2, player.get_level())
 
     text = None
     test_cur = None
