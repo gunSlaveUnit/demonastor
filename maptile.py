@@ -26,5 +26,6 @@ class MapTile(pygame.sprite.Sprite):
     def __draw(self, surface):
         surface.blit(self.__image, self.__rect)
 
-    def get_rect(self):
+    @property
+    def rect(self):
         return self.__rect

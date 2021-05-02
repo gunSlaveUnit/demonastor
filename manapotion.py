@@ -53,23 +53,34 @@ class ManaPotion(Sprite):
     def __draw(self, surface):
         surface.blit(self.__image, (self.__rect.centerx, self.__rect.centery))
 
-    def get_rect(self):
+    @property
+    def rect(self):
         return self.__rect
 
-    def get_regen_amount(self):
+    @rect.setter
+    def rect(self, new_value):
+        self.__rect = new_value
+
+    @property
+    def regen_amount(self):
         return self.__regen_amount
 
-    def get_amount_health_regen_yet(self):
+    @property
+    def amount_health_regen_yet(self):
         return self.__amount_health_regen_yet
 
-    def set_amount_health_regen_yet(self, new_value):
+    @amount_health_regen_yet.setter
+    def amount_health_regen_yet(self, new_value):
         self.__amount_health_regen_yet = new_value
 
-    def get_max_amount_health_for_regen(self):
+    @property
+    def max_amount_health_for_regen(self):
         return self.__max_amount_for_regeneration
 
-    def get_type(self):
+    @property
+    def type(self):
         return self.__type
 
-    def get_resource_name(self):
+    @property
+    def resource_name(self):
         return self.__resource_name

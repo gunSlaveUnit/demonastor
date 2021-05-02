@@ -10,7 +10,6 @@ In this file the program is started
 # ! usr/bin/env python3
 # -*- coding: utf8 -*-
 
-# TODO: lots of numeric constants, we should to remove it
 # TODO: use properties in classes
 # TODO: make collisions
 # TODO: we need to add exceptions
@@ -75,7 +74,7 @@ def run_game():
     shells_player = []
     min_enemies_amount = 10
     max_enemies_amount = 40
-    enemies = create_enemies(min_enemies_amount, max_enemies_amount, player.get_level())
+    enemies = create_enemies(min_enemies_amount, max_enemies_amount, player.level)
 
     text = None
     test_cur = None
@@ -95,9 +94,9 @@ def run_game():
             if pygame.sprite.collide_rect(player, enemy):
                 if time_to_count_attack >= enemy_attack_interval:
                     time_to_count_attack = 0
-                    player.set_amount_health(player.get_amount_health() - enemy.get_amount_damage())
-                if player.get_amount_health() < 1:
-                    return game_over()
+                    player.amount_health = player.amount_health - enemy.amount_damage
+                    if player.amount_health < 1:
+                        return game_over()
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -115,11 +114,15 @@ def run_game():
         main_game_window.fill(int())
 
         game_map.update(main_game_window)
-        for tile in game_map.get_map_tiles():
-            camera.apply(tile)
+        for tile in game_map.map_tiles:
+            offset = camera.get_offset()
+            tile.rect.centerx -= offset[0]
+            tile.rect.centery -= offset[1]
 
         for chest in chests:
-            camera.apply(chest)
+            offset = camera.get_offset()
+            chest.rect.centerx -= offset[0]
+            chest.rect.centery -= offset[1]
             chest.update(main_game_window)
             if pygame.sprite.collide_rect(player, chest) and pygame.key.get_pressed()[pygame.K_e]:
                 additional_potions = chest.open()
@@ -130,7 +133,9 @@ def run_game():
 
         for potion in potions:
             potion.update(main_game_window)
-            camera.apply(potion)
+            offset = camera.get_offset()
+            potion.rect.centerx -= offset[0]
+            potion.rect.centery -= offset[1]
 
             if pygame.sprite.collide_rect(player, potion) and pygame.key.get_pressed()[pygame.K_e]:
                 player.append_thing_to_inventory(potion)
@@ -138,35 +143,37 @@ def run_game():
 
         for shell in shells_player:
             if shell:
-                camera.apply(shell)
                 shell.update(main_game_window)
+                offset = camera.get_offset()
+                shell.rect.centerx -= offset[0]
+                shell.rect.centery -= offset[1]
 
         for enemy in enemies:
-            enemy.attack(player.get_rect().centerx, player.get_rect().centery)
-            camera.apply(enemy)
+            enemy.attack(player.rect.centerx, player.rect.centery)
+            offset = camera.get_offset()
+            enemy.rect.centerx -= offset[0]
+            enemy.rect.centery -= offset[1]
             enemy.update(main_game_window)
-            enemy.attack(player.get_rect().centerx, player.get_rect().centery)
+            enemy.attack(player.rect.centerx, player.rect.centery)
 
         for enemy in enemies:
             for shell in shells_player:
                 if shell:
                     if pygame.sprite.collide_rect(enemy, shell):
                         shells_player.remove(shell)
-                        enemy.set_amount_health(enemy.get_current_amount_health() - player.get_amount_damage()
-                                                - shell.get_amount_additional_damage())
+                        enemy.current_amount_health -= player.amount_damage - shell.amount_additional_damage
 
-                        dx = float(player.get_rect().centerx - enemy.get_rect().centerx)
-                        dy = float(player.get_rect().centery - enemy.get_rect().centery)
+                        dx = float(player.rect.centerx - enemy.rect.centerx)
+                        dy = float(player.rect.centery - enemy.rect.centery)
                         length = math.sqrt(dx ** 2 + dy ** 2)
-                        enemy.set_is_enemy_angry(True)
+                        enemy.is_enemy_angry = True
                         enemy.show_aggression_to_attack_player(dx, dy, length)
 
-                        text = enemy.get_name()
-                        test_cur = enemy.get_current_amount_health()
-                        test_max = enemy.get_max_amount_health()
-                        if enemy.get_current_amount_health() < 0:
-                            player.set_current_experience(player.get_current_experience() +
-                                                          enemy.get_experience_for_killing())
+                        text = enemy.name
+                        test_cur = enemy.current_amount_health
+                        test_max = enemy.max_amount_health
+                        if enemy.current_amount_health < 0:
+                            player.current_experience += enemy.experience_for_killing
 
                             enemies.remove(enemy)
                             text = None
@@ -183,15 +190,15 @@ def run_game():
             draw_text(main_game_window, text, 25, constants.WHITE_COLOR_TITLE_BLOCKS, constants.GAME_WINDOW_WIDTH // 2,
                       9)
 
-        draw_text(main_game_window, player.get_name(), 15, constants.WHITE_COLOR_TITLE_BLOCKS,
-                  player.get_rect().centerx,
-                  player.get_rect().centery + player.get_rect().height // 2 + 5)
+        draw_text(main_game_window, player.name, 15, constants.WHITE_COLOR_TITLE_BLOCKS,
+                  player.rect.centerx,
+                  player.rect.centery + player.rect.height // 2 + 5)
         draw_bar(main_game_window, constants.GAME_WINDOW_WIDTH // 2, constants.GAME_WINDOW_HEIGHT // 2 + 220,
                  constants.WHITE_COLOR_TITLE_BLOCKS,
-                 player.get_current_experience(), player.get_experience_to_up_level(), 204, 5)
+                 player.current_experience, player.experience_to_up_level, 204, 5)
         draw_bar(main_game_window, constants.GAME_WINDOW_WIDTH // 2 - 52, constants.GAME_WINDOW_HEIGHT - 70,
-                 constants.STAMINA_BAR_COLOR, player.get_current_stamina(),
-                 player.get_max_stamina(), 50, 10)
+                 constants.STAMINA_BAR_COLOR, player.current_stamina,
+                 player.max_stamina, 50, 10)
 
         pygame.display.flip()  # for double buffering
         clock.tick(constants.FPS_LOCKING)

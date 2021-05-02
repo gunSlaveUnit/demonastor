@@ -111,26 +111,42 @@ class Demon(pygame.sprite.Sprite):
         self.__rect.centerx += direction_to_player[0] * random.randint(2, 3)
         self.__rect.centery += direction_to_player[1] * random.randint(2, 3)
 
-    def get_rect(self):
+    @property
+    def rect(self):
         return self.__rect
 
-    def get_amount_damage(self):
+    @rect.setter
+    def rect(self, new_value):
+        self.__rect = new_value
+
+    @property
+    def amount_damage(self):
         return self.__amount_damage
 
-    def get_current_amount_health(self):
+    @property
+    def current_amount_health(self):
         return self.__current_amount_health
 
-    def get_max_amount_health(self):
+    @property
+    def max_amount_health(self):
         return self.__max_amount_health
 
-    def set_amount_health(self, new_value_health):
-        self.__current_amount_health = new_value_health
+    @current_amount_health.setter
+    def current_amount_health(self, new_value):
+        self.__current_amount_health = new_value
 
-    def get_name(self):
+    @property
+    def name(self):
         return self.__name
 
-    def get_experience_for_killing(self):
+    @property
+    def experience_for_killing(self):
         return self.__experience_for_killing
 
-    def set_is_enemy_angry(self, new_value):
+    @property
+    def is_enemy_angry(self):
+        return self.__is_angry
+
+    @is_enemy_angry.setter
+    def is_enemy_angry(self, new_value):
         self.__is_angry = new_value

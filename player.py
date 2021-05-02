@@ -181,38 +181,54 @@ class Player(pygame.sprite.Sprite):
     def show_inventory(self, surface):
         self.__inventory.draw_inventory(surface)
 
-    def get_rect(self):
+    @property
+    def rect(self):
         return self.__rect
 
-    def get_amount_mana(self):
+    @rect.setter
+    def rect(self, new_value):
+        self.__rect = new_value
+
+    @property
+    def amount_mana(self):
         return self.__current_mana
 
-    def get_amount_damage(self):
+    @property
+    def amount_damage(self):
         return self.__amount_damage
 
-    def get_amount_health(self):
+    @property
+    def amount_health(self):
         return self.__current_health
 
-    def set_amount_health(self, new_value_health):
+    @amount_health.setter
+    def amount_health(self, new_value_health):
         self.__current_health = new_value_health
 
-    def get_name(self):
+    @property
+    def name(self):
         return self.__name
 
-    def get_current_experience(self):
+    @property
+    def current_experience(self):
         return self.__current_experience
 
-    def set_current_experience(self, new_value):
+    @current_experience.setter
+    def current_experience(self, new_value):
         self.__current_experience = new_value
 
-    def get_experience_to_up_level(self):
+    @property
+    def experience_to_up_level(self):
         return self.__experience_to_up_level
 
-    def get_level(self):
+    @property
+    def level(self):
         return self.__level
 
-    def get_current_stamina(self):
+    @property
+    def current_stamina(self):
         return self.__current_stamina
 
-    def get_max_stamina(self):
+    @property
+    def max_stamina(self):
         return self.__max_stamina

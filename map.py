@@ -35,5 +35,6 @@ class Map(pygame.sprite.Sprite):
         for map_tile in self.__map_tiles:
             map_tile.update(surface)
 
-    def get_map_tiles(self):
+    @property
+    def map_tiles(self):
         return self.__map_tiles

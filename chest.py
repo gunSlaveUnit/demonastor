@@ -58,5 +58,10 @@ class Chest(pygame.sprite.Sprite):
             content_local.append(thing)
         return content_local
 
-    def get_rect(self):
+    @property
+    def rect(self):
         return self.__rect
+
+    @rect.setter
+    def rect(self, new_value):
+        self.__rect = new_value

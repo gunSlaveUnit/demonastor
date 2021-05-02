@@ -25,14 +25,10 @@ class Camera:
         self.__dy = 0
         self.__view_sizes = window_sizes
 
-    def apply(self, game_object):
-        """
-        The method applies the calculated offset to the passed object.
-        :param game_object: an object of the Sprite class or its descendants containing the rect attribute.
-        :return: None
-        """
-        game_object.get_rect().centerx -= self.__dx
-        game_object.get_rect().centery -= self.__dy
+    def get_offset(self):
+        # game_object.get_rect().centerx -= self.__dx
+        # game_object.get_rect().centery -= self.__dy
+        return self.__dx, self.__dy
 
     def update(self, target):
         """
@@ -40,7 +36,7 @@ class Camera:
         :param target: player object with rect attribute. An object of the Sprite class.
         :return: None
         """
-        self.__dx = target.get_rect().centerx - constants.GAME_WINDOW_WIDTH // 2
-        self.__dy = target.get_rect().centery - constants.GAME_WINDOW_HEIGHT // 2
-        target.get_rect().centerx = constants.GAME_WINDOW_WIDTH // 2
-        target.get_rect().centery = constants.GAME_WINDOW_HEIGHT // 2
+        self.__dx = target.rect.centerx - constants.GAME_WINDOW_WIDTH // 2
+        self.__dy = target.rect.centery - constants.GAME_WINDOW_HEIGHT // 2
+        target.rect.centerx = constants.GAME_WINDOW_WIDTH // 2
+        target.rect.centery = constants.GAME_WINDOW_HEIGHT // 2

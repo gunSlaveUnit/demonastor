@@ -35,8 +35,14 @@ class Coin(pygame.sprite.Sprite):
     def __draw(self, surface):
         surface.blit(self.__image, self.__rect)
 
-    def get_rect(self):
+    @property
+    def rect(self):
         return self.__rect
 
-    def get_resource_name(self):
+    @rect.setter
+    def rect(self, new_value):
+        self.__rect = new_value
+
+    @property
+    def resource_name(self):
         return self.__resource_name

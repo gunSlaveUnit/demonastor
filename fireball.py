@@ -55,8 +55,14 @@ class Fireball(pygame.sprite.Sprite):
                 self.__rect.right > constants.GAME_WINDOW_WIDTH:
             self.kill()
 
-    def get_amount_additional_damage(self):
+    @property
+    def amount_additional_damage(self):
         return self.__amount_damage
 
-    def get_rect(self):
+    @property
+    def rect(self):
         return self.__rect
+
+    @rect.setter
+    def rect(self, new_value):
+        self.__rect = new_value
