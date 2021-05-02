@@ -19,7 +19,6 @@ In this file the program is started
 
 # TODO: для сохранения мы можем просто пихать в качестве аргумента при создании объекта словарь
 # TODO: можно добавить скриншоты и запись видео
-# TODO: i don't like money icons in inventory
 
 import sys
 import random
@@ -59,7 +58,7 @@ def run_game():
     potions.extend(mana_potions)
 
     shells_player = []
-    enemies = create_enemies(1, 2, player.get_level())
+    enemies = create_enemies(10, 40, player.get_level())
 
     text = None
     test_cur = None
@@ -300,8 +299,8 @@ def create_enemies(min_number_enemies, max_number_enemies, player_level):
     """
     enemies_local = list()
     for i in range(min_number_enemies, max_number_enemies):
-        x_for_appear_demon = random.randint(0, constants.GAME_WINDOW_WIDTH)
-        y_for_appear_demon = random.randint(0, constants.GAME_WINDOW_HEIGHT)
+        x_for_appear_demon = random.randint(-constants.GAME_WINDOW_WIDTH*2, constants.GAME_WINDOW_WIDTH*2)
+        y_for_appear_demon = random.randint(-constants.GAME_WINDOW_HEIGHT*2, constants.GAME_WINDOW_HEIGHT*2)
         enemy_local = demon.Demon(x_for_appear_demon, y_for_appear_demon, player_level)
         enemies_local.append(enemy_local)
     return enemies_local

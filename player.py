@@ -160,6 +160,11 @@ class Player(pygame.sprite.Sprite):
         if potion is None:
             self.__current_health += self.__passive_amount_regeneration
             self.__current_mana += self.__passive_amount_regeneration
+
+            if self.__current_health > self.__max_health:
+                self.__current_health = self.__max_health
+            if self.__current_mana > self.__max_mana:
+                self.__current_mana = self.__max_mana
         else:
             if potion.get_type() == 'health':
                 self.__current_health += potion.get_regen_amount()
