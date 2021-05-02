@@ -42,12 +42,21 @@ def run_game():
     player = Player(constants.GAME_WINDOW_WIDTH // 2,
                     constants.GAME_WINDOW_HEIGHT // 2)
 
-    chests = [Chest(random.randint(0, constants.GAME_WINDOW_WIDTH), random.randint(0, constants.GAME_WINDOW_HEIGHT),
-                  is_chest_need_key=False), Chest(random.randint(0, constants.GAME_WINDOW_WIDTH), random.randint(0, constants.GAME_WINDOW_HEIGHT),
-                  is_chest_need_key=False), Chest(random.randint(0, constants.GAME_WINDOW_WIDTH), random.randint(0, constants.GAME_WINDOW_HEIGHT),
-                  is_chest_need_key=False), Chest(random.randint(0, constants.GAME_WINDOW_WIDTH), random.randint(0, constants.GAME_WINDOW_HEIGHT),
-                  is_chest_need_key=False), Chest(random.randint(0, constants.GAME_WINDOW_WIDTH), random.randint(0, constants.GAME_WINDOW_HEIGHT),
-                  is_chest_need_key=False)]
+    chests = [Chest(random.randint(-constants.GAME_WINDOW_WIDTH*2, constants.GAME_WINDOW_WIDTH*2),
+                    random.randint(-constants.GAME_WINDOW_HEIGHT*2, constants.GAME_WINDOW_HEIGHT*2),
+                    is_chest_need_key=False),
+              Chest(random.randint(-constants.GAME_WINDOW_WIDTH*2, constants.GAME_WINDOW_WIDTH*2),
+                    random.randint(-constants.GAME_WINDOW_HEIGHT*2, constants.GAME_WINDOW_HEIGHT*2),
+                    is_chest_need_key=False),
+              Chest(random.randint(-constants.GAME_WINDOW_WIDTH*2, constants.GAME_WINDOW_WIDTH*2),
+                    random.randint(-constants.GAME_WINDOW_HEIGHT*2, constants.GAME_WINDOW_HEIGHT*2),
+                    is_chest_need_key=False),
+              Chest(random.randint(-constants.GAME_WINDOW_WIDTH*2, constants.GAME_WINDOW_WIDTH*2),
+                    random.randint(-constants.GAME_WINDOW_HEIGHT*2, constants.GAME_WINDOW_HEIGHT*2),
+                    is_chest_need_key=False),
+              Chest(random.randint(-constants.GAME_WINDOW_WIDTH*2, constants.GAME_WINDOW_WIDTH*2),
+                    random.randint(-constants.GAME_WINDOW_HEIGHT*2, constants.GAME_WINDOW_HEIGHT*2),
+                    is_chest_need_key=False)]
 
     camera = Camera((constants.GAME_WINDOW_WIDTH, constants.GAME_WINDOW_HEIGHT))
 
@@ -162,15 +171,16 @@ def run_game():
             draw_bar(main_game_window, constants.GAME_WINDOW_WIDTH // 2, 10,
                      constants.UNNAMED_COLOR_HEALTH_BAR,
                      test_cur, test_max, 150, 15)
-            draw_text(main_game_window, text, 25, constants.WHITE_COLOR_TITLE_BLOCKS, constants.GAME_WINDOW_WIDTH//2, 9)
+            draw_text(main_game_window, text, 25, constants.WHITE_COLOR_TITLE_BLOCKS, constants.GAME_WINDOW_WIDTH // 2,
+                      9)
 
         draw_text(main_game_window, player.get_name(), 15, constants.WHITE_COLOR_TITLE_BLOCKS,
                   player.get_rect().centerx,
                   player.get_rect().centery + player.get_rect().height // 2 + 5)
-        draw_bar(main_game_window, constants.GAME_WINDOW_WIDTH//2, constants.GAME_WINDOW_HEIGHT//2+220,
+        draw_bar(main_game_window, constants.GAME_WINDOW_WIDTH // 2, constants.GAME_WINDOW_HEIGHT // 2 + 220,
                  constants.WHITE_COLOR_TITLE_BLOCKS,
                  player.get_current_experience(), player.get_experience_to_up_level(), 204, 5)
-        draw_bar(main_game_window, constants.GAME_WINDOW_WIDTH//2-52, constants.GAME_WINDOW_HEIGHT-70,
+        draw_bar(main_game_window, constants.GAME_WINDOW_WIDTH // 2 - 52, constants.GAME_WINDOW_HEIGHT - 70,
                  constants.STAMINA_BAR_COLOR, player.get_current_stamina(),
                  player.get_max_stamina(), 50, 10)
 
@@ -299,8 +309,8 @@ def create_enemies(min_number_enemies, max_number_enemies, player_level):
     """
     enemies_local = list()
     for i in range(min_number_enemies, max_number_enemies):
-        x_for_appear_demon = random.randint(-constants.GAME_WINDOW_WIDTH*2, constants.GAME_WINDOW_WIDTH*2)
-        y_for_appear_demon = random.randint(-constants.GAME_WINDOW_HEIGHT*2, constants.GAME_WINDOW_HEIGHT*2)
+        x_for_appear_demon = random.randint(-constants.GAME_WINDOW_WIDTH * 2, constants.GAME_WINDOW_WIDTH * 2)
+        y_for_appear_demon = random.randint(-constants.GAME_WINDOW_HEIGHT * 2, constants.GAME_WINDOW_HEIGHT * 2)
         enemy_local = demon.Demon(x_for_appear_demon, y_for_appear_demon, player_level)
         enemies_local.append(enemy_local)
     return enemies_local
@@ -322,8 +332,8 @@ def draw_bar(surface, center_x, center_y, color, current_value, max_value, bar_l
     fill = (current_value * bar_length) // max_value
     if fill > bar_length:
         fill = bar_length
-    outline_rect = pygame.Rect(center_x-bar_length//2, center_y, bar_length, bar_height)
-    fill_rect = pygame.Rect(center_x-bar_length//2, center_y, fill, bar_height)
+    outline_rect = pygame.Rect(center_x - bar_length // 2, center_y, bar_length, bar_height)
+    fill_rect = pygame.Rect(center_x - bar_length // 2, center_y, fill, bar_height)
     pygame.draw.rect(surface, color, fill_rect)
     pygame.draw.rect(surface, constants.WHITE_COLOR_TITLE_BLOCKS, outline_rect, 1)
 
