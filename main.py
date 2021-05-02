@@ -10,15 +10,21 @@ In this file the program is started
 # ! usr/bin/env python3
 # -*- coding: utf8 -*-
 
-# TODO: bind different characteristics to each other
 # TODO: lots of numeric constants, we should to remove it
 # TODO: use properties in classes
 # TODO: make collisions
-# TODO: change draw_text function. It need to paste a text into left down corner
 # TODO: we need to add exceptions
 
 # TODO: для сохранения мы можем просто пихать в качестве аргумента при создании объекта словарь
 # TODO: можно добавить скриншоты и запись видео
+
+# TODO: Several main tasks:
+# Map
+# Quests
+# Locations
+# New opponents
+# Inventory
+# Skills
 
 import sys
 import random
@@ -67,7 +73,9 @@ def run_game():
     potions.extend(mana_potions)
 
     shells_player = []
-    enemies = create_enemies(10, 40, player.get_level())
+    min_enemies_amount = 10
+    max_enemies_amount = 40
+    enemies = create_enemies(min_enemies_amount, max_enemies_amount, player.get_level())
 
     text = None
     test_cur = None
@@ -79,12 +87,13 @@ def run_game():
     while not is_game_exit:
         delta = clock.tick(constants.FPS_LOCKING)
         pygame.event.pump()
-        if time_to_count_attack < 500:
+        enemy_attack_interval = random.randint(250, 1000)
+        if time_to_count_attack < enemy_attack_interval:
             time_to_count_attack += delta
 
         for enemy in enemies:
             if pygame.sprite.collide_rect(player, enemy):
-                if time_to_count_attack >= 500:
+                if time_to_count_attack >= enemy_attack_interval:
                     time_to_count_attack = 0
                     player.set_amount_health(player.get_amount_health() - enemy.get_amount_damage())
                 if player.get_amount_health() < 1:
