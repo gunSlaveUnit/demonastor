@@ -37,6 +37,7 @@ from camera import Camera
 from player import Player
 import demon
 from chest import Chest
+from key import Key
 
 
 def run_game():
@@ -59,17 +60,17 @@ def run_game():
               Chest(random.randint(-constants.GAME_WINDOW_WIDTH*2, constants.GAME_WINDOW_WIDTH*2),
                     random.randint(-constants.GAME_WINDOW_HEIGHT*2, constants.GAME_WINDOW_HEIGHT*2),
                     is_chest_need_key=False),
-              Chest(random.randint(-constants.GAME_WINDOW_WIDTH*2, constants.GAME_WINDOW_WIDTH*2),
-                    random.randint(-constants.GAME_WINDOW_HEIGHT*2, constants.GAME_WINDOW_HEIGHT*2),
-                    is_chest_need_key=False)]
+              Chest(random.randint(-constants.GAME_WINDOW_WIDTH, constants.GAME_WINDOW_WIDTH),
+                    random.randint(-constants.GAME_WINDOW_HEIGHT, constants.GAME_WINDOW_HEIGHT),
+                    is_chest_need_key=True)]
 
     camera = Camera((constants.GAME_WINDOW_WIDTH, constants.GAME_WINDOW_HEIGHT))
 
-    potions = []
-    health_potions = []
-    mana_potions = []
-    potions.extend(health_potions)
-    potions.extend(mana_potions)
+    things = []
+
+    key = Key(random.randint(-constants.GAME_WINDOW_WIDTH, constants.GAME_WINDOW_WIDTH),
+              random.randint(-constants.GAME_WINDOW_HEIGHT, constants.GAME_WINDOW_HEIGHT))
+    things.append(key)
 
     shells_player = []
     min_enemies_amount = 10
@@ -125,13 +126,13 @@ def run_game():
             chest.rect.centery -= offset[1]
             chest.update(main_game_window)
             if pygame.sprite.collide_rect(player, chest) and pygame.key.get_pressed()[pygame.K_e]:
-                additional_potions = chest.open()
+                additional_potions = chest.open(player.is_key_in_inventory())
                 if additional_potions is not None:
                     for additional_thing in additional_potions:
                         if additional_thing != 0:
-                            potions.append(additional_thing)
+                            things.append(additional_thing)
 
-        for potion in potions:
+        for potion in things:
             potion.update(main_game_window)
             offset = camera.get_offset()
             potion.rect.centerx -= offset[0]
@@ -139,7 +140,7 @@ def run_game():
 
             if pygame.sprite.collide_rect(player, potion) and pygame.key.get_pressed()[pygame.K_e]:
                 player.append_thing_to_inventory(potion)
-                potions.remove(potion)
+                things.remove(potion)
 
         for shell in shells_player:
             if shell:

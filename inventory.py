@@ -109,3 +109,6 @@ class Inventory:
 
             pygame.display.update()
             clock.tick(constants.FPS_LOCKING)
+
+    def get_key_for_chest(self):
+        return 'key' in self.__resources

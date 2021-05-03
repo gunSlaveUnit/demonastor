@@ -181,6 +181,9 @@ class Player(pygame.sprite.Sprite):
     def show_inventory(self, surface):
         self.__inventory.draw_inventory(surface)
 
+    def is_key_in_inventory(self):
+        return self.__inventory.get_key_for_chest()
+
     @property
     def rect(self):
         return self.__rect

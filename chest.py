@@ -11,15 +11,20 @@ import game_enums
 class Chest(pygame.sprite.Sprite):
     def __init__(self, init_center_x, init_center_y, is_chest_need_key):
         super().__init__()
-
-        self.__image = pygame.image.load('resources/images/chests/closed_chest.png').convert()
+        self.__need_key = is_chest_need_key
+        self.__image = self.__get_image()
         self.__rect = self.rect = self.__image.get_rect()
         self.__rect.centerx = init_center_x
         self.__rect.centery = init_center_y
         self.__amount_things_in_chest = random.randint(0, 10)
         self.__is_chest_opened = False
-        self.__need_key = is_chest_need_key
         self.__sound_creaking = pygame.mixer.Sound('resources/sounds/chest_creak.wav')
+
+    def __get_image(self):
+        if self.__need_key:
+            return pygame.image.load('resources/images/chests/chest_with_key.png')
+        else:
+            return pygame.image.load('resources/images/chests/closed_chest.png').convert()
 
     def update(self, surface):
         self.__draw(surface)
@@ -27,7 +32,7 @@ class Chest(pygame.sprite.Sprite):
     def __draw(self, surface):
         surface.blit(self.__image, self.__rect)
 
-    def open(self):
+    def open(self, is_player_has_key):
         if not self.__is_chest_opened:
             if not self.__need_key:
                 self.__image = pygame.image.load('resources/images/chests/opened_chest.png').convert()
@@ -36,7 +41,12 @@ class Chest(pygame.sprite.Sprite):
                 content = self.__create_random_content()
                 return content
             else:
-                pass
+                if is_player_has_key:
+                    self.__image = pygame.image.load('resources/images/chests/opened_chest_with_key.png').convert()
+                    self.__sound_creaking.play()
+                    self.__is_chest_opened = True
+                    content = self.__create_random_content()
+                    return content
 
     def __create_random_content(self):
         content_local = []
