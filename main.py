@@ -227,39 +227,40 @@ def show_pause_menu():
 
 def show_start_menu():
     # TODO: add mouse menu control
-    def set_color_active_menu_item(index_active_menu_item, color):
+    def set_color_active_menu_item(index_active_menu_item, color, font_size):
         if index_active_menu_item == 0:
-            menu_items['New Game'] = color
+            menu_items['New Game'] = [color, font_size]
         if index_active_menu_item == 1:
-            menu_items['Load Game'] = color
+            menu_items['Load Game'] = [color, font_size]
         if index_active_menu_item == 2:
-            menu_items['Settings'] = color
+            menu_items['Settings'] = [color, font_size]
         if index_active_menu_item == 3:
-            menu_items['Exit'] = color
+            menu_items['Exit'] = [color, font_size]
 
     menu_background = pygame.image.load(
         f'resources/images/backgrounds/background_{constants.GAME_WINDOW_WIDTH}_{constants.GAME_WINDOW_HEIGHT}.jpg'
     )
 
     menu_items = {
-        'New Game': constants.DARK_ORANGE_HIGHLIGHTED_MENU_ITEM,
-        'Load Game': constants.WHITE_COLOR_TITLE_BLOCKS,
-        'Settings': constants.WHITE_COLOR_TITLE_BLOCKS,
-        'Exit': constants.WHITE_COLOR_TITLE_BLOCKS
+        'New Game': [constants.DARK_ORANGE_HIGHLIGHTED_MENU_ITEM, 80],
+        'Load Game': [constants.WHITE_COLOR_TITLE_BLOCKS, 50],
+        'Settings': [constants.WHITE_COLOR_TITLE_BLOCKS, 50],
+        'Exit': [constants.WHITE_COLOR_TITLE_BLOCKS, 50]
     }
     index_selected_menu_item = 0
 
     is_menu_show = True
     clock = pygame.time.Clock()
     while is_menu_show:
-        draw_text(main_game_window, constants.GAME_WINDOW_TITLE, 80, constants.WHITE_COLOR_TITLE_BLOCKS,
+        title_size = 80
+        draw_text(main_game_window, constants.GAME_WINDOW_TITLE, title_size, constants.WHITE_COLOR_TITLE_BLOCKS,
                   constants.GAME_WINDOW_WIDTH // 2, 80)
 
-        x_to_paste_menu_item = 200
-        for menu_item in menu_items.keys():
-            draw_text(main_game_window, menu_item, 50, menu_items[menu_item],
+        x_to_paste_menu_item = constants.GAME_WINDOW_HEIGHT//3
+        for menu_item, color_and_size in menu_items.items():
+            draw_text(main_game_window, menu_item, color_and_size[1], color_and_size[0],
                       constants.GAME_WINDOW_WIDTH // 2, x_to_paste_menu_item)
-            x_to_paste_menu_item += 60
+            x_to_paste_menu_item += constants.GAME_WINDOW_HEIGHT//15
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -272,15 +273,15 @@ def show_start_menu():
                     if index_selected_menu_item > 3:
                         index_selected_menu_item = 0
                         index_previous_selected_item = 3
-                    set_color_active_menu_item(index_previous_selected_item, constants.WHITE_COLOR_TITLE_BLOCKS)
-                    set_color_active_menu_item(index_selected_menu_item, constants.DARK_ORANGE_HIGHLIGHTED_MENU_ITEM)
+                    set_color_active_menu_item(index_previous_selected_item, constants.WHITE_COLOR_TITLE_BLOCKS, 50)
+                    set_color_active_menu_item(index_selected_menu_item, constants.DARK_ORANGE_HIGHLIGHTED_MENU_ITEM, 80)
                 if event.key == pygame.K_UP or event.key == pygame.K_w:
                     index_previous_selected_item = index_selected_menu_item
                     index_selected_menu_item -= 1
                     if index_selected_menu_item < 0:
                         index_selected_menu_item = 3
-                    set_color_active_menu_item(index_previous_selected_item, constants.WHITE_COLOR_TITLE_BLOCKS)
-                    set_color_active_menu_item(index_selected_menu_item, constants.DARK_ORANGE_HIGHLIGHTED_MENU_ITEM)
+                    set_color_active_menu_item(index_previous_selected_item, constants.WHITE_COLOR_TITLE_BLOCKS, 50)
+                    set_color_active_menu_item(index_selected_menu_item, constants.DARK_ORANGE_HIGHLIGHTED_MENU_ITEM, 80)
                 if event.key == pygame.K_RETURN:
                     if index_selected_menu_item == 0:
                         is_menu_show = False
@@ -364,7 +365,7 @@ main_game_window = pygame.display.set_mode((constants.GAME_WINDOW_WIDTH,
 def main():
     pygame.init()
 
-    pygame.display.toggle_fullscreen()
+    # pygame.display.toggle_fullscreen()
 
     global main_game_window
 
