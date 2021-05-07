@@ -12,21 +12,11 @@ The file describes a Map class
 
 import pygame
 
-from maptile import MapTile
-
 
 class Map(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
         self.__map_tiles = list()
-        start_coordinates_to_generate_map = [0, 0]
-        for _ in range(0, 50):
-            for _ in range(0, 50):
-                self.__map_tiles.append(MapTile(start_coordinates_to_generate_map[0],
-                                                start_coordinates_to_generate_map[1]))
-                start_coordinates_to_generate_map[0] += 256
-            start_coordinates_to_generate_map[1] += 128
-            start_coordinates_to_generate_map[0] = 0
 
     def update(self, surface):
         self.__draw(surface)

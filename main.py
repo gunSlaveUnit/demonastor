@@ -237,7 +237,9 @@ def show_start_menu():
         if index_active_menu_item == 3:
             menu_items['Exit'] = color
 
-    menu_background = pygame.image.load('resources/images/backgrounds/menu_background.png')
+    menu_background = pygame.image.load(
+        f'resources/images/backgrounds/background_{constants.GAME_WINDOW_WIDTH}_{constants.GAME_WINDOW_HEIGHT}.jpg'
+    )
 
     menu_items = {
         'New Game': constants.DARK_ORANGE_HIGHLIGHTED_MENU_ITEM,
@@ -251,7 +253,7 @@ def show_start_menu():
     clock = pygame.time.Clock()
     while is_menu_show:
         draw_text(main_game_window, constants.GAME_WINDOW_TITLE, 80, constants.WHITE_COLOR_TITLE_BLOCKS,
-                  constants.GAME_WINDOW_WIDTH // 2, 30)
+                  constants.GAME_WINDOW_WIDTH // 2, 80)
 
         x_to_paste_menu_item = 200
         for menu_item in menu_items.keys():

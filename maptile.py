@@ -13,9 +13,9 @@ import pygame
 
 
 class MapTile(pygame.sprite.Sprite):
-    def __init__(self, init_center_x, init_center_y):
+    def __init__(self, init_center_x, init_center_y, file_path):
         super().__init__()
-        self.__image = pygame.image.load('resources/images/map/grass.png').convert()
+        self.__image = pygame.image.load(file_path).convert()
         self.__rect = self.__image.get_rect()
         self.__rect.centerx = init_center_x
         self.__rect.centery = init_center_y
