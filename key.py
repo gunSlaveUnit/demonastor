@@ -25,5 +25,9 @@ class Key(pygame.sprite.Sprite):
         self.__rect = new_value
 
     @property
+    def image(self):
+        return self.__image
+
+    @property
     def resource_name(self):
         return self.__resource_name

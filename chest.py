@@ -16,7 +16,7 @@ class Chest(pygame.sprite.Sprite):
         self.__rect = self.rect = self.__image.get_rect()
         self.__rect.centerx = init_center_x
         self.__rect.centery = init_center_y
-        self.__amount_things_in_chest = random.randint(0, 10)
+        self.__amount_things_in_chest = random.randint(5, 10)
         self.__is_chest_opened = False
         self.__sound_creaking = pygame.mixer.Sound('resources/sounds/chest_creak.wav')
 
@@ -51,7 +51,7 @@ class Chest(pygame.sprite.Sprite):
     def __create_random_content(self):
         content_local = []
         for _ in range(self.__amount_things_in_chest):
-            random_thing = random.randint(1, 20)
+            random_thing = random.randint(0, 6)
             random_x = random.randint(self.__rect.centerx - 20, self.__rect.centerx + 20)
             random_y = random.randint(self.__rect.centery + 10, self.__rect.centery + 30)
             thing = 0

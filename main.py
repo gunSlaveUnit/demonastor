@@ -10,12 +10,13 @@ In this file the program is started
 # ! usr/bin/env python3
 # -*- coding: utf8 -*-
 
-# TODO: use properties in classes
 # TODO: make collisions
 # TODO: we need to add exceptions
 
 # TODO: для сохранения мы можем просто пихать в качестве аргумента при создании объекта словарь
 # TODO: можно добавить скриншоты и запись видео
+
+# TODO: make an additional panel with some resources, for example, with potions
 
 # TODO: Several main tasks:
 # Map
@@ -48,17 +49,41 @@ def run_game():
     player = Player(constants.GAME_WINDOW_WIDTH // 2,
                     constants.GAME_WINDOW_HEIGHT // 2)
 
-    chests = [Chest(random.randint(-constants.GAME_WINDOW_WIDTH*2, constants.GAME_WINDOW_WIDTH*2),
-                    random.randint(-constants.GAME_WINDOW_HEIGHT*2, constants.GAME_WINDOW_HEIGHT*2),
+    chests = [Chest(random.randint(-constants.GAME_WINDOW_WIDTH, constants.GAME_WINDOW_WIDTH),
+                    random.randint(-constants.GAME_WINDOW_HEIGHT, constants.GAME_WINDOW_HEIGHT),
                     is_chest_need_key=False),
-              Chest(random.randint(-constants.GAME_WINDOW_WIDTH*2, constants.GAME_WINDOW_WIDTH*2),
-                    random.randint(-constants.GAME_WINDOW_HEIGHT*2, constants.GAME_WINDOW_HEIGHT*2),
+              Chest(random.randint(-constants.GAME_WINDOW_WIDTH, constants.GAME_WINDOW_WIDTH),
+                    random.randint(-constants.GAME_WINDOW_HEIGHT, constants.GAME_WINDOW_HEIGHT),
                     is_chest_need_key=False),
-              Chest(random.randint(-constants.GAME_WINDOW_WIDTH*2, constants.GAME_WINDOW_WIDTH*2),
-                    random.randint(-constants.GAME_WINDOW_HEIGHT*2, constants.GAME_WINDOW_HEIGHT*2),
+              Chest(random.randint(-constants.GAME_WINDOW_WIDTH, constants.GAME_WINDOW_WIDTH),
+                    random.randint(-constants.GAME_WINDOW_HEIGHT, constants.GAME_WINDOW_HEIGHT),
                     is_chest_need_key=False),
-              Chest(random.randint(-constants.GAME_WINDOW_WIDTH*2, constants.GAME_WINDOW_WIDTH*2),
-                    random.randint(-constants.GAME_WINDOW_HEIGHT*2, constants.GAME_WINDOW_HEIGHT*2),
+              Chest(random.randint(-constants.GAME_WINDOW_WIDTH, constants.GAME_WINDOW_WIDTH),
+                    random.randint(-constants.GAME_WINDOW_HEIGHT, constants.GAME_WINDOW_HEIGHT),
+                    is_chest_need_key=False),
+              Chest(random.randint(-constants.GAME_WINDOW_WIDTH, constants.GAME_WINDOW_WIDTH),
+                    random.randint(-constants.GAME_WINDOW_HEIGHT, constants.GAME_WINDOW_HEIGHT),
+                    is_chest_need_key=False),
+              Chest(random.randint(-constants.GAME_WINDOW_WIDTH, constants.GAME_WINDOW_WIDTH),
+                    random.randint(-constants.GAME_WINDOW_HEIGHT, constants.GAME_WINDOW_HEIGHT),
+                    is_chest_need_key=False),
+              Chest(random.randint(-constants.GAME_WINDOW_WIDTH, constants.GAME_WINDOW_WIDTH),
+                    random.randint(-constants.GAME_WINDOW_HEIGHT, constants.GAME_WINDOW_HEIGHT),
+                    is_chest_need_key=False),
+              Chest(random.randint(-constants.GAME_WINDOW_WIDTH, constants.GAME_WINDOW_WIDTH),
+                    random.randint(-constants.GAME_WINDOW_HEIGHT, constants.GAME_WINDOW_HEIGHT),
+                    is_chest_need_key=False),
+              Chest(random.randint(-constants.GAME_WINDOW_WIDTH, constants.GAME_WINDOW_WIDTH),
+                    random.randint(-constants.GAME_WINDOW_HEIGHT, constants.GAME_WINDOW_HEIGHT),
+                    is_chest_need_key=False),
+              Chest(random.randint(-constants.GAME_WINDOW_WIDTH, constants.GAME_WINDOW_WIDTH),
+                    random.randint(-constants.GAME_WINDOW_HEIGHT, constants.GAME_WINDOW_HEIGHT),
+                    is_chest_need_key=False),
+              Chest(random.randint(-constants.GAME_WINDOW_WIDTH, constants.GAME_WINDOW_WIDTH),
+                    random.randint(-constants.GAME_WINDOW_HEIGHT, constants.GAME_WINDOW_HEIGHT),
+                    is_chest_need_key=False),
+              Chest(random.randint(-constants.GAME_WINDOW_WIDTH, constants.GAME_WINDOW_WIDTH),
+                    random.randint(-constants.GAME_WINDOW_HEIGHT, constants.GAME_WINDOW_HEIGHT),
                     is_chest_need_key=False),
               Chest(random.randint(-constants.GAME_WINDOW_WIDTH, constants.GAME_WINDOW_WIDTH),
                     random.randint(-constants.GAME_WINDOW_HEIGHT, constants.GAME_WINDOW_HEIGHT),
@@ -252,9 +277,9 @@ def show_start_menu():
     is_menu_show = True
     clock = pygame.time.Clock()
     while is_menu_show:
-        title_size = 80
+        title_size = 150
         draw_text(main_game_window, constants.GAME_WINDOW_TITLE, title_size, constants.WHITE_COLOR_TITLE_BLOCKS,
-                  constants.GAME_WINDOW_WIDTH // 2, 80)
+                  constants.GAME_WINDOW_WIDTH // 2, 100)
 
         x_to_paste_menu_item = constants.GAME_WINDOW_HEIGHT//3
         for menu_item, color_and_size in menu_items.items():
