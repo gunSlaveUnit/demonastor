@@ -16,6 +16,7 @@ import pygame
 import constants
 import game_enums
 import coin
+from drawer import Drawer
 
 
 class Inventory:
@@ -61,16 +62,6 @@ class Inventory:
                 pygame.draw.rect(surface, constants.TEST_COLOR, (x, y, 40, 40), self.__frame_thickness)
                 self.__inventory_cells.append(cell)
 
-        self.__resources['gold_coin'][0].update(surface)
-        self.__resources['silver_coin'][0].update(surface)
-        self.__resources['bronze_coin'][0].update(surface)
-
-        for name, resource in self.__resources.items():
-            if name != 'gold_coin' and name != 'silver_coin' and name != 'bronze_coin':
-                resource[0].rect.centerx = self.__inventory_cells[resource[2]].centerx
-                resource[0].rect.centery = self.__inventory_cells[resource[2]].centery
-                surface.blit(resource[0].image, resource[0].rect)
-
         clock = pygame.time.Clock()
         is_inventory_showed = True
         while is_inventory_showed:
@@ -81,6 +72,20 @@ class Inventory:
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_i:
                         is_inventory_showed = False
+
+            self.__resources['gold_coin'][0].update(surface)
+            self.__resources['silver_coin'][0].update(surface)
+            self.__resources['bronze_coin'][0].update(surface)
+
+            for name, resource in self.__resources.items():
+                if name != 'gold_coin' and name != 'silver_coin' and name != 'bronze_coin':
+                    resource[0].rect.centerx = self.__inventory_cells[resource[2]].centerx
+                    resource[0].rect.centery = self.__inventory_cells[resource[2]].centery
+                    surface.blit(resource[0].image, resource[0].rect)
+                    Drawer.draw_text(surface, str(resource[1]), 20,
+                                     constants.WHITE_COLOR_TITLE_BLOCKS,
+                                     self.__inventory_cells[resource[2]].centerx+10,
+                                     self.__inventory_cells[resource[2]].centery+5)
 
             pygame.display.update()
             clock.tick(constants.FPS_LOCKING)
