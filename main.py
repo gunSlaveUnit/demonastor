@@ -221,10 +221,10 @@ def run_game():
                   player.rect.centery + player.rect.height // 2 + 5)
         draw_bar(main_game_window, constants.GAME_WINDOW_WIDTH // 2, constants.GAME_WINDOW_HEIGHT // 2 + 220,
                  constants.WHITE_COLOR_TITLE_BLOCKS,
-                 player.current_experience, player.experience_to_up_level, 204, 5)
+                 player.current_experience, player.experience_to_up_level, 204, 5, True)
         draw_bar(main_game_window, constants.GAME_WINDOW_WIDTH // 2 - 52, constants.GAME_WINDOW_HEIGHT - 70,
                  constants.STAMINA_BAR_COLOR, player.current_stamina,
-                 player.max_stamina, 50, 10)
+                 player.max_stamina, 50, 10, True)
 
         pygame.display.flip()  # for double buffering
         clock.tick(constants.FPS_LOCKING)
@@ -370,7 +370,7 @@ def draw_text(surface, text, size, color, x, y):
     surface.blit(text_surface, text_rect)
 
 
-def draw_bar(surface, center_x, center_y, color, current_value, max_value, bar_length, bar_height):
+def draw_bar(surface, center_x, center_y, color, current_value, max_value, bar_length, bar_height, is_frame_need=False):
     if current_value < 0:
         current_value = 0
 
@@ -380,7 +380,8 @@ def draw_bar(surface, center_x, center_y, color, current_value, max_value, bar_l
     outline_rect = pygame.Rect(center_x - bar_length // 2, center_y, bar_length, bar_height)
     fill_rect = pygame.Rect(center_x - bar_length // 2, center_y, fill, bar_height)
     pygame.draw.rect(surface, color, fill_rect)
-    pygame.draw.rect(surface, constants.WHITE_COLOR_TITLE_BLOCKS, outline_rect, 1)
+    if is_frame_need:
+        pygame.draw.rect(surface, constants.WHITE_COLOR_TITLE_BLOCKS, outline_rect, 1)
 
 
 main_game_window = pygame.display.set_mode((constants.GAME_WINDOW_WIDTH,
