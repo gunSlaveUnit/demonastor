@@ -39,6 +39,7 @@ from player import Player
 import demon
 from chest import Chest
 from key import Key
+from drawer import Drawer
 
 
 def run_game():
@@ -210,19 +211,19 @@ def run_game():
         player.update(main_game_window)
 
         if text is not None:
-            draw_bar(main_game_window, constants.GAME_WINDOW_WIDTH // 2, 10,
+            Drawer.draw_bar(main_game_window, constants.GAME_WINDOW_WIDTH // 2, 10,
                      constants.UNNAMED_COLOR_HEALTH_BAR,
                      test_cur, test_max, 150, 15)
-            draw_text(main_game_window, text, 25, constants.WHITE_COLOR_TITLE_BLOCKS, constants.GAME_WINDOW_WIDTH // 2,
+            Drawer.draw_text(main_game_window, text, 25, constants.WHITE_COLOR_TITLE_BLOCKS, constants.GAME_WINDOW_WIDTH // 2,
                       9)
 
-        draw_text(main_game_window, player.name, 15, constants.WHITE_COLOR_TITLE_BLOCKS,
+        Drawer.draw_text(main_game_window, player.name, 15, constants.WHITE_COLOR_TITLE_BLOCKS,
                   player.rect.centerx,
                   player.rect.centery + player.rect.height // 2 + 5)
-        draw_bar(main_game_window, constants.GAME_WINDOW_WIDTH // 2, constants.GAME_WINDOW_HEIGHT // 2 + 220,
+        Drawer.draw_bar(main_game_window, constants.GAME_WINDOW_WIDTH // 2, constants.GAME_WINDOW_HEIGHT // 2 + 220,
                  constants.WHITE_COLOR_TITLE_BLOCKS,
                  player.current_experience, player.experience_to_up_level, 204, 5, True)
-        draw_bar(main_game_window, constants.GAME_WINDOW_WIDTH // 2 - 52, constants.GAME_WINDOW_HEIGHT - 70,
+        Drawer.draw_bar(main_game_window, constants.GAME_WINDOW_WIDTH // 2 - 52, constants.GAME_WINDOW_HEIGHT - 70,
                  constants.STAMINA_BAR_COLOR, player.current_stamina,
                  player.max_stamina, 50, 10, True)
 
@@ -232,7 +233,7 @@ def run_game():
 
 
 def show_pause_menu():
-    draw_text(main_game_window, 'Pause. Press <Escape> To Continue', 30, constants.WHITE_COLOR_TITLE_BLOCKS,
+    Drawer.draw_text(main_game_window, 'Pause. Press <Escape> To Continue', 30, constants.WHITE_COLOR_TITLE_BLOCKS,
               constants.GAME_WINDOW_WIDTH // 2, constants.GAME_WINDOW_HEIGHT // 2)
 
     clock = pygame.time.Clock()
@@ -278,12 +279,12 @@ def show_start_menu():
     clock = pygame.time.Clock()
     while is_menu_show:
         title_size = 150
-        draw_text(main_game_window, constants.GAME_WINDOW_TITLE, title_size, constants.WHITE_COLOR_TITLE_BLOCKS,
+        Drawer.draw_text(main_game_window, constants.GAME_WINDOW_TITLE, title_size, constants.WHITE_COLOR_TITLE_BLOCKS,
                   constants.GAME_WINDOW_WIDTH // 2, 100)
 
         x_to_paste_menu_item = constants.GAME_WINDOW_HEIGHT//3
         for menu_item, color_and_size in menu_items.items():
-            draw_text(main_game_window, menu_item, color_and_size[1], color_and_size[0],
+            Drawer.draw_text(main_game_window, menu_item, color_and_size[1], color_and_size[0],
                       constants.GAME_WINDOW_WIDTH // 2, x_to_paste_menu_item)
             x_to_paste_menu_item += constants.GAME_WINDOW_HEIGHT//15
 
@@ -324,7 +325,7 @@ def show_start_menu():
 
 
 def game_over():
-    draw_text(main_game_window, 'You died. Press <Enter> To Restart Or <Escape> To Exit', 30,
+    Drawer.draw_text(main_game_window, 'You died. Press <Enter> To Restart Or <Escape> To Exit', 30,
               constants.WHITE_COLOR_TITLE_BLOCKS,
               constants.GAME_WINDOW_WIDTH // 2, constants.GAME_WINDOW_HEIGHT // 2)
 
@@ -359,29 +360,6 @@ def create_enemies(min_number_enemies, max_number_enemies, player_level):
         enemy_local = demon.Demon(x_for_appear_demon, y_for_appear_demon, player_level)
         enemies_local.append(enemy_local)
     return enemies_local
-
-
-def draw_text(surface, text, size, color, x, y):
-    font_name = pygame.font.match_font('resources/fonts/samson_font.ttf')
-    font = pygame.font.Font(font_name, size)
-    text_surface = font.render(text, True, color)
-    text_rect = text_surface.get_rect()
-    text_rect.midtop = (x, y)
-    surface.blit(text_surface, text_rect)
-
-
-def draw_bar(surface, center_x, center_y, color, current_value, max_value, bar_length, bar_height, is_frame_need=False):
-    if current_value < 0:
-        current_value = 0
-
-    fill = (current_value * bar_length) // max_value
-    if fill > bar_length:
-        fill = bar_length
-    outline_rect = pygame.Rect(center_x - bar_length // 2, center_y, bar_length, bar_height)
-    fill_rect = pygame.Rect(center_x - bar_length // 2, center_y, fill, bar_height)
-    pygame.draw.rect(surface, color, fill_rect)
-    if is_frame_need:
-        pygame.draw.rect(surface, constants.WHITE_COLOR_TITLE_BLOCKS, outline_rect, 1)
 
 
 main_game_window = pygame.display.set_mode((constants.GAME_WINDOW_WIDTH,
