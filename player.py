@@ -23,7 +23,7 @@ import bar
 class Player(pygame.sprite.Sprite):
     __DIRECTIONS_MOVING = {'LEFT': 0, 'RIGHT': 1, 'UP': 2, 'DOWN': 3}
 
-    def __init__(self, init_center_x, init_center_y):
+    def __init__(self, init_center_x, init_center_y, saved_params=None):
         super().__init__()
         self.__image = pygame.image.load('resources/images/player/player_down_moving_0.png').convert()
         self.__rect = self.rect = self.__image.get_rect()
@@ -69,17 +69,26 @@ class Player(pygame.sprite.Sprite):
         self.__speed_x = 0
         self.__speed_y = 0
 
-        self.__level = 1
+        self.__max_stamina = 100
+        if saved_params is None:
+            self.__level = 1
+            self.__current_experience = 0
+            self.__current_health = 100
+            self.__current_stamina = self.__max_stamina
+            self.__current_mana = 100
+        else:
+            self.__level = saved_params['']
+            self.__current_experience = saved_params['current_experience']
+            self.__current_health = saved_params['current_health']
+            self.__current_stamina = saved_params['current_stamina']
+            self.__current_mana = saved_params['current_mana']
+
         self.__experience_to_up_level = 1000 * pow(1.1, self.__level)
-        self.__current_experience = 0
 
         self.__max_health = 100
-        self.__current_health = 100
+
         self.__passive_amount_regeneration = 0.1
         self.__max_mana = 100
-        self.__current_mana = 100
-        self.__max_stamina = 100
-        self.__current_stamina = self.__max_stamina
 
         self.__amount_damage = random.randint(10, 20)
 
@@ -183,6 +192,16 @@ class Player(pygame.sprite.Sprite):
 
     def is_key_in_inventory(self):
         return self.__inventory.get_key_for_chest()
+
+    @property
+    def params_for_saving(self):
+        return {
+            'level': self.__level,
+            'current_experience': self.__current_experience,
+            'current_health': self.__current_health,
+            'current_mana': self.__current_mana,
+            'current_stamina': self.__current_stamina
+        }
 
     @property
     def rect(self):

@@ -28,6 +28,7 @@ In this file the program is started
 import sys
 import random
 import math
+import os
 
 import pygame
 
@@ -38,6 +39,7 @@ from player import Player
 import demon
 from chest import Chest
 from key import Key
+from tree import Tree
 from drawer import Drawer
 
 
@@ -88,6 +90,8 @@ def run_game():
               Chest(random.randint(-constants.GAME_WINDOW_WIDTH, constants.GAME_WINDOW_WIDTH),
                     random.randint(-constants.GAME_WINDOW_HEIGHT, constants.GAME_WINDOW_HEIGHT),
                     is_chest_need_key=True)]
+
+    tree = Tree(200, 200)
 
     camera = Camera((constants.GAME_WINDOW_WIDTH, constants.GAME_WINDOW_HEIGHT))
 
@@ -167,6 +171,11 @@ def run_game():
                 player.append_thing_to_inventory(potion)
                 things.remove(potion)
 
+        tree.update(main_game_window)
+        offset = camera.get_offset()
+        tree.rect.centerx -= offset[0]
+        tree.rect.centery -= offset[1]
+
         for shell in shells_player:
             if shell:
                 shell.update(main_game_window)
@@ -233,7 +242,7 @@ def run_game():
 
 def show_pause_menu():
     Drawer.draw_text(main_game_window, 'Pause. Press <Escape> To Continue', 30, constants.WHITE_COLOR_TITLE_BLOCKS,
-              constants.GAME_WINDOW_WIDTH // 2, constants.GAME_WINDOW_HEIGHT // 2)
+                     constants.GAME_WINDOW_WIDTH // 2, constants.GAME_WINDOW_HEIGHT // 2)
 
     clock = pygame.time.Clock()
     is_pause_over = False
@@ -279,12 +288,12 @@ def show_start_menu():
     while is_menu_show:
         title_size = 150
         Drawer.draw_text(main_game_window, constants.GAME_WINDOW_TITLE, title_size, constants.WHITE_COLOR_TITLE_BLOCKS,
-                  constants.GAME_WINDOW_WIDTH // 2, 100)
+                         constants.GAME_WINDOW_WIDTH // 2, 100)
 
         x_to_paste_menu_item = constants.GAME_WINDOW_HEIGHT//3
         for menu_item, color_and_size in menu_items.items():
             Drawer.draw_text(main_game_window, menu_item, color_and_size[1], color_and_size[0],
-                      constants.GAME_WINDOW_WIDTH // 2, x_to_paste_menu_item)
+                             constants.GAME_WINDOW_WIDTH // 2, x_to_paste_menu_item)
             x_to_paste_menu_item += constants.GAME_WINDOW_HEIGHT//15
 
         for event in pygame.event.get():
@@ -311,7 +320,7 @@ def show_start_menu():
                     if index_selected_menu_item == 0:
                         is_menu_show = False
                     if index_selected_menu_item == 1:
-                        pass
+                        load_game()
                     if index_selected_menu_item == 2:
                         pass
                     if index_selected_menu_item == 3:
@@ -325,8 +334,8 @@ def show_start_menu():
 
 def game_over():
     Drawer.draw_text(main_game_window, 'You died. Press <Enter> To Restart Or <Escape> To Exit', 30,
-              constants.WHITE_COLOR_TITLE_BLOCKS,
-              constants.GAME_WINDOW_WIDTH // 2, constants.GAME_WINDOW_HEIGHT // 2)
+                     constants.WHITE_COLOR_TITLE_BLOCKS,
+                     constants.GAME_WINDOW_WIDTH // 2, constants.GAME_WINDOW_HEIGHT // 2)
 
     clock = pygame.time.Clock()
     while True:
@@ -359,6 +368,11 @@ def create_enemies(min_number_enemies, max_number_enemies, player_level):
         enemy_local = demon.Demon(x_for_appear_demon, y_for_appear_demon, player_level)
         enemies_local.append(enemy_local)
     return enemies_local
+
+
+def load_game():
+    savings = os.listdir(constants.DIRECTORY_WITH_SAVINGS)
+    print(savings)
 
 
 main_game_window = pygame.display.set_mode((constants.GAME_WINDOW_WIDTH,
