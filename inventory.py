@@ -118,6 +118,19 @@ class Inventory:
             self.__resources['silver_coin'][0].update(surface)
             self.__resources['bronze_coin'][0].update(surface)
 
+            Drawer.draw_text(surface, str(self.__resources['gold_coin'][1]), 20,
+                             constants.WHITE_COLOR_TITLE_BLOCKS,
+                             self.__resources['gold_coin'][0].rect.right + 10,
+                             self.__resources['gold_coin'][0].rect.top)
+            Drawer.draw_text(surface, str(self.__resources['silver_coin'][1]), 20,
+                             constants.WHITE_COLOR_TITLE_BLOCKS,
+                             self.__resources['silver_coin'][0].rect.right + 10,
+                             self.__resources['silver_coin'][0].rect.top)
+            Drawer.draw_text(surface, str(self.__resources['bronze_coin'][1]), 20,
+                             constants.WHITE_COLOR_TITLE_BLOCKS,
+                             self.__resources['bronze_coin'][0].rect.right + 10,
+                             self.__resources['bronze_coin'][0].rect.top)
+
             pygame.display.flip()
             for name, resource in self.__resources.items():
                 if name != 'gold_coin' and name != 'silver_coin' and name != 'bronze_coin':

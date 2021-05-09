@@ -23,7 +23,6 @@ In this file the program is started
 # Quests
 # Locations
 # New opponents
-# Inventory
 # Skills
 
 import sys
