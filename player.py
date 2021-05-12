@@ -70,12 +70,13 @@ class Player(pygame.sprite.Sprite):
         self.__speed_y = 0
 
         self.__max_stamina = 100
+        self.__max_mana = 1000
         if saved_params is None:
             self.__level = 1
             self.__current_experience = 0
             self.__current_health = 100
             self.__current_stamina = self.__max_stamina
-            self.__current_mana = 100
+            self.__current_mana = self.__max_mana
         else:
             self.__level = saved_params['level']
             self.__current_experience = saved_params['current_experience']
@@ -87,10 +88,9 @@ class Player(pygame.sprite.Sprite):
 
         self.__max_health = 100
 
-        self.__passive_amount_regeneration = 0.1
-        self.__max_mana = 100
+        self.__passive_amount_regeneration = 0.3
 
-        self.__amount_damage = random.randint(10, 20)
+        self.__amount_damage = random.randint(140, 200)
 
         self.__inventory = inventory.Inventory()
 
@@ -105,11 +105,13 @@ class Player(pygame.sprite.Sprite):
                                   game_enums.PlayerBarTypes.MANA.value)
 
     def update(self, surface):
+        print(self.__experience_to_up_level)
         self.__draw(surface)
         self.__move()
         self.regeneration()
 
-        self.__amount_damage = random.randint(10, 20)
+        self.__amount_damage = random.randint(140, 200)
+        self.__experience_to_up_level = 1000 * pow(1.1, self.__level)
 
         if self.__current_experience >= self.__experience_to_up_level:
             self.__level += 1

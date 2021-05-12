@@ -31,7 +31,7 @@ class Fireball(pygame.sprite.Sprite):
         self.__speed_x = random.randint(3, 10)
         self.__speed_y = random.randint(3, 10)
 
-        self.__amount_damage = random.randint(1, 5)
+        self.__amount_damage = random.randint(140, 250)
 
     def update(self, surface):
         self.__draw(surface)

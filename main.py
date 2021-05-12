@@ -111,8 +111,8 @@ def run_game(data_for_loading=None):
     things.append(key)
 
     shells_player = []
-    min_enemies_amount = 10
-    max_enemies_amount = 40
+    min_enemies_amount = 40
+    max_enemies_amount = 500
     enemies = create_enemies(min_enemies_amount, max_enemies_amount, player.level)
 
     text = None
@@ -209,7 +209,8 @@ def run_game(data_for_loading=None):
                 if shell:
                     if pygame.sprite.collide_rect(enemy, shell):
                         shells_player.remove(shell)
-                        enemy.current_amount_health -= player.amount_damage - shell.amount_additional_damage
+                        enemy.current_amount_health -= player.amount_damage
+                        enemy.current_amount_health -= shell.amount_additional_damage
 
                         dx = float(player.rect.centerx - enemy.rect.centerx)
                         dy = float(player.rect.centery - enemy.rect.centery)
@@ -254,7 +255,7 @@ def run_game(data_for_loading=None):
 
 
 def show_pause_menu():
-    Drawer.draw_text(main_game_window, 'Pause. Press <Escape> To Continue', 30, constants.WHITE_COLOR_TITLE_BLOCKS,
+    Drawer.draw_text(main_game_window, 'Pause. Press <Enter> To Continue', 30, constants.WHITE_COLOR_TITLE_BLOCKS,
                      constants.GAME_WINDOW_WIDTH // 2, constants.GAME_WINDOW_HEIGHT // 2)
 
     clock = pygame.time.Clock()
@@ -265,8 +266,11 @@ def show_pause_menu():
                 pygame.quit()
                 sys.exit()
             if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_ESCAPE:
+                if event.key == pygame.K_RETURN:
                     is_pause_over = True
+                if event.key == pygame.K_ESCAPE:
+                    pygame.quit()
+                    sys.exit()
 
         pygame.display.update()
         clock.tick(constants.FPS_LOCKING)
@@ -377,18 +381,17 @@ def create_enemies(min_number_enemies, max_number_enemies, player_level):
     """
     enemies_local = list()
     for i in range(min_number_enemies, max_number_enemies):
-        x_for_appear_demon = random.randint(-constants.GAME_WINDOW_WIDTH * 2, constants.GAME_WINDOW_WIDTH * 2)
-        y_for_appear_demon = random.randint(-constants.GAME_WINDOW_HEIGHT * 2, constants.GAME_WINDOW_HEIGHT * 2)
+        x_for_appear_demon = random.randint(-constants.GAME_WINDOW_WIDTH*2, constants.GAME_WINDOW_WIDTH*2)
+        y_for_appear_demon = random.randint(-constants.GAME_WINDOW_HEIGHT*2, constants.GAME_WINDOW_HEIGHT*2)
         enemy_local = demon.Demon(x_for_appear_demon, y_for_appear_demon, player_level)
         enemies_local.append(enemy_local)
     return enemies_local
 
 
 def show_game_loads():
-    print("In show game loads")
     savings = os.listdir(constants.DIRECTORY_WITH_SAVINGS)
-    print(savings)
-    # load_game(os.path.join(constants.DIRECTORY_WITH_SAVINGS, savings[-1]))
+    if not savings:
+        run_game()
 
     def set_color_active_menu_item(savings_file_name, index_active_menu_item, color, font_size):
         filename_to_highlight = savings[index_active_menu_item]
@@ -453,7 +456,6 @@ def save_game(objects_for_saving):
     save_time = datetime.today()
     with open(f'savings/{save_time.strftime("%Y-%m-%d-%H.%M.%S")}.pickle', 'wb') as save_file:
         for game_object in objects_for_saving:
-            print(game_object.params_for_saving)
             pickle.dump(game_object.params_for_saving, save_file)
 
 
@@ -473,7 +475,7 @@ main_game_window = pygame.display.set_mode((constants.GAME_WINDOW_WIDTH,
 def main():
     pygame.init()
 
-    pygame.display.toggle_fullscreen()
+    # pygame.display.toggle_fullscreen()
 
     global main_game_window
 
