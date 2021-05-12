@@ -77,7 +77,7 @@ class Player(pygame.sprite.Sprite):
             self.__current_stamina = self.__max_stamina
             self.__current_mana = 100
         else:
-            self.__level = saved_params['']
+            self.__level = saved_params['level']
             self.__current_experience = saved_params['current_experience']
             self.__current_health = saved_params['current_health']
             self.__current_stamina = saved_params['current_stamina']

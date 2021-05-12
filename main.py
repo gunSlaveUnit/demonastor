@@ -29,6 +29,8 @@ import sys
 import random
 import math
 import os
+import pickle
+from datetime import datetime
 
 import pygame
 
@@ -43,13 +45,20 @@ from tree import Tree
 from drawer import Drawer
 
 
-def run_game():
+def run_game(data_for_loading=None):
     global main_game_window
 
     game_map = map.Map()
-
-    player = Player(constants.GAME_WINDOW_WIDTH // 2,
-                    constants.GAME_WINDOW_HEIGHT // 2)
+    if data_for_loading:
+        print(data_for_loading)
+        for key in data_for_loading.keys():
+            print(key)
+        player = Player(constants.GAME_WINDOW_WIDTH // 2,
+                        constants.GAME_WINDOW_HEIGHT // 2,
+                        data_for_loading)
+    else:
+        player = Player(constants.GAME_WINDOW_WIDTH // 2,
+                        constants.GAME_WINDOW_HEIGHT // 2)
 
     chests = [Chest(random.randint(-constants.GAME_WINDOW_WIDTH, constants.GAME_WINDOW_WIDTH),
                     random.randint(-constants.GAME_WINDOW_HEIGHT, constants.GAME_WINDOW_HEIGHT),
@@ -135,6 +144,10 @@ def run_game():
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     show_pause_menu()
+                if event.key == pygame.K_F5:
+                    save_game([player])
+                if event.key == pygame.K_F9:
+                    load_game()
                 if event.key == pygame.K_SPACE:
                     shell = player.attack()
                     shells_player.append(shell)
@@ -260,6 +273,7 @@ def show_pause_menu():
 
 
 def show_start_menu():
+    print("In show start menu")
     # TODO: add mouse menu control
     def set_color_active_menu_item(index_active_menu_item, color, font_size):
         if index_active_menu_item == 0:
@@ -320,7 +334,7 @@ def show_start_menu():
                     if index_selected_menu_item == 0:
                         is_menu_show = False
                     if index_selected_menu_item == 1:
-                        load_game()
+                        show_game_loads()
                     if index_selected_menu_item == 2:
                         pass
                     if index_selected_menu_item == 3:
@@ -370,9 +384,86 @@ def create_enemies(min_number_enemies, max_number_enemies, player_level):
     return enemies_local
 
 
-def load_game():
+def show_game_loads():
+    print("In show game loads")
     savings = os.listdir(constants.DIRECTORY_WITH_SAVINGS)
     print(savings)
+    # load_game(os.path.join(constants.DIRECTORY_WITH_SAVINGS, savings[-1]))
+
+    def set_color_active_menu_item(savings_file_name, index_active_menu_item, color, font_size):
+        filename_to_highlight = savings[index_active_menu_item]
+        menu_items[filename_to_highlight] = [color, font_size]
+
+    menu_background = pygame.image.load(
+        f'resources/images/backgrounds/background_{constants.GAME_WINDOW_WIDTH}_{constants.GAME_WINDOW_HEIGHT}.jpg'
+    )
+
+    menu_items = {
+
+    }
+    for save_file_name in savings:
+        menu_items[save_file_name] = [constants.WHITE_COLOR_TITLE_BLOCKS, 50]
+    menu_items[savings[0]] = [constants.DARK_ORANGE_HIGHLIGHTED_MENU_ITEM, 80]
+
+    amount_files = len(savings)
+    index_selected_menu_item = 0
+
+    is_menu_show = True
+    clock = pygame.time.Clock()
+    while is_menu_show:
+        title_size = 150
+        Drawer.draw_text(main_game_window, constants.GAME_WINDOW_TITLE, title_size, constants.WHITE_COLOR_TITLE_BLOCKS,
+                         constants.GAME_WINDOW_WIDTH // 2, 100)
+
+        x_to_paste_menu_item = constants.GAME_WINDOW_HEIGHT//3
+        for menu_item, color_and_size in menu_items.items():
+            Drawer.draw_text(main_game_window, menu_item, color_and_size[1], color_and_size[0],
+                             constants.GAME_WINDOW_WIDTH // 2, x_to_paste_menu_item)
+            x_to_paste_menu_item += constants.GAME_WINDOW_HEIGHT//15
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_DOWN or event.key == pygame.K_s:
+                    index_previous_selected_item = index_selected_menu_item
+                    index_selected_menu_item += 1
+                    if index_selected_menu_item > amount_files-1:
+                        index_selected_menu_item = 0
+                        index_previous_selected_item = amount_files-1
+                    set_color_active_menu_item(savings, index_previous_selected_item, constants.WHITE_COLOR_TITLE_BLOCKS, 50)
+                    set_color_active_menu_item(savings,index_selected_menu_item, constants.DARK_ORANGE_HIGHLIGHTED_MENU_ITEM, 80)
+                if event.key == pygame.K_UP or event.key == pygame.K_w:
+                    index_previous_selected_item = index_selected_menu_item
+                    index_selected_menu_item -= 1
+                    if index_selected_menu_item < 0:
+                        index_selected_menu_item = amount_files-1
+                    set_color_active_menu_item(savings, index_previous_selected_item, constants.WHITE_COLOR_TITLE_BLOCKS, 50)
+                    set_color_active_menu_item(savings, index_selected_menu_item, constants.DARK_ORANGE_HIGHLIGHTED_MENU_ITEM, 80)
+                if event.key == pygame.K_RETURN:
+                    load_game(savings[index_selected_menu_item])
+
+        pygame.display.update()
+        main_game_window.blit(menu_background, (0, 0))
+        clock.tick(constants.FPS_LOCKING)
+
+
+def save_game(objects_for_saving):
+    save_time = datetime.today()
+    with open(f'savings/{save_time.strftime("%Y-%m-%d-%H.%M.%S")}.pickle', 'wb') as save_file:
+        for game_object in objects_for_saving:
+            print(game_object.params_for_saving)
+            pickle.dump(game_object.params_for_saving, save_file)
+
+
+def load_game(file_name_for_loading=None):
+    objects = []
+    filename = os.path.join(constants.DIRECTORY_WITH_SAVINGS, os.listdir(constants.DIRECTORY_WITH_SAVINGS)[-1]) if file_name_for_loading is None \
+        else os.path.join(constants.DIRECTORY_WITH_SAVINGS, file_name_for_loading)
+    with open(filename, 'rb') as load_file:
+        data = pickle.load(load_file)
+        run_game(data)
 
 
 main_game_window = pygame.display.set_mode((constants.GAME_WINDOW_WIDTH,
@@ -382,7 +473,7 @@ main_game_window = pygame.display.set_mode((constants.GAME_WINDOW_WIDTH,
 def main():
     pygame.init()
 
-    # pygame.display.toggle_fullscreen()
+    pygame.display.toggle_fullscreen()
 
     global main_game_window
 
