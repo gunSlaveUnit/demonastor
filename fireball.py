@@ -46,8 +46,8 @@ class Fireball(pygame.sprite.Sprite):
         self._speed_x = random.randint(3, 10)
         self._speed_y = random.randint(3, 10)
 
-        self.__rect.centerx += self.__direction[0] * random.randint(5, 10)
-        self.__rect.centery += self.__direction[1] * random.randint(5, 10)
+        self.__rect.centerx += self.__direction[0] * random.randint(1, 5)
+        self.__rect.centery += self.__direction[1] * random.randint(1, 5)
 
         if self.__rect.bottom < 0 or \
                 self.__rect.left < 0 or \

@@ -47,7 +47,6 @@ from drawer import Drawer
 
 def run_game(data_for_loading=None):
     global main_game_window
-
     game_map = map.Map()
     if data_for_loading:
         print(data_for_loading)
@@ -112,7 +111,7 @@ def run_game(data_for_loading=None):
 
     shells_player = []
     min_enemies_amount = 40
-    max_enemies_amount = 500
+    max_enemies_amount = 200
     enemies = create_enemies(min_enemies_amount, max_enemies_amount, player.level)
 
     text = None
@@ -256,23 +255,64 @@ def run_game(data_for_loading=None):
 
 def show_pause_menu():
     Drawer.draw_text(main_game_window, 'Pause. Press <Enter> To Continue', 30, constants.WHITE_COLOR_TITLE_BLOCKS,
-                     constants.GAME_WINDOW_WIDTH // 2, constants.GAME_WINDOW_HEIGHT // 2)
+                     constants.GAME_WINDOW_WIDTH // 2, constants.GAME_WINDOW_HEIGHT // 4)
 
+    items = ['Загрузить', 'Выход']
+    handlers = ['show_game_loads()', 'exit(0)']
+
+    def set_color_active_menu_item(index_active_menu_item, color, font_size):
+        filename_to_highlight = items[index_active_menu_item]
+        menu_items[filename_to_highlight] = [color, font_size]
+
+    menu_background = pygame.image.load(
+        f'resources/images/backgrounds/background_{constants.GAME_WINDOW_WIDTH}_{constants.GAME_WINDOW_HEIGHT}.jpg'
+    )
+
+    menu_items = {}
+    for save_file_name in items:
+        menu_items[save_file_name] = [constants.WHITE_COLOR_TITLE_BLOCKS, 50]
+    menu_items[items[0]] = [constants.DARK_ORANGE_HIGHLIGHTED_MENU_ITEM, 80]
+
+    amount_files = len(items)
+    index_selected_menu_item = 0
+
+    is_menu_show = True
     clock = pygame.time.Clock()
-    is_pause_over = False
-    while not is_pause_over:
+    while is_menu_show:
+        x_to_paste_menu_item = constants.GAME_WINDOW_HEIGHT // 3
+        for menu_item, color_and_size in menu_items.items():
+            Drawer.draw_text(main_game_window, menu_item, color_and_size[1], color_and_size[0],
+                             constants.GAME_WINDOW_WIDTH // 2, x_to_paste_menu_item)
+            x_to_paste_menu_item += constants.GAME_WINDOW_HEIGHT // 15
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
             if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_DOWN or event.key == pygame.K_s:
+                    index_previous_selected_item = index_selected_menu_item
+                    index_selected_menu_item += 1
+                    if index_selected_menu_item > amount_files - 1:
+                        index_selected_menu_item = 0
+                        index_previous_selected_item = amount_files - 1
+                    set_color_active_menu_item(index_previous_selected_item,
+                                               constants.WHITE_COLOR_TITLE_BLOCKS, 50)
+                    set_color_active_menu_item(index_selected_menu_item,
+                                               constants.DARK_ORANGE_HIGHLIGHTED_MENU_ITEM, 80)
+                if event.key == pygame.K_UP or event.key == pygame.K_w:
+                    index_previous_selected_item = index_selected_menu_item
+                    index_selected_menu_item -= 1
+                    if index_selected_menu_item < 0:
+                        index_selected_menu_item = amount_files - 1
+                    set_color_active_menu_item(index_previous_selected_item,
+                                               constants.WHITE_COLOR_TITLE_BLOCKS, 50)
+                    set_color_active_menu_item(index_selected_menu_item,
+                                               constants.DARK_ORANGE_HIGHLIGHTED_MENU_ITEM, 80)
                 if event.key == pygame.K_RETURN:
-                    is_pause_over = True
-                if event.key == pygame.K_ESCAPE:
-                    pygame.quit()
-                    sys.exit()
-
-        pygame.display.update()
+                    eval(handlers[index_selected_menu_item])
+        pygame.display.flip()
+        main_game_window.blit(menu_background, (0, 0))
         clock.tick(constants.FPS_LOCKING)
 
 
@@ -351,23 +391,65 @@ def show_start_menu():
 
 
 def game_over():
+    items = ['Последнее сохранение', 'Загрузить', 'Выйти']
+    handlers = ['load_game()', 'show_game_loads()', 'exit(0)']
     Drawer.draw_text(main_game_window, 'You died. Press <Enter> To Restart Or <Escape> To Exit', 30,
                      constants.WHITE_COLOR_TITLE_BLOCKS,
-                     constants.GAME_WINDOW_WIDTH // 2, constants.GAME_WINDOW_HEIGHT // 2)
+                     constants.GAME_WINDOW_WIDTH // 2, constants.GAME_WINDOW_HEIGHT // 4)
 
+    def set_color_active_menu_item(index_active_menu_item, color, font_size):
+        filename_to_highlight = items[index_active_menu_item]
+        menu_items[filename_to_highlight] = [color, font_size]
+
+    menu_background = pygame.image.load(
+        f'resources/images/backgrounds/background_{constants.GAME_WINDOW_WIDTH}_{constants.GAME_WINDOW_HEIGHT}.jpg'
+    )
+
+    menu_items = {}
+    for save_file_name in items:
+        menu_items[save_file_name] = [constants.WHITE_COLOR_TITLE_BLOCKS, 50]
+    menu_items[items[0]] = [constants.DARK_ORANGE_HIGHLIGHTED_MENU_ITEM, 80]
+
+    amount_files = len(items)
+    index_selected_menu_item = 0
+
+    is_menu_show = True
     clock = pygame.time.Clock()
-    while True:
+    while is_menu_show:
+        x_to_paste_menu_item = constants.GAME_WINDOW_HEIGHT // 3
+        for menu_item, color_and_size in menu_items.items():
+            Drawer.draw_text(main_game_window, menu_item, color_and_size[1], color_and_size[0],
+                             constants.GAME_WINDOW_WIDTH // 2, x_to_paste_menu_item)
+            x_to_paste_menu_item += constants.GAME_WINDOW_HEIGHT // 15
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
             if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_DOWN or event.key == pygame.K_s:
+                    index_previous_selected_item = index_selected_menu_item
+                    index_selected_menu_item += 1
+                    if index_selected_menu_item > amount_files - 1:
+                        index_selected_menu_item = 0
+                        index_previous_selected_item = amount_files - 1
+                    set_color_active_menu_item(index_previous_selected_item,
+                                               constants.WHITE_COLOR_TITLE_BLOCKS, 50)
+                    set_color_active_menu_item(index_selected_menu_item,
+                                               constants.DARK_ORANGE_HIGHLIGHTED_MENU_ITEM, 80)
+                if event.key == pygame.K_UP or event.key == pygame.K_w:
+                    index_previous_selected_item = index_selected_menu_item
+                    index_selected_menu_item -= 1
+                    if index_selected_menu_item < 0:
+                        index_selected_menu_item = amount_files - 1
+                    set_color_active_menu_item(index_previous_selected_item,
+                                               constants.WHITE_COLOR_TITLE_BLOCKS, 50)
+                    set_color_active_menu_item(index_selected_menu_item,
+                                               constants.DARK_ORANGE_HIGHLIGHTED_MENU_ITEM, 80)
                 if event.key == pygame.K_RETURN:
-                    return True
-                if event.key == pygame.K_ESCAPE:
-                    return False
-
-        pygame.display.update()
+                    eval(handlers[index_selected_menu_item])
+        pygame.display.flip()
+        main_game_window.blit(menu_background, (0, 0))
         clock.tick(constants.FPS_LOCKING)
 
 
@@ -393,7 +475,7 @@ def show_game_loads():
     if not savings:
         run_game()
 
-    def set_color_active_menu_item(savings_file_name, index_active_menu_item, color, font_size):
+    def set_color_active_menu_item(index_active_menu_item, color, font_size):
         filename_to_highlight = savings[index_active_menu_item]
         menu_items[filename_to_highlight] = [color, font_size]
 
@@ -435,19 +517,19 @@ def show_game_loads():
                     if index_selected_menu_item > amount_files-1:
                         index_selected_menu_item = 0
                         index_previous_selected_item = amount_files-1
-                    set_color_active_menu_item(savings, index_previous_selected_item, constants.WHITE_COLOR_TITLE_BLOCKS, 50)
-                    set_color_active_menu_item(savings,index_selected_menu_item, constants.DARK_ORANGE_HIGHLIGHTED_MENU_ITEM, 80)
+                    set_color_active_menu_item(index_previous_selected_item, constants.WHITE_COLOR_TITLE_BLOCKS, 50)
+                    set_color_active_menu_item(index_selected_menu_item, constants.DARK_ORANGE_HIGHLIGHTED_MENU_ITEM, 80)
                 if event.key == pygame.K_UP or event.key == pygame.K_w:
                     index_previous_selected_item = index_selected_menu_item
                     index_selected_menu_item -= 1
                     if index_selected_menu_item < 0:
                         index_selected_menu_item = amount_files-1
-                    set_color_active_menu_item(savings, index_previous_selected_item, constants.WHITE_COLOR_TITLE_BLOCKS, 50)
-                    set_color_active_menu_item(savings, index_selected_menu_item, constants.DARK_ORANGE_HIGHLIGHTED_MENU_ITEM, 80)
+                    set_color_active_menu_item(index_previous_selected_item, constants.WHITE_COLOR_TITLE_BLOCKS, 50)
+                    set_color_active_menu_item(index_selected_menu_item, constants.DARK_ORANGE_HIGHLIGHTED_MENU_ITEM, 80)
                 if event.key == pygame.K_RETURN:
                     load_game(savings[index_selected_menu_item])
 
-        pygame.display.update()
+        pygame.display.flip()
         main_game_window.blit(menu_background, (0, 0))
         clock.tick(constants.FPS_LOCKING)
 
