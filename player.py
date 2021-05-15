@@ -18,6 +18,7 @@ import constants
 import fireball
 import inventory
 import bar
+import lighting
 
 
 class Player(pygame.sprite.Sprite):
@@ -70,11 +71,11 @@ class Player(pygame.sprite.Sprite):
         self.__speed_y = 0
 
         self.__max_stamina = 100
-        self.__max_mana = 1000
+        self.__max_mana = 100
         if saved_params is None:
             self.__level = 1
             self.__current_experience = 0
-            self.__current_health = 100
+            self.__current_health = 100000
             self.__current_stamina = self.__max_stamina
             self.__current_mana = self.__max_mana
         else:
@@ -86,9 +87,9 @@ class Player(pygame.sprite.Sprite):
 
         self.__experience_to_up_level = 1000 * pow(1.1, self.__level)
 
-        self.__max_health = 100
+        self.__max_health = 100000
 
-        self.__passive_amount_regeneration = 0.3
+        self.__passive_amount_regeneration = 0.1
 
         self.__amount_damage = random.randint(140, 200)
 
@@ -104,8 +105,9 @@ class Player(pygame.sprite.Sprite):
                                   constants.GAME_WINDOW_HEIGHT - 96,
                                   game_enums.PlayerBarTypes.MANA.value)
 
+        self.__selected_weapon = 0
+
     def update(self, surface):
-        print(self.__experience_to_up_level)
         self.__draw(surface)
         self.__move()
         self.regeneration()
@@ -161,11 +163,31 @@ class Player(pygame.sprite.Sprite):
 
     def attack(self):
         if self.__current_mana > 0:
-            shell = fireball.Fireball(self.__rect.centerx, self.__rect.centery,
-                                      (float(pygame.mouse.get_pos()[0] - self.__rect.centerx),
-                                       float(pygame.mouse.get_pos()[1] - self.__rect.centery)))
-            self.__current_mana -= 4
-            return shell
+            if self.__selected_weapon == 0:
+                shell = fireball.Fireball(self.__rect.centerx, self.__rect.centery,
+                                          (float(pygame.mouse.get_pos()[0] - self.__rect.centerx),
+                                           float(pygame.mouse.get_pos()[1] - self.__rect.centery)))
+                self.__current_mana -= 4
+                return [shell]
+            else:
+                shell_1 = lighting.Lighting(self.__rect.centerx, self.__rect.centery,
+                                          (float(pygame.mouse.get_pos()[0] - self.__rect.centerx),
+                                           float(pygame.mouse.get_pos()[1] - self.__rect.centery)))
+                shell_2 = lighting.Lighting(self.__rect.centerx, self.__rect.centery,
+                                            (float(pygame.mouse.get_pos()[0]-50 - self.__rect.centerx),
+                                             float(pygame.mouse.get_pos()[1]-50 - self.__rect.centery)))
+                shell_3 = lighting.Lighting(self.__rect.centerx, self.__rect.centery,
+                                            (float(pygame.mouse.get_pos()[0]-50 - self.__rect.centerx),
+                                             float(pygame.mouse.get_pos()[1]+50 - self.__rect.centery)))
+                shell_4 = lighting.Lighting(self.__rect.centerx, self.__rect.centery,
+                                            (float(pygame.mouse.get_pos()[0]+50 - self.__rect.centerx),
+                                             float(pygame.mouse.get_pos()[1]-50 - self.__rect.centery)))
+                shell_5 = lighting.Lighting(self.__rect.centerx, self.__rect.centery,
+                                            (float(pygame.mouse.get_pos()[0]+50 - self.__rect.centerx),
+                                             float(pygame.mouse.get_pos()[1]+50 - self.__rect.centery)))
+                self.__current_mana -= 20
+                return [shell_1, shell_2, shell_3, shell_4, shell_5]
+        return []
 
     def regeneration(self, potion=None):
         if potion is None:
@@ -194,6 +216,11 @@ class Player(pygame.sprite.Sprite):
 
     def is_key_in_inventory(self):
         return self.__inventory.get_key_for_chest()
+
+    def change_weapon(self):
+        self.__selected_weapon += 1
+        if self.__selected_weapon > 1:
+            self.__selected_weapon = 0
 
     @property
     def params_for_saving(self):

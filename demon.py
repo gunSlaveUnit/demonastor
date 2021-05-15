@@ -90,10 +90,9 @@ class Demon(pygame.sprite.Sprite):
         distance_reaction = random.randint(100, 170)
         dx = float(current_x_player - self.__rect.centerx)
         dy = float(current_y_player - self.__rect.centery)
-        if dx == 0 and dy == 0:
+        length = math.sqrt(dx**2 + dy**2)
+        if int(length) == 0:
             length = 1
-        else:
-            length = math.sqrt(dx**2 + dy**2)
         if length <= distance_reaction or self.__is_angry:
             self.show_aggression_to_attack_player(dx, dy, length)
         else:

@@ -28,10 +28,10 @@ class Fireball(pygame.sprite.Sprite):
         __length = math.sqrt(shooting_direction[0] ** 2 + shooting_direction[1] ** 2)
         self.__direction = (shooting_direction[0] / __length, shooting_direction[1] / __length)
 
-        self.__speed_x = random.randint(3, 10)
-        self.__speed_y = random.randint(3, 10)
+        self.__speed_x = random.randint(5, 10)
+        self.__speed_y = random.randint(5, 10)
 
-        self.__amount_damage = random.randint(140, 250)
+        self.__amount_damage = random.randint(1, 5)
 
     def update(self, surface):
         self.__draw(surface)
@@ -43,11 +43,11 @@ class Fireball(pygame.sprite.Sprite):
         surface.blit(self.__image, (self.__rect.centerx, self.__rect.centery))
 
     def __move(self):
-        self._speed_x = random.randint(3, 10)
-        self._speed_y = random.randint(3, 10)
+        self._speed_x = random.randint(5, 10)
+        self._speed_y = random.randint(5, 10)
 
-        self.__rect.centerx += self.__direction[0] * random.randint(1, 5)
-        self.__rect.centery += self.__direction[1] * random.randint(1, 5)
+        self.__rect.centerx += self.__direction[0] * self.__speed_x
+        self.__rect.centery += self.__direction[1] * self.__speed_x
 
         if self.__rect.bottom < 0 or \
                 self.__rect.left < 0 or \

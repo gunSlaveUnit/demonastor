@@ -148,10 +148,12 @@ def run_game(data_for_loading=None):
                 if event.key == pygame.K_F9:
                     load_game()
                 if event.key == pygame.K_SPACE:
-                    shell = player.attack()
-                    shells_player.append(shell)
+                    shells = player.attack()
+                    shells_player.extend(shells)
                 if event.key == pygame.K_i:
                     player.show_inventory(main_game_window)
+                if event.key == pygame.K_c:
+                    player.change_weapon()
 
         main_game_window.fill(int())
 
@@ -223,7 +225,8 @@ def run_game(data_for_loading=None):
                         if enemy.current_amount_health < 0:
                             player.current_experience += enemy.experience_for_killing
 
-                            enemies.remove(enemy)
+                            if enemy in enemies:
+                                enemies.remove(enemy)
                             text = None
                             test_cur = None
                             test_max = None
@@ -241,12 +244,12 @@ def run_game(data_for_loading=None):
         Drawer.draw_text(main_game_window, player.name, 15, constants.WHITE_COLOR_TITLE_BLOCKS,
                   player.rect.centerx,
                   player.rect.centery + player.rect.height // 2 + 5)
-        Drawer.draw_bar(main_game_window, constants.GAME_WINDOW_WIDTH // 2, constants.GAME_WINDOW_HEIGHT // 2 + 220,
+        Drawer.draw_bar(main_game_window, constants.GAME_WINDOW_WIDTH // 2, constants.GAME_WINDOW_HEIGHT*0.92,
                  constants.WHITE_COLOR_TITLE_BLOCKS,
-                 player.current_experience, player.experience_to_up_level, 204, 5, True)
-        Drawer.draw_bar(main_game_window, constants.GAME_WINDOW_WIDTH // 2 - 52, constants.GAME_WINDOW_HEIGHT - 70,
+                 player.current_experience, player.experience_to_up_level, constants.GAME_WINDOW_WIDTH//3, 5, True)
+        Drawer.draw_bar(main_game_window, constants.GAME_WINDOW_WIDTH // 2 - 200, constants.GAME_WINDOW_HEIGHT - 70,
                  constants.STAMINA_BAR_COLOR, player.current_stamina,
-                 player.max_stamina, 50, 10, True)
+                 player.max_stamina, constants.GAME_WINDOW_WIDTH//22, 14, True)
 
         pygame.display.flip()  # for double buffering
         clock.tick(constants.FPS_LOCKING)
@@ -311,13 +314,14 @@ def show_pause_menu():
                                                constants.DARK_ORANGE_HIGHLIGHTED_MENU_ITEM, 80)
                 if event.key == pygame.K_RETURN:
                     eval(handlers[index_selected_menu_item])
+                if event.key == pygame.K_ESCAPE:
+                    is_menu_show = False
         pygame.display.flip()
         main_game_window.blit(menu_background, (0, 0))
         clock.tick(constants.FPS_LOCKING)
 
 
 def show_start_menu():
-    print("In show start menu")
     # TODO: add mouse menu control
     def set_color_active_menu_item(index_active_menu_item, color, font_size):
         if index_active_menu_item == 0:
