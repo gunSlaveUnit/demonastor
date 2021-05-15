@@ -75,7 +75,7 @@ class Player(pygame.sprite.Sprite):
         if saved_params is None:
             self.__level = 1
             self.__current_experience = 0
-            self.__current_health = 100000
+            self.__current_health = 100
             self.__current_stamina = self.__max_stamina
             self.__current_mana = self.__max_mana
         else:
@@ -87,7 +87,7 @@ class Player(pygame.sprite.Sprite):
 
         self.__experience_to_up_level = 1000 * pow(1.1, self.__level)
 
-        self.__max_health = 100000
+        self.__max_health = 100
 
         self.__passive_amount_regeneration = 0.1
 

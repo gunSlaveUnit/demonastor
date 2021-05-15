@@ -25,6 +25,8 @@ In this file the program is started
 # New opponents
 # Skills
 
+#TODO: we need to get camera offset just only once, not so much
+
 import sys
 import random
 import math
@@ -43,6 +45,7 @@ from chest import Chest
 from key import Key
 from tree import Tree
 from drawer import Drawer
+from waterfall import Waterfall
 
 
 def run_game(data_for_loading=None):
@@ -58,6 +61,8 @@ def run_game(data_for_loading=None):
     else:
         player = Player(constants.GAME_WINDOW_WIDTH // 2,
                         constants.GAME_WINDOW_HEIGHT // 2)
+
+    waterfall = Waterfall(100, 100)
 
     chests = [Chest(random.randint(-constants.GAME_WINDOW_WIDTH, constants.GAME_WINDOW_WIDTH),
                     random.randint(-constants.GAME_WINDOW_HEIGHT, constants.GAME_WINDOW_HEIGHT),
@@ -99,7 +104,11 @@ def run_game(data_for_loading=None):
                     random.randint(-constants.GAME_WINDOW_HEIGHT, constants.GAME_WINDOW_HEIGHT),
                     is_chest_need_key=True)]
 
-    tree = Tree(200, 200)
+    trees = []
+    for _ in range(0, 5):
+        tree = Tree(random.randint(-constants.GAME_WINDOW_WIDTH, constants.GAME_WINDOW_WIDTH),
+                    random.randint(-constants.GAME_WINDOW_HEIGHT, constants.GAME_WINDOW_HEIGHT))
+        trees.append(tree)
 
     camera = Camera((constants.GAME_WINDOW_WIDTH, constants.GAME_WINDOW_HEIGHT))
 
@@ -111,7 +120,7 @@ def run_game(data_for_loading=None):
 
     shells_player = []
     min_enemies_amount = 40
-    max_enemies_amount = 200
+    max_enemies_amount = 50
     enemies = create_enemies(min_enemies_amount, max_enemies_amount, player.level)
 
     text = None
@@ -185,10 +194,16 @@ def run_game(data_for_loading=None):
                 player.append_thing_to_inventory(potion)
                 things.remove(potion)
 
-        tree.update(main_game_window)
+        waterfall.update(main_game_window)
         offset = camera.get_offset()
-        tree.rect.centerx -= offset[0]
-        tree.rect.centery -= offset[1]
+        waterfall.rect.centerx -= offset[0]
+        waterfall.rect.centery -= offset[1]
+
+        for tree in trees:
+            tree.update(main_game_window)
+            offset = camera.get_offset()
+            tree.rect.centerx -= offset[0]
+            tree.rect.centery -= offset[1]
 
         for shell in shells_player:
             if shell:
