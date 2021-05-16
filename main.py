@@ -576,7 +576,7 @@ main_game_window = pygame.display.set_mode((constants.GAME_WINDOW_WIDTH,
 def main():
     pygame.init()
 
-    # pygame.display.toggle_fullscreen()
+    pygame.display.toggle_fullscreen()
 
     global main_game_window
 
