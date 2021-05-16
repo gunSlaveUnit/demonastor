@@ -46,6 +46,7 @@ from key import Key
 from tree import Tree
 from drawer import Drawer
 from waterfall import Waterfall
+from neutral import Neutral
 
 
 def run_game(data_for_loading=None):
@@ -63,6 +64,8 @@ def run_game(data_for_loading=None):
                         constants.GAME_WINDOW_HEIGHT // 2)
 
     waterfall = Waterfall(100, 100)
+
+    neutrals = [Neutral(100, 100)]
 
     chests = [Chest(random.randint(-constants.GAME_WINDOW_WIDTH, constants.GAME_WINDOW_WIDTH),
                     random.randint(-constants.GAME_WINDOW_HEIGHT, constants.GAME_WINDOW_HEIGHT),
@@ -198,6 +201,10 @@ def run_game(data_for_loading=None):
         offset = camera.get_offset()
         waterfall.rect.centerx -= offset[0]
         waterfall.rect.centery -= offset[1]
+        for neutral in neutrals:
+            neutral.update(main_game_window)
+            neutral.rect.centerx -= offset[0]
+            neutral.rect.centery -= offset[1]
 
         for tree in trees:
             tree.update(main_game_window)
