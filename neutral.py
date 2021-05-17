@@ -3,6 +3,8 @@ import random
 import pygame.sprite
 
 import constants
+import quest
+import quest_mark
 
 
 class Neutral(pygame.sprite.Sprite):
@@ -49,9 +51,19 @@ class Neutral(pygame.sprite.Sprite):
         self.__speed_x = 0
         self.__speed_y = 0
 
+        self.__is_has_quest = True
+        if self.__is_has_quest:
+            self.__quests = [quest.Quest()]
+            self.__quest_mark = quest_mark.QuestMark(self.__rect.centerx, self.__rect.top - 10)
+
     def update(self, surface):
         self.__draw(surface)
         self.__move()
+
+        self.__quest_mark.rect.centerx = self.__rect.centerx
+        self.__quest_mark.rect.centery = self.__rect.top - 10
+        if self.__quests:
+            self.__quest_mark.update(surface)
 
     def __draw(self, surface):
         multiplier_change_animation_speed = 15
@@ -92,3 +104,11 @@ class Neutral(pygame.sprite.Sprite):
     @rect.setter
     def rect(self, new_value):
         self.__rect = new_value
+
+    @property
+    def quest(self):
+        if self.__quests:
+            return self.__quests.pop(0)
+
+    def quest_mark(self):
+        return self.__quest_mark

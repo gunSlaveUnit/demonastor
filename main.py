@@ -64,7 +64,7 @@ def run_game(data_for_loading=None):
                         constants.GAME_WINDOW_HEIGHT // 2)
 
     waterfall = Waterfall(100, 100)
-
+    quests = []
     neutrals = [Neutral(100, 100)]
 
     chests = [Chest(random.randint(-constants.GAME_WINDOW_WIDTH, constants.GAME_WINDOW_WIDTH),
@@ -124,6 +124,7 @@ def run_game(data_for_loading=None):
     shells_player = []
     min_enemies_amount = 40
     max_enemies_amount = 50
+    # enemies = create_enemies(min_enemies_amount, max_enemies_amount, player.level)
     enemies = create_enemies(min_enemies_amount, max_enemies_amount, player.level)
 
     text = None
@@ -196,6 +197,10 @@ def run_game(data_for_loading=None):
             if pygame.sprite.collide_rect(player, potion) and pygame.key.get_pressed()[pygame.K_e]:
                 player.append_thing_to_inventory(potion)
                 things.remove(potion)
+
+        for neutral in neutrals:
+            if pygame.sprite.collide_rect(player, neutral) and pygame.key.get_pressed()[pygame.K_e]:
+                quests.append(neutral.quest)
 
         waterfall.update(main_game_window)
         offset = camera.get_offset()
@@ -583,7 +588,7 @@ main_game_window = pygame.display.set_mode((constants.GAME_WINDOW_WIDTH,
 def main():
     pygame.init()
 
-    pygame.display.toggle_fullscreen()
+    # pygame.display.toggle_fullscreen()
 
     global main_game_window
 

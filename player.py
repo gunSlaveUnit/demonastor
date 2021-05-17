@@ -117,6 +117,7 @@ class Player(pygame.sprite.Sprite):
 
         if self.__current_experience >= self.__experience_to_up_level:
             self.__level += 1
+            constants.player_level = self.__level
             self.__current_experience = self.__current_experience - self.__experience_to_up_level
 
     def __draw(self, surface):
