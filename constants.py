@@ -11,8 +11,6 @@ The file contains constants for the main program settings, windows, various name
 
 import os
 
-player_level = 1
-
 GAME_WINDOW_WIDTH = 800
 GAME_WINDOW_HEIGHT = 600
 GAME_WINDOW_TITLE = 'DEMONASTOR'

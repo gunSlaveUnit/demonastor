@@ -2,11 +2,11 @@ import random
 
 import constants
 import demon
-import player
 
 
 class Quest:
-    def __init__(self, quest_objects=None, location_border=None):
+    def __init__(self, player_level, quest_objects=None, location_border=None):
+        self.__player_level = player_level
         if quest_objects is None:
             self.__condition = self.__create_quest_objects()
         else:
@@ -21,11 +21,25 @@ class Quest:
         else:
             self.__border = location_border
         self.__completed = False
+        self.__experience_for_ending = 200
+
+        self.__title = 'Beginning Of Killing'
 
     def __create_quest_objects(self):
         return [
-            demon.Demon
+            demon.Demon(random.randint(0, constants.GAME_WINDOW_WIDTH), random.randint(0, constants.GAME_WINDOW_HEIGHT),
+                        self.__player_level),
+            demon.Demon(random.randint(0, constants.GAME_WINDOW_WIDTH), random.randint(0, constants.GAME_WINDOW_HEIGHT),
+                        self.__player_level)
         ]
+
+    @property
+    def condition(self):
+        return self.__condition
+
+    @property
+    def title(self):
+        return self.__title
 
     @property
     def completed(self):

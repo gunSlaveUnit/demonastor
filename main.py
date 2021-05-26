@@ -65,7 +65,8 @@ def run_game(data_for_loading=None):
 
     waterfall = Waterfall(100, 100)
     quests = []
-    neutrals = [Neutral(100, 100)]
+    names_done_quests = []
+    neutrals = [Neutral(100, 100, player.level)]
 
     chests = [Chest(random.randint(-constants.GAME_WINDOW_WIDTH, constants.GAME_WINDOW_WIDTH),
                     random.randint(-constants.GAME_WINDOW_HEIGHT, constants.GAME_WINDOW_HEIGHT),
@@ -125,7 +126,7 @@ def run_game(data_for_loading=None):
     min_enemies_amount = 40
     max_enemies_amount = 50
     # enemies = create_enemies(min_enemies_amount, max_enemies_amount, player.level)
-    enemies = create_enemies(min_enemies_amount, max_enemies_amount, player.level)
+    enemies = neutrals[0].quest.condition
 
     text = None
     test_cur = None
@@ -201,6 +202,7 @@ def run_game(data_for_loading=None):
         for neutral in neutrals:
             if pygame.sprite.collide_rect(player, neutral) and pygame.key.get_pressed()[pygame.K_e]:
                 quests.append(neutral.quest)
+                neutral.vision_quest_mark = False
 
         waterfall.update(main_game_window)
         offset = camera.get_offset()
@@ -261,22 +263,29 @@ def run_game(data_for_loading=None):
         camera.update(player)
         player.update(main_game_window)
 
+        for quest in quests:
+            if not enemies:
+                quest.completed = True
+                if quest.title not in names_done_quests:
+                    names_done_quests.append(quest.title)
+                quests.remove(quest)
+
         if text is not None:
             Drawer.draw_bar(main_game_window, constants.GAME_WINDOW_WIDTH // 2, 10,
-                     constants.UNNAMED_COLOR_HEALTH_BAR,
-                     test_cur, test_max, 150, 15)
+                            constants.UNNAMED_COLOR_HEALTH_BAR,
+                            test_cur, test_max, 150, 15)
             Drawer.draw_text(main_game_window, text, 25, constants.WHITE_COLOR_TITLE_BLOCKS, constants.GAME_WINDOW_WIDTH // 2,
-                      9)
+                             9)
 
         Drawer.draw_text(main_game_window, player.name, 15, constants.WHITE_COLOR_TITLE_BLOCKS,
-                  player.rect.centerx,
-                  player.rect.centery + player.rect.height // 2 + 5)
+                        player.rect.centerx,
+                        player.rect.centery + player.rect.height // 2 + 5)
         Drawer.draw_bar(main_game_window, constants.GAME_WINDOW_WIDTH // 2, constants.GAME_WINDOW_HEIGHT*0.92,
-                 constants.WHITE_COLOR_TITLE_BLOCKS,
-                 player.current_experience, player.experience_to_up_level, constants.GAME_WINDOW_WIDTH//3, 5, True)
+                        constants.WHITE_COLOR_TITLE_BLOCKS,
+                        player.current_experience, player.experience_to_up_level, constants.GAME_WINDOW_WIDTH//3, 5, True)
         Drawer.draw_bar(main_game_window, constants.GAME_WINDOW_WIDTH // 2 - 200, constants.GAME_WINDOW_HEIGHT - 70,
-                 constants.STAMINA_BAR_COLOR, player.current_stamina,
-                 player.max_stamina, constants.GAME_WINDOW_WIDTH//22, 14, True)
+                        constants.STAMINA_BAR_COLOR, player.current_stamina,
+                        player.max_stamina, constants.GAME_WINDOW_WIDTH//22, 14, True)
 
         pygame.display.flip()  # for double buffering
         clock.tick(constants.FPS_LOCKING)

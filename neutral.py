@@ -10,7 +10,7 @@ import quest_mark
 class Neutral(pygame.sprite.Sprite):
     __DIRECTIONS_MOVING = {'LEFT': 0, 'RIGHT': 1, 'UP': 2, 'DOWN': 3}
 
-    def __init__(self, init_center_x, init_center_y):
+    def __init__(self, init_center_x, init_center_y, player_level):
         super().__init__()
         self.__image = pygame.image.load('resources/images/characters/neutral_down_0.png').convert()
         self.__rect = self.rect = self.__image.get_rect()
@@ -47,14 +47,18 @@ class Neutral(pygame.sprite.Sprite):
         self.__current_number_image_in_animation = 0
         self.__current_direction_moving = self.__DIRECTIONS_MOVING['DOWN']
 
+        self.__player_level = player_level
+
         self.__speed_changing = 1
         self.__speed_x = 0
         self.__speed_y = 0
 
         self.__is_has_quest = True
+        self.__vision_quest_mark = True
         if self.__is_has_quest:
-            self.__quests = [quest.Quest()]
+            self.__quest = quest.Quest(self.__player_level)
             self.__quest_mark = quest_mark.QuestMark(self.__rect.centerx, self.__rect.top - 10)
+            print(self.__quest_mark)
 
     def update(self, surface):
         self.__draw(surface)
@@ -62,7 +66,7 @@ class Neutral(pygame.sprite.Sprite):
 
         self.__quest_mark.rect.centerx = self.__rect.centerx
         self.__quest_mark.rect.centery = self.__rect.top - 10
-        if self.__quests:
+        if self.__quest and self.__vision_quest_mark:
             self.__quest_mark.update(surface)
 
     def __draw(self, surface):
@@ -107,8 +111,17 @@ class Neutral(pygame.sprite.Sprite):
 
     @property
     def quest(self):
-        if self.__quests:
-            return self.__quests.pop(0)
+        if self.__quest:
+            return self.__quest
 
+    @property
     def quest_mark(self):
         return self.__quest_mark
+
+    @property
+    def vision_quest_mark(self):
+        return self.__vision_quest_mark
+
+    @vision_quest_mark.setter
+    def vision_quest_mark(self, new_value):
+        self.__vision_quest_mark = new_value
