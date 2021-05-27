@@ -266,6 +266,7 @@ def run_game(data_for_loading=None):
         for quest in quests:
             if not enemies:
                 quest.completed = True
+                player.current_experience += quest.experience
                 if quest.title not in names_done_quests:
                     names_done_quests.append(quest.title)
                 quests.remove(quest)

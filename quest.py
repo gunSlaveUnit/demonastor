@@ -38,6 +38,10 @@ class Quest:
         return self.__condition
 
     @property
+    def experience(self):
+        return self.__experience_for_ending
+
+    @property
     def title(self):
         return self.__title
 
