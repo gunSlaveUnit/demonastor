@@ -26,6 +26,8 @@ class Fireball(pygame.sprite.Sprite):
         self.__rect.centery = init_center_y
 
         __length = math.sqrt(shooting_direction[0] ** 2 + shooting_direction[1] ** 2)
+        if __length == 0:
+            __length = 1
         self.__direction = (shooting_direction[0] / __length, shooting_direction[1] / __length)
 
         self.__speed_x = random.randint(5, 10)
