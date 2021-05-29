@@ -53,9 +53,6 @@ def run_game(data_for_loading=None):
     global main_game_window
     game_map = map.Map()
     if data_for_loading:
-        print(data_for_loading)
-        for key in data_for_loading.keys():
-            print(key)
         player = Player(constants.GAME_WINDOW_WIDTH // 2,
                         constants.GAME_WINDOW_HEIGHT // 2,
                         data_for_loading)
@@ -279,14 +276,14 @@ def run_game(data_for_loading=None):
                              9)
 
         Drawer.draw_text(main_game_window, player.name, 15, constants.WHITE_COLOR_TITLE_BLOCKS,
-                        player.rect.centerx,
-                        player.rect.centery + player.rect.height // 2 + 5)
-        Drawer.draw_bar(main_game_window, constants.GAME_WINDOW_WIDTH // 2, constants.GAME_WINDOW_HEIGHT*0.92,
+                         player.rect.centerx,
+                         player.rect.centery + player.rect.height // 2 + 5)
+        Drawer.draw_bar(main_game_window, constants.GAME_WINDOW_WIDTH // 2, constants.GAME_WINDOW_HEIGHT*0.86,
                         constants.WHITE_COLOR_TITLE_BLOCKS,
-                        player.current_experience, player.experience_to_up_level, constants.GAME_WINDOW_WIDTH//3, 5, True)
-        Drawer.draw_bar(main_game_window, constants.GAME_WINDOW_WIDTH // 2 - 200, constants.GAME_WINDOW_HEIGHT - 70,
+                        player.current_experience, player.experience_to_up_level, 310, 5, True)
+        Drawer.draw_bar(main_game_window, constants.GAME_WINDOW_WIDTH // 2 - 70, constants.GAME_WINDOW_HEIGHT - 70,
                         constants.STAMINA_BAR_COLOR, player.current_stamina,
-                        player.max_stamina, constants.GAME_WINDOW_WIDTH//22, 14, True)
+                        player.max_stamina, 90, 14, True)
 
         pygame.display.flip()  # for double buffering
         clock.tick(constants.FPS_LOCKING)

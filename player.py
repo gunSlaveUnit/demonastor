@@ -97,11 +97,11 @@ class Player(pygame.sprite.Sprite):
 
         self.__active_effects = []
 
-        self.__health_bar = bar.Bar(constants.GAME_WINDOW_WIDTH//2-constants.GAME_WINDOW_WIDTH//4,
+        self.__health_bar = bar.Bar(constants.GAME_WINDOW_WIDTH//2-250,
                                     constants.GAME_WINDOW_HEIGHT - 96,
                                     game_enums.PlayerBarTypes.HEALTH.value)
 
-        self.__mana_bar = bar.Bar(constants.GAME_WINDOW_WIDTH * 0.75-96,
+        self.__mana_bar = bar.Bar(constants.GAME_WINDOW_WIDTH//2+155,
                                   constants.GAME_WINDOW_HEIGHT - 96,
                                   game_enums.PlayerBarTypes.MANA.value)
 
