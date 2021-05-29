@@ -584,11 +584,15 @@ def save_game(objects_for_saving):
 
 def load_game(file_name_for_loading=None):
     objects = []
-    filename = os.path.join(constants.DIRECTORY_WITH_SAVINGS, os.listdir(constants.DIRECTORY_WITH_SAVINGS)[-1]) if file_name_for_loading is None \
-        else os.path.join(constants.DIRECTORY_WITH_SAVINGS, file_name_for_loading)
-    with open(filename, 'rb') as load_file:
-        data = pickle.load(load_file)
-        run_game(data)
+    saves = os.listdir(constants.DIRECTORY_WITH_SAVINGS)
+    if not saves:
+        run_game()
+    else:
+        filename = os.path.join(constants.DIRECTORY_WITH_SAVINGS, os.listdir(constants.DIRECTORY_WITH_SAVINGS)[-1]) if file_name_for_loading is None \
+            else os.path.join(constants.DIRECTORY_WITH_SAVINGS, file_name_for_loading)
+        with open(filename, 'rb') as load_file:
+            data = pickle.load(load_file)
+            run_game(data)
 
 
 main_game_window = pygame.display.set_mode((constants.GAME_WINDOW_WIDTH,
