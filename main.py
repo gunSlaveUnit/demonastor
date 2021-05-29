@@ -60,7 +60,6 @@ def run_game(data_for_loading=None):
         player = Player(constants.GAME_WINDOW_WIDTH // 2,
                         constants.GAME_WINDOW_HEIGHT // 2)
 
-    waterfall = Waterfall(100, 100)
     quests = []
     names_done_quests = []
     neutrals = [Neutral(100, 100, player.level)]
@@ -201,10 +200,7 @@ def run_game(data_for_loading=None):
                 quests.append(neutral.quest)
                 neutral.vision_quest_mark = False
 
-        waterfall.update(main_game_window)
         offset = camera.get_offset()
-        waterfall.rect.centerx -= offset[0]
-        waterfall.rect.centery -= offset[1]
         for neutral in neutrals:
             neutral.update(main_game_window)
             neutral.rect.centerx -= offset[0]
