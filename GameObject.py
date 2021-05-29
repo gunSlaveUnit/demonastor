@@ -83,32 +83,3 @@ class GameObject(Sprite):
     @property
     def rect(self):
         return self._rect
-
-
-if __name__ == '__main__':
-    go = GameObject(100, 100, [
-        [
-            'resources/images/player/player_left_moving_0.png',
-            'resources/images/player/player_left_moving_1.png',
-            'resources/images/player/player_left_moving_2.png',
-            'resources/images/player/player_left_moving_3.png'
-        ],
-        [
-            'resources/images/player/player_right_moving_0.png',
-            'resources/images/player/player_right_moving_1.png',
-            'resources/images/player/player_right_moving_2.png',
-            'resources/images/player/player_right_moving_3.png'
-        ],
-        [
-            'resources/images/player/player_up_moving_0.png',
-            'resources/images/player/player_up_moving_1.png',
-            'resources/images/player/player_up_moving_2.png',
-            'resources/images/player/player_up_moving_3.png'
-        ],
-        [
-            'resources/images/player/player_down_moving_0.png',
-            'resources/images/player/player_down_moving_1.png',
-            'resources/images/Player/player_down_moving_2.png',
-            'resources/images/Player/player_down_moving_3.png'
-        ]
-    ])
