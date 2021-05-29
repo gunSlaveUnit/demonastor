@@ -59,7 +59,7 @@ class Player(pygame.sprite.Sprite):
         ]
         self.__amount_images_in_animation = len(self.__tile_set[0])
         self.__current_number_image_in_animation = 0
-        self.__current_direction_moving = self.__DIRECTIONS_MOVING['UP']
+        self.__current_direction_moving = self.__DIRECTIONS_MOVING['DOWN']
         self.__last_pressed_key = pygame.K_w
 
         self.__name = 'Bonobo'
@@ -106,6 +106,8 @@ class Player(pygame.sprite.Sprite):
                                   game_enums.PlayerBarTypes.MANA.value)
 
         self.__selected_weapon = 0
+        self._last_time_shoot = pygame.time.get_ticks()
+        self._shoot_interval = 250
 
     def update(self, surface):
         self.__draw(surface)
@@ -120,6 +122,9 @@ class Player(pygame.sprite.Sprite):
             constants.player_level = self.__level
             self.__current_experience = self.__current_experience - self.__experience_to_up_level
 
+        self.__health_bar.update(surface, self.__current_health, self.__max_health)
+        self.__mana_bar.update(surface, self.__current_mana, self.__max_mana)
+
     def __draw(self, surface):
         multiplier_change_animation_speed = 15
         if self.__current_number_image_in_animation == self.__amount_images_in_animation * constants.FPS_LOCKING // \
@@ -131,8 +136,6 @@ class Player(pygame.sprite.Sprite):
         surface.blit(self.__image, self.__rect)
         self.__current_number_image_in_animation += 1
 
-        self.__health_bar.update(surface, self.__current_health, self.__max_health)
-        self.__mana_bar.update(surface, self.__current_mana, self.__max_mana)
 
     def __move(self):
         self.__speed_x = 0
@@ -163,7 +166,9 @@ class Player(pygame.sprite.Sprite):
         self.__rect.centery += self.__speed_y
 
     def attack(self):
-        if self.__current_mana > 0:
+        now = pygame.time.get_ticks()
+        if self.__current_mana > 0 and now - self._last_time_shoot > self._shoot_interval:
+            self._last_time_shoot = now
             if self.__selected_weapon == 0:
                 shell = fireball.Fireball(self.__rect.centerx, self.__rect.centery,
                                           (float(pygame.mouse.get_pos()[0] - self.__rect.centerx),
