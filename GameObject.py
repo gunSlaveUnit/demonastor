@@ -9,7 +9,7 @@ The file describes the class that is the parent for most of the game objects, re
 
 # ! usr/bin/env python3
 # -*- coding: utf8 -*-
-
+import pygame.time
 from pygame.sprite import Sprite
 from pygame import image
 
@@ -46,10 +46,12 @@ class GameObject(Sprite):
             self._amount_images_in_animation = len(self._animation_images[0])
             self._current_number_image_in_animation = 0
             self._current_direction_moving = self._DIRECTIONS_MOVING['DOWN']
+            self._last_changing_image_time = 0
             self._animation_interval = 0
         self._rect = self._image.get_rect()
         self._rect.centerx = center_x
         self._rect.centery = center_y
+        self._name = ''
 
     @staticmethod
     def _load_image(image_name):
@@ -64,7 +66,7 @@ class GameObject(Sprite):
     def _load_images(images):
         """
         The method loads images for animation.
-        :param images: the names of the images to be loaded. Format: [[LEFT],[RIGHT],[UP],[DOWN]]
+        :param images: the names of the images to be loaded. Format: [[LEFT],[RIGHT],[UP],[DOWN]].
         :return: the list of lists of loaded images objects in [[LEFT],[RIGHT],[UP],[DOWN]] format.
         """
         loaded_images = []
@@ -76,16 +78,17 @@ class GameObject(Sprite):
             loaded_images.extend([loaded_one_direction_images])
         return loaded_images
 
-    def update(self, *args, **kwargs):
+    def update(self, surface, *args, **kwargs):
         """
         This method is just a hook that can be called during the running of the game loop.
         Calls the _draw and _move methods by default.
+        :param surface: window object
         :return: None
         """
-        self._draw()
+        self._draw(surface)
         self._move()
 
-    def _draw(self, *args, **kwargs):
+    def _draw(self, surface, *args, **kwargs):
         """
         This method is just a hook in which to draw the animation of the object with interval or just the object.
         :return: None

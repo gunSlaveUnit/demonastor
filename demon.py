@@ -60,6 +60,7 @@ class Demon(pygame.sprite.Sprite):
 
     def update(self, surface):
         self.__draw(surface)
+        self.__move()
 
         self.__amount_damage = random.randint(40, 50)
 

@@ -25,7 +25,7 @@ In this file the program is started
 # New opponents
 # Skills
 
-#TODO: we need to get camera offset just only once, not so much
+# TODO: we need to get camera offset just only once, not so much
 
 import sys
 import random
@@ -39,7 +39,7 @@ import pygame
 import map
 import constants
 from camera import Camera
-from player import Player
+from Player import Player
 import demon
 from chest import Chest
 from key import Key
@@ -52,14 +52,35 @@ from neutral import Neutral
 def run_game(data_for_loading=None):
     global main_game_window
     game_map = map.Map()
-    if data_for_loading:
-        player = Player(constants.GAME_WINDOW_WIDTH // 2,
-                        constants.GAME_WINDOW_HEIGHT // 2,
-                        data_for_loading)
-    else:
-        player = Player(constants.GAME_WINDOW_WIDTH // 2,
-                        constants.GAME_WINDOW_HEIGHT // 2)
-
+    player = Player(constants.GAME_WINDOW_WIDTH // 2,
+                    constants.GAME_WINDOW_HEIGHT // 2,
+                    animation_images=[
+                        [
+                            'resources/images/player/player_left_moving_0.png',
+                            'resources/images/player/player_left_moving_1.png',
+                            'resources/images/player/player_left_moving_2.png',
+                            'resources/images/player/player_left_moving_3.png'
+                        ],
+                        [
+                            'resources/images/player/player_right_moving_0.png',
+                            'resources/images/player/player_right_moving_1.png',
+                            'resources/images/player/player_right_moving_2.png',
+                            'resources/images/player/player_right_moving_3.png'
+                        ],
+                        [
+                            'resources/images/player/player_up_moving_0.png',
+                            'resources/images/player/player_up_moving_1.png',
+                            'resources/images/player/player_up_moving_2.png',
+                            'resources/images/player/player_up_moving_3.png'
+                        ],
+                        [
+                            'resources/images/player/player_down_moving_0.png',
+                            'resources/images/player/player_down_moving_1.png',
+                            'resources/images/Player/player_down_moving_2.png',
+                            'resources/images/Player/player_down_moving_3.png'
+                        ]],
+                    saved_params=data_for_loading
+                    )
     quests = []
     names_done_quests = []
     neutrals = [Neutral(100, 100, player.level)]
@@ -268,15 +289,16 @@ def run_game(data_for_loading=None):
             Drawer.draw_bar(main_game_window, constants.GAME_WINDOW_WIDTH // 2, 10,
                             constants.UNNAMED_COLOR_HEALTH_BAR,
                             test_cur, test_max, 150, 15)
-            Drawer.draw_text(main_game_window, text, 25, constants.WHITE_COLOR_TITLE_BLOCKS, constants.GAME_WINDOW_WIDTH // 2,
+            Drawer.draw_text(main_game_window, text, 25, constants.WHITE_COLOR_TITLE_BLOCKS,
+                             constants.GAME_WINDOW_WIDTH // 2,
                              9)
 
         Drawer.draw_text(main_game_window, player.name, 15, constants.WHITE_COLOR_TITLE_BLOCKS,
                          player.rect.centerx,
                          player.rect.centery + player.rect.height // 2 + 5)
-        Drawer.draw_bar(main_game_window, constants.GAME_WINDOW_WIDTH // 2, constants.GAME_WINDOW_HEIGHT*0.86,
+        Drawer.draw_bar(main_game_window, constants.GAME_WINDOW_WIDTH // 2, constants.GAME_WINDOW_HEIGHT * 0.86,
                         constants.WHITE_COLOR_TITLE_BLOCKS,
-                        player.current_experience, player.experience_to_up_level, 310, 5, True)
+                        player.current_experience, player.experience_up_level, 310, 5, True)
         Drawer.draw_bar(main_game_window, constants.GAME_WINDOW_WIDTH // 2 - 70, constants.GAME_WINDOW_HEIGHT - 70,
                         constants.STAMINA_BAR_COLOR, player.current_stamina,
                         player.max_stamina, 90, 14, True)
@@ -382,11 +404,11 @@ def show_start_menu():
         Drawer.draw_text(main_game_window, constants.GAME_WINDOW_TITLE, title_size, constants.WHITE_COLOR_TITLE_BLOCKS,
                          constants.GAME_WINDOW_WIDTH // 2, 100)
 
-        x_to_paste_menu_item = constants.GAME_WINDOW_HEIGHT//3
+        x_to_paste_menu_item = constants.GAME_WINDOW_HEIGHT // 3
         for menu_item, color_and_size in menu_items.items():
             Drawer.draw_text(main_game_window, menu_item, color_and_size[1], color_and_size[0],
                              constants.GAME_WINDOW_WIDTH // 2, x_to_paste_menu_item)
-            x_to_paste_menu_item += constants.GAME_WINDOW_HEIGHT//15
+            x_to_paste_menu_item += constants.GAME_WINDOW_HEIGHT // 15
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -400,14 +422,16 @@ def show_start_menu():
                         index_selected_menu_item = 0
                         index_previous_selected_item = 3
                     set_color_active_menu_item(index_previous_selected_item, constants.WHITE_COLOR_TITLE_BLOCKS, 50)
-                    set_color_active_menu_item(index_selected_menu_item, constants.DARK_ORANGE_HIGHLIGHTED_MENU_ITEM, 80)
+                    set_color_active_menu_item(index_selected_menu_item, constants.DARK_ORANGE_HIGHLIGHTED_MENU_ITEM,
+                                               80)
                 if event.key == pygame.K_UP or event.key == pygame.K_w:
                     index_previous_selected_item = index_selected_menu_item
                     index_selected_menu_item -= 1
                     if index_selected_menu_item < 0:
                         index_selected_menu_item = 3
                     set_color_active_menu_item(index_previous_selected_item, constants.WHITE_COLOR_TITLE_BLOCKS, 50)
-                    set_color_active_menu_item(index_selected_menu_item, constants.DARK_ORANGE_HIGHLIGHTED_MENU_ITEM, 80)
+                    set_color_active_menu_item(index_selected_menu_item, constants.DARK_ORANGE_HIGHLIGHTED_MENU_ITEM,
+                                               80)
                 if event.key == pygame.K_RETURN:
                     if index_selected_menu_item == 0:
                         is_menu_show = False
@@ -497,8 +521,8 @@ def create_enemies(min_number_enemies, max_number_enemies, player_level):
     """
     enemies_local = list()
     for i in range(min_number_enemies, max_number_enemies):
-        x_for_appear_demon = random.randint(-constants.GAME_WINDOW_WIDTH*2, constants.GAME_WINDOW_WIDTH*2)
-        y_for_appear_demon = random.randint(-constants.GAME_WINDOW_HEIGHT*2, constants.GAME_WINDOW_HEIGHT*2)
+        x_for_appear_demon = random.randint(-constants.GAME_WINDOW_WIDTH * 2, constants.GAME_WINDOW_WIDTH * 2)
+        y_for_appear_demon = random.randint(-constants.GAME_WINDOW_HEIGHT * 2, constants.GAME_WINDOW_HEIGHT * 2)
         enemy_local = demon.Demon(x_for_appear_demon, y_for_appear_demon, player_level)
         enemies_local.append(enemy_local)
     return enemies_local
@@ -534,11 +558,11 @@ def show_game_loads():
         Drawer.draw_text(main_game_window, constants.GAME_WINDOW_TITLE, title_size, constants.WHITE_COLOR_TITLE_BLOCKS,
                          constants.GAME_WINDOW_WIDTH // 2, 100)
 
-        x_to_paste_menu_item = constants.GAME_WINDOW_HEIGHT//3
+        x_to_paste_menu_item = constants.GAME_WINDOW_HEIGHT // 3
         for menu_item, color_and_size in menu_items.items():
             Drawer.draw_text(main_game_window, menu_item, color_and_size[1], color_and_size[0],
                              constants.GAME_WINDOW_WIDTH // 2, x_to_paste_menu_item)
-            x_to_paste_menu_item += constants.GAME_WINDOW_HEIGHT//15
+            x_to_paste_menu_item += constants.GAME_WINDOW_HEIGHT // 15
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -548,18 +572,20 @@ def show_game_loads():
                 if event.key == pygame.K_DOWN or event.key == pygame.K_s:
                     index_previous_selected_item = index_selected_menu_item
                     index_selected_menu_item += 1
-                    if index_selected_menu_item > amount_files-1:
+                    if index_selected_menu_item > amount_files - 1:
                         index_selected_menu_item = 0
-                        index_previous_selected_item = amount_files-1
+                        index_previous_selected_item = amount_files - 1
                     set_color_active_menu_item(index_previous_selected_item, constants.WHITE_COLOR_TITLE_BLOCKS, 50)
-                    set_color_active_menu_item(index_selected_menu_item, constants.DARK_ORANGE_HIGHLIGHTED_MENU_ITEM, 80)
+                    set_color_active_menu_item(index_selected_menu_item, constants.DARK_ORANGE_HIGHLIGHTED_MENU_ITEM,
+                                               80)
                 if event.key == pygame.K_UP or event.key == pygame.K_w:
                     index_previous_selected_item = index_selected_menu_item
                     index_selected_menu_item -= 1
                     if index_selected_menu_item < 0:
-                        index_selected_menu_item = amount_files-1
+                        index_selected_menu_item = amount_files - 1
                     set_color_active_menu_item(index_previous_selected_item, constants.WHITE_COLOR_TITLE_BLOCKS, 50)
-                    set_color_active_menu_item(index_selected_menu_item, constants.DARK_ORANGE_HIGHLIGHTED_MENU_ITEM, 80)
+                    set_color_active_menu_item(index_selected_menu_item, constants.DARK_ORANGE_HIGHLIGHTED_MENU_ITEM,
+                                               80)
                 if event.key == pygame.K_RETURN:
                     load_game(savings[index_selected_menu_item])
 
@@ -581,7 +607,8 @@ def load_game(file_name_for_loading=None):
     if not saves:
         run_game()
     else:
-        filename = os.path.join(constants.DIRECTORY_WITH_SAVINGS, os.listdir(constants.DIRECTORY_WITH_SAVINGS)[-1]) if file_name_for_loading is None \
+        filename = os.path.join(constants.DIRECTORY_WITH_SAVINGS,
+                                os.listdir(constants.DIRECTORY_WITH_SAVINGS)[-1]) if file_name_for_loading is None \
             else os.path.join(constants.DIRECTORY_WITH_SAVINGS, file_name_for_loading)
         with open(filename, 'rb') as load_file:
             data = pickle.load(load_file)
@@ -595,7 +622,7 @@ main_game_window = pygame.display.set_mode((constants.GAME_WINDOW_WIDTH,
 def main():
     pygame.init()
 
-    pygame.display.toggle_fullscreen()
+    # pygame.display.toggle_fullscreen()
 
     global main_game_window
 

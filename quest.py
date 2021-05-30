@@ -27,10 +27,7 @@ class Quest:
 
     def __create_quest_objects(self):
         return [
-            demon.Demon(random.randint(0, constants.GAME_WINDOW_WIDTH), random.randint(0, constants.GAME_WINDOW_HEIGHT),
-                        self.__player_level),
-            demon.Demon(random.randint(0, constants.GAME_WINDOW_WIDTH), random.randint(0, constants.GAME_WINDOW_HEIGHT),
-                        self.__player_level)
+
         ]
 
     @property
