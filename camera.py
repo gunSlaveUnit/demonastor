@@ -16,14 +16,12 @@ import constants
 
 
 class Camera:
-    def __init__(self, window_sizes):
+    def __init__(self):
         """
         Creates a camera following the player.
-        :param window_sizes: a tuple of the width and height of the window in pixels.
         """
         self.__dx = 0
         self.__dy = 0
-        self.__view_sizes = window_sizes
 
     def get_offset(self):
         # game_object.get_rect().centerx -= self.__dx
