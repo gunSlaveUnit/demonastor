@@ -47,8 +47,8 @@ class Character(GameObject):
 
     def _regeneration(self):
         now = pygame.time.get_ticks()
-        if now - self._last_attack_time > self._attack_interval:
-            self._last_attack_time = now
+        if now - self._last_regeneration_time > self._regeneration_interval:
+            self._last_regeneration_time = now
             self._current_health += self._passive_regeneration
             self._current_mana += self._passive_regeneration
             self._current_stamina += self._passive_regeneration
@@ -59,3 +59,47 @@ class Character(GameObject):
                 self._current_mana = self._max_mana
             if self._current_stamina > self._max_stamina:
                 self._current_stamina = self._max_stamina
+
+    def _draw(self, surface, *args, **kwargs):
+        if self._current_number_image_in_animation == self._amount_images_in_animation:
+            self._current_number_image_in_animation = 0
+        self._image = self._animation_images[
+            self._current_direction_moving][
+            self._current_number_image_in_animation]
+        surface.blit(self._image, self.rect)
+        now = pygame.time.get_ticks()
+        if now - self._last_changing_image_time > self._animation_interval:
+            self._last_changing_image_time = now
+            self._current_number_image_in_animation += 1
+
+    @property
+    def amount_damage(self):
+        return self._amount_damage
+
+    @property
+    def current_health(self):
+        return self._current_health
+
+    @property
+    def max_amount_health(self):
+        return self._max_health
+
+    @current_health.setter
+    def current_health(self, new_value):
+        self._current_health = new_value
+
+    @property
+    def name(self):
+        return self._name
+
+    @property
+    def level(self):
+        return self._level
+
+    @property
+    def current_stamina(self):
+        return self._current_stamina
+
+    @property
+    def max_stamina(self):
+        return self._max_stamina

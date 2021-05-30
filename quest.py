@@ -1,7 +1,7 @@
 import random
 
 import constants
-from enemy import Enemy
+from Enemy import Enemy
 
 
 class Quest:

@@ -36,7 +36,7 @@ from datetime import datetime
 
 import pygame
 
-import enemy
+import Enemy
 import map
 import constants
 from camera import Camera
@@ -48,7 +48,7 @@ from tree import Tree
 from drawer import Drawer
 from waterfall import Waterfall
 from neutral import Neutral
-from enemy import Enemy
+from Enemy import Enemy
 
 
 def run_game(data_for_loading=None):
@@ -165,8 +165,8 @@ def run_game(data_for_loading=None):
             if pygame.sprite.collide_rect(player, enemy):
                 if time_to_count_attack >= enemy_attack_interval:
                     time_to_count_attack = 0
-                    player.amount_health = player.amount_health - enemy.amount_damage
-                    if player.amount_health < 1:
+                    player.current_health = player.current_health - enemy.amount_damage
+                    if player.current_health < 1:
                         return game_over()
 
         for event in pygame.event.get():
@@ -255,8 +255,8 @@ def run_game(data_for_loading=None):
                 if shell:
                     if pygame.sprite.collide_rect(enemy, shell):
                         shells_player.remove(shell)
-                        enemy.current_amount_health -= player.amount_damage
-                        enemy.current_amount_health -= shell.amount_additional_damage
+                        enemy.current_health -= player.amount_damage
+                        enemy.current_health -= shell.amount_additional_damage
 
                         dx = float(player.rect.centerx - enemy.rect.centerx)
                         dy = float(player.rect.centery - enemy.rect.centery)
@@ -265,9 +265,9 @@ def run_game(data_for_loading=None):
                         enemy.show_aggression_to_attack_player(dx, dy, length)
 
                         text = enemy.name
-                        test_cur = enemy.current_amount_health
+                        test_cur = enemy.current_health
                         test_max = enemy.max_amount_health
-                        if enemy.current_amount_health < 0:
+                        if enemy.current_health < 0:
                             player.current_experience += enemy.experience_for_killing
 
                             if enemy in enemies:
@@ -525,7 +525,7 @@ def create_enemies(min_number_enemies, max_number_enemies, player_level):
     for i in range(min_number_enemies, max_number_enemies):
         x_for_appear_demon = random.randint(-constants.GAME_WINDOW_WIDTH * 2, constants.GAME_WINDOW_WIDTH * 2)
         y_for_appear_demon = random.randint(-constants.GAME_WINDOW_HEIGHT * 2, constants.GAME_WINDOW_HEIGHT * 2)
-        enemy_local = enemy.Enemy(x_for_appear_demon, y_for_appear_demon, player_level)
+        enemy_local = Enemy.Enemy(x_for_appear_demon, y_for_appear_demon, player_level)
         enemies_local.append(enemy_local)
     return enemies_local
 

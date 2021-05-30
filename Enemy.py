@@ -3,12 +3,6 @@ import random
 
 import pygame
 
-import bar
-import constants
-import fireball
-import game_enums
-import inventory
-import lighting
 from Character import Character
 
 
@@ -23,37 +17,24 @@ class Enemy(Character):
         self._current_mana = self._max_mana
         self._speed_changing = 1
         self._amount_damage = random.randint(40, 50)
-        self._passive_regeneration = 0.5
-        self._last_regeneration_time = 300
-        self._last_attack_time = 250
-        self._last_changing_image_time = 250
+        self._passive_regeneration = 1
+        self._regeneration_interval = 0.5
+        self._attack_interval = 500
         self._animation_interval = 150
         self._changing_direction_interval = 1000
-        self._last_changing_direction_time = pygame.time.get_ticks()
         self._experience_for_killing = 100 * (10 + self._level - player_level) / (10 + player_level)
         self._is_angry = False
         self._name = 'Demon'
 
     def update(self, surface, *args, **kwargs):
         self._regeneration()
+        print(self._current_health)
         self._draw(surface)
         self._move()
         self._recount_damage()
 
     def _recount_damage(self):
         self._amount_damage = random.randint(40, 50)
-
-    def _draw(self, surface, *args, **kwargs):
-        if self._current_number_image_in_animation == self._amount_images_in_animation:
-            self._current_number_image_in_animation = 0
-        self._image = self._animation_images[
-            self._current_direction_moving][
-            self._current_number_image_in_animation]
-        surface.blit(self._image, self.rect)
-        now = pygame.time.get_ticks()
-        if now - self._last_changing_image_time > self._animation_interval:
-            self._last_changing_image_time = now
-            self._current_number_image_in_animation += 1
 
     def _move(self, *args, **kwargs):
         now = pygame.time.get_ticks()
@@ -100,26 +81,6 @@ class Enemy(Character):
             self._current_direction_moving = self._DIRECTIONS_MOVING['DOWN']
         self._rect.centerx += direction_to_player[0] * random.randint(2, 3)
         self._rect.centery += direction_to_player[1] * random.randint(2, 3)
-
-    @property
-    def amount_damage(self):
-        return self._amount_damage
-
-    @property
-    def current_amount_health(self):
-        return self._current_health
-
-    @property
-    def max_amount_health(self):
-        return self._max_health
-
-    @current_amount_health.setter
-    def current_amount_health(self, new_value):
-        self._current_health = new_value
-
-    @property
-    def name(self):
-        return self._name
 
     @property
     def experience_for_killing(self):
