@@ -9,6 +9,7 @@ The file describes the base class for the player, enemy and neutral units.
 
 # ! usr/bin/env python3
 # -*- coding: utf8 -*-
+import random
 
 import pygame.time
 
@@ -71,6 +72,30 @@ class Character(GameObject):
         if now - self._last_changing_image_time > self._animation_interval:
             self._last_changing_image_time = now
             self._current_number_image_in_animation += 1
+
+    def _move(self, *args, **kwargs):
+        now = pygame.time.get_ticks()
+        if now - self._last_changing_direction_time > self._changing_direction_interval:
+            self._last_changing_direction_time = now
+            random_direction = random.randint(0, 4)
+            if random_direction == 0:
+                self._current_direction_moving = self._DIRECTIONS_MOVING['LEFT']
+                self._speed_x = -self._speed_changing
+            elif random_direction == 1:
+                self._current_direction_moving = self._DIRECTIONS_MOVING['RIGHT']
+                self._speed_x = self._speed_changing
+            elif random_direction == 2:
+                self._current_direction_moving = self._DIRECTIONS_MOVING['UP']
+                self._speed_y = -self._speed_changing
+            elif random_direction == 3:
+                self._current_direction_moving = self._DIRECTIONS_MOVING['DOWN']
+                self._speed_y = self._speed_changing
+
+        if self._speed_x == 0 and self._speed_y == 0:
+            self._current_number_image_in_animation = 0
+
+        self._rect.centerx += self._speed_x
+        self._rect.centery += self._speed_y
 
     @property
     def amount_damage(self):

@@ -15,7 +15,7 @@ class Player(Character):
     def __init__(self, center_x, center_y, animation_images, saved_params=None):
         super().__init__(center_x, center_y, animation_images)
         self._max_health = self._max_mana = self._max_stamina = 100
-        self._speed_changing = 6
+        self._speed_changing = 3
         self._amount_damage = random.randint(140, 200)
         self._passive_regeneration = 0.1
         self._regeneration_interval = 10

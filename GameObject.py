@@ -9,6 +9,7 @@ The file describes the class that is the parent for most of the game objects, re
 
 # ! usr/bin/env python3
 # -*- coding: utf8 -*-
+
 import pygame.time
 from pygame.sprite import Sprite
 from pygame import image
@@ -46,7 +47,7 @@ class GameObject(Sprite):
             self._amount_images_in_animation = len(self._animation_images[0])
             self._current_number_image_in_animation = 0
             self._current_direction_moving = self._DIRECTIONS_MOVING['DOWN']
-            self._last_changing_image_time = 0
+            self._last_changing_image_time = pygame.time.get_ticks()
             self._animation_interval = 0
         self._rect = self._image.get_rect()
         self._rect.centerx = center_x

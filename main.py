@@ -37,6 +37,7 @@ from datetime import datetime
 import pygame
 
 import Enemy
+import Neutral
 import map
 import constants
 from camera import Camera
@@ -47,7 +48,7 @@ from key import Key
 from tree import Tree
 from drawer import Drawer
 from waterfall import Waterfall
-from neutral import Neutral
+from Neutral import Neutral
 from Enemy import Enemy
 
 
@@ -85,7 +86,32 @@ def run_game(data_for_loading=None):
                     )
     quests = []
     names_done_quests = []
-    neutrals = [Neutral(100, 100, player.level)]
+    neutrals = [Neutral(100, 100, [
+        [
+            'resources/images/characters/neutral_left_0.png',
+            'resources/images/characters/neutral_left_1.png',
+            'resources/images/characters/neutral_left_3.png',
+            'resources/images/characters/neutral_left_2.png'
+        ],
+        [
+            'resources/images/characters/neutral_right_0.png',
+            'resources/images/characters/neutral_right_1.png',
+            'resources/images/characters/neutral_right_3.png',
+            'resources/images/characters/neutral_right_2.png'
+        ],
+        [
+            'resources/images/characters/neutral_up_0.png',
+            'resources/images/characters/neutral_up_1.png',
+            'resources/images/characters/neutral_up_2.png',
+            'resources/images/characters/neutral_up_2.png'
+        ],
+        [
+            'resources/images/characters/neutral_down_0.png',
+            'resources/images/characters/neutral_down_1.png',
+            'resources/images/characters/neutral_down_3.png',
+            'resources/images/characters/neutral_down_2.png'
+        ]
+    ], player.level)]
 
     chests = [Chest(random.randint(-constants.GAME_WINDOW_WIDTH, constants.GAME_WINDOW_WIDTH),
                     random.randint(-constants.GAME_WINDOW_HEIGHT, constants.GAME_WINDOW_HEIGHT),
