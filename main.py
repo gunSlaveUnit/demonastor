@@ -36,17 +36,19 @@ from datetime import datetime
 
 import pygame
 
+import enemy
 import map
 import constants
 from camera import Camera
 from Player import Player
-import demon
+# import demon
 from chest import Chest
 from key import Key
 from tree import Tree
 from drawer import Drawer
 from waterfall import Waterfall
 from neutral import Neutral
+from enemy import Enemy
 
 
 def run_game(data_for_loading=None):
@@ -523,7 +525,7 @@ def create_enemies(min_number_enemies, max_number_enemies, player_level):
     for i in range(min_number_enemies, max_number_enemies):
         x_for_appear_demon = random.randint(-constants.GAME_WINDOW_WIDTH * 2, constants.GAME_WINDOW_WIDTH * 2)
         y_for_appear_demon = random.randint(-constants.GAME_WINDOW_HEIGHT * 2, constants.GAME_WINDOW_HEIGHT * 2)
-        enemy_local = demon.Demon(x_for_appear_demon, y_for_appear_demon, player_level)
+        enemy_local = enemy.Enemy(x_for_appear_demon, y_for_appear_demon, player_level)
         enemies_local.append(enemy_local)
     return enemies_local
 

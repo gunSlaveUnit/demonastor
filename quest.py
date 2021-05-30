@@ -1,7 +1,7 @@
 import random
 
 import constants
-import demon
+from enemy import Enemy
 
 
 class Quest:
@@ -27,7 +27,20 @@ class Quest:
 
     def __create_quest_objects(self):
         return [
-
+            Enemy(random.randint(0, constants.GAME_WINDOW_WIDTH), random.randint(0, constants.GAME_WINDOW_HEIGHT),
+                  [[
+                      'resources/images/enemy/enemy_moving_left.png'
+                  ],
+                  [
+                      'resources/images/enemy/enemy_moving_right.png'
+                  ],
+                  [
+                      'resources/images/enemy/enemy_moving_up.png'
+                  ],
+                  [
+                       'resources/images/enemy/enemy_moving_down.png'
+                  ]]
+                  )
         ]
 
     @property
