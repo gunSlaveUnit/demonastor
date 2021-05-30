@@ -3,6 +3,7 @@ import random
 import pygame
 
 from healthpotion import HealthPotion
+from key import Key
 from manapotion import ManaPotion
 import coin
 import game_enums
@@ -51,7 +52,7 @@ class Chest(pygame.sprite.Sprite):
     def __create_random_content(self):
         content_local = []
         for _ in range(self.__amount_things_in_chest):
-            random_thing = random.randint(0, 6)
+            random_thing = random.randint(0, 7)
             random_x = random.randint(self.__rect.centerx - 20, self.__rect.centerx + 20)
             random_y = random.randint(self.__rect.centery + 10, self.__rect.centery + 30)
             thing = 0
@@ -65,6 +66,8 @@ class Chest(pygame.sprite.Sprite):
                 thing = coin.Coin(random_x, random_y, game_enums.CoinTypes.SILVER)
             if random_thing == 5:
                 thing = coin.Coin(random_x, random_y, game_enums.CoinTypes.BRONZE)
+            if random_thing == 6:
+                thing = Key(random_x, random_y)
             content_local.append(thing)
         return content_local
 

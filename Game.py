@@ -21,13 +21,13 @@ import random
 
 import pygame
 
+import Textures
 import constants
 from Neutral import Neutral
 from Player import Player
 from camera import Camera
 from chest import Chest
 from drawer import Drawer
-from key import Key
 from map import Map
 from tree import Tree
 
@@ -38,7 +38,29 @@ class Game:
         self._main_game_window = pygame.display.set_mode((constants.GAME_WINDOW_WIDTH,
                                                           constants.GAME_WINDOW_HEIGHT))
         self._customize_window()
-        pygame.display.toggle_fullscreen()
+        self._player = None
+        self._map = Map()
+        self._neutrals = [Neutral(100, 100, Textures.NEUTRAL_TEXTURES)]
+        self._quests = []
+        self._names_done_quests = []
+        self._enemies = self._neutrals[0].quest.condition
+        self._camera = Camera()
+        self._shells = []
+        self._things = []
+        self._chests = [
+            Chest(random.randint(-constants.GAME_WINDOW_WIDTH, constants.GAME_WINDOW_WIDTH),
+                  random.randint(-constants.GAME_WINDOW_HEIGHT, constants.GAME_WINDOW_HEIGHT),
+                  is_chest_need_key=False),
+            Chest(random.randint(-constants.GAME_WINDOW_WIDTH, constants.GAME_WINDOW_WIDTH),
+                  random.randint(-constants.GAME_WINDOW_HEIGHT, constants.GAME_WINDOW_HEIGHT),
+                  is_chest_need_key=True)
+        ]
+        self._trees = [
+            Tree(random.randint(-constants.GAME_WINDOW_WIDTH, constants.GAME_WINDOW_WIDTH),
+                 random.randint(-constants.GAME_WINDOW_HEIGHT, constants.GAME_WINDOW_HEIGHT)),
+            Tree(random.randint(-constants.GAME_WINDOW_WIDTH, constants.GAME_WINDOW_WIDTH),
+                 random.randint(-constants.GAME_WINDOW_HEIGHT, constants.GAME_WINDOW_HEIGHT)),
+        ]
         pygame.display.set_caption(constants.GAME_WINDOW_TITLE)
         icon = pygame.image.load('resources/images/icons/icon.png')
         pygame.display.set_icon(icon)
@@ -129,11 +151,12 @@ class Game:
             clock.tick(constants.FPS_LOCKING)
 
     def show_pause_menu(self):
-        Drawer.draw_text(self._main_game_window, 'Pause. Press <Enter> To Continue', 30, constants.WHITE_COLOR_TITLE_BLOCKS,
+        Drawer.draw_text(self._main_game_window, 'Pause. Press <Enter> To Continue', 30,
+                         constants.WHITE_COLOR_TITLE_BLOCKS,
                          constants.GAME_WINDOW_WIDTH // 2, constants.GAME_WINDOW_HEIGHT // 4)
 
         items = ['Загрузить', 'Выход']
-        handlers = ['show_game_loads()', 'exit(0)']
+        handlers = ['self.show_game_loads()', 'exit(0)']
 
         def set_color_active_menu_item(index_active_menu_item, color, font_size):
             filename_to_highlight = items[index_active_menu_item]
@@ -279,122 +302,13 @@ class Game:
             self._main_game_window.blit(menu_background, (0, 0))
             clock.tick(constants.FPS_LOCKING)
 
-    def run_game(self, data_for_loading=None):
-        game_map = Map()
-        player = Player(constants.GAME_WINDOW_WIDTH // 2,
-                        constants.GAME_WINDOW_HEIGHT // 2,
-                        animation_images=[
-                            [
-                                'resources/images/player/player_left_moving_0.png',
-                                'resources/images/player/player_left_moving_1.png',
-                                'resources/images/player/player_left_moving_2.png',
-                                'resources/images/player/player_left_moving_3.png'
-                            ],
-                            [
-                                'resources/images/player/player_right_moving_0.png',
-                                'resources/images/player/player_right_moving_1.png',
-                                'resources/images/player/player_right_moving_2.png',
-                                'resources/images/player/player_right_moving_3.png'
-                            ],
-                            [
-                                'resources/images/player/player_up_moving_0.png',
-                                'resources/images/player/player_up_moving_1.png',
-                                'resources/images/player/player_up_moving_2.png',
-                                'resources/images/player/player_up_moving_3.png'
-                            ],
-                            [
-                                'resources/images/player/player_down_moving_0.png',
-                                'resources/images/player/player_down_moving_1.png',
-                                'resources/images/Player/player_down_moving_2.png',
-                                'resources/images/Player/player_down_moving_3.png'
-                            ]],
-                        saved_params=data_for_loading
-                        )
-        quests = []
-        names_done_quests = []
-        neutrals = [Neutral(100, 100, [
-            [
-                'resources/images/characters/neutral_left_0.png',
-                'resources/images/characters/neutral_left_1.png',
-                'resources/images/characters/neutral_left_3.png',
-                'resources/images/characters/neutral_left_2.png'
-            ],
-            [
-                'resources/images/characters/neutral_right_0.png',
-                'resources/images/characters/neutral_right_1.png',
-                'resources/images/characters/neutral_right_3.png',
-                'resources/images/characters/neutral_right_2.png'
-            ],
-            [
-                'resources/images/characters/neutral_up_0.png',
-                'resources/images/characters/neutral_up_1.png',
-                'resources/images/characters/neutral_up_2.png',
-                'resources/images/characters/neutral_up_2.png'
-            ],
-            [
-                'resources/images/characters/neutral_down_0.png',
-                'resources/images/characters/neutral_down_1.png',
-                'resources/images/characters/neutral_down_3.png',
-                'resources/images/characters/neutral_down_2.png'
-            ]
-        ], player.level)]
-
-        chests = [Chest(random.randint(-constants.GAME_WINDOW_WIDTH, constants.GAME_WINDOW_WIDTH),
-                        random.randint(-constants.GAME_WINDOW_HEIGHT, constants.GAME_WINDOW_HEIGHT),
-                        is_chest_need_key=False),
-                  Chest(random.randint(-constants.GAME_WINDOW_WIDTH, constants.GAME_WINDOW_WIDTH),
-                        random.randint(-constants.GAME_WINDOW_HEIGHT, constants.GAME_WINDOW_HEIGHT),
-                        is_chest_need_key=False),
-                  Chest(random.randint(-constants.GAME_WINDOW_WIDTH, constants.GAME_WINDOW_WIDTH),
-                        random.randint(-constants.GAME_WINDOW_HEIGHT, constants.GAME_WINDOW_HEIGHT),
-                        is_chest_need_key=False),
-                  Chest(random.randint(-constants.GAME_WINDOW_WIDTH, constants.GAME_WINDOW_WIDTH),
-                        random.randint(-constants.GAME_WINDOW_HEIGHT, constants.GAME_WINDOW_HEIGHT),
-                        is_chest_need_key=False),
-                  Chest(random.randint(-constants.GAME_WINDOW_WIDTH, constants.GAME_WINDOW_WIDTH),
-                        random.randint(-constants.GAME_WINDOW_HEIGHT, constants.GAME_WINDOW_HEIGHT),
-                        is_chest_need_key=False),
-                  Chest(random.randint(-constants.GAME_WINDOW_WIDTH, constants.GAME_WINDOW_WIDTH),
-                        random.randint(-constants.GAME_WINDOW_HEIGHT, constants.GAME_WINDOW_HEIGHT),
-                        is_chest_need_key=False),
-                  Chest(random.randint(-constants.GAME_WINDOW_WIDTH, constants.GAME_WINDOW_WIDTH),
-                        random.randint(-constants.GAME_WINDOW_HEIGHT, constants.GAME_WINDOW_HEIGHT),
-                        is_chest_need_key=False),
-                  Chest(random.randint(-constants.GAME_WINDOW_WIDTH, constants.GAME_WINDOW_WIDTH),
-                        random.randint(-constants.GAME_WINDOW_HEIGHT, constants.GAME_WINDOW_HEIGHT),
-                        is_chest_need_key=False),
-                  Chest(random.randint(-constants.GAME_WINDOW_WIDTH, constants.GAME_WINDOW_WIDTH),
-                        random.randint(-constants.GAME_WINDOW_HEIGHT, constants.GAME_WINDOW_HEIGHT),
-                        is_chest_need_key=False),
-                  Chest(random.randint(-constants.GAME_WINDOW_WIDTH, constants.GAME_WINDOW_WIDTH),
-                        random.randint(-constants.GAME_WINDOW_HEIGHT, constants.GAME_WINDOW_HEIGHT),
-                        is_chest_need_key=False),
-                  Chest(random.randint(-constants.GAME_WINDOW_WIDTH, constants.GAME_WINDOW_WIDTH),
-                        random.randint(-constants.GAME_WINDOW_HEIGHT, constants.GAME_WINDOW_HEIGHT),
-                        is_chest_need_key=False),
-                  Chest(random.randint(-constants.GAME_WINDOW_WIDTH, constants.GAME_WINDOW_WIDTH),
-                        random.randint(-constants.GAME_WINDOW_HEIGHT, constants.GAME_WINDOW_HEIGHT),
-                        is_chest_need_key=False),
-                  Chest(random.randint(-constants.GAME_WINDOW_WIDTH, constants.GAME_WINDOW_WIDTH),
-                        random.randint(-constants.GAME_WINDOW_HEIGHT, constants.GAME_WINDOW_HEIGHT),
-                        is_chest_need_key=True)]
-
-        trees = []
-        for _ in range(0, 5):
-            tree = Tree(random.randint(-constants.GAME_WINDOW_WIDTH, constants.GAME_WINDOW_WIDTH),
-                        random.randint(-constants.GAME_WINDOW_HEIGHT, constants.GAME_WINDOW_HEIGHT))
-            trees.append(tree)
-
-        camera = Camera()
-
-        things = []
-
-        key = Key(random.randint(-constants.GAME_WINDOW_WIDTH, constants.GAME_WINDOW_WIDTH),
-                  random.randint(-constants.GAME_WINDOW_HEIGHT, constants.GAME_WINDOW_HEIGHT))
-        things.append(key)
-
-        shells_player = []
-        enemies = neutrals[0].quest.condition
+    def run_game(self, data=None):
+        self._player = Player(
+            constants.GAME_WINDOW_WIDTH // 2,
+            constants.GAME_WINDOW_HEIGHT // 2,
+            animation_images=Textures.PLAYER_TEXTURES,
+            saved_params=data
+        )
 
         text = None
         test_cur = None
@@ -410,12 +324,12 @@ class Game:
             if time_to_count_attack < enemy_attack_interval:
                 time_to_count_attack += delta
 
-            for enemy in enemies:
-                if pygame.sprite.collide_rect(player, enemy):
+            for enemy in self._enemies:
+                if pygame.sprite.collide_rect(self._player, enemy):
                     if time_to_count_attack >= enemy_attack_interval:
                         time_to_count_attack = 0
-                        player.current_health = player.current_health - enemy.amount_damage
-                        if player.current_health < 1:
+                        self._player.current_health = self._player.current_health - enemy.amount_damage
+                        if self._player.current_health < 1:
                             return self.game_over()
 
             for event in pygame.event.get():
@@ -426,89 +340,89 @@ class Game:
                     if event.key == pygame.K_ESCAPE:
                         self.show_pause_menu()
                     if event.key == pygame.K_F5:
-                        self.save_game([player])
+                        self.save_game([self._player])
                     if event.key == pygame.K_F9:
                         self.load_game()
                     if event.key == pygame.K_SPACE:
-                        shells = player.attack()
-                        shells_player.extend(shells)
+                        shells = self._player.attack()
+                        self._shells.extend(shells)
                     if event.key == pygame.K_i:
-                        player.show_inventory(self._main_game_window)
+                        self._player.show_inventory(self._main_game_window)
                     if event.key == pygame.K_c:
-                        player.change_weapon()
+                        self._player.change_weapon()
 
             self._main_game_window.fill(int())
 
-            game_map.update(self._main_game_window)
-            for tile in game_map.map_tiles:
-                offset = camera.get_offset()
+            self._map.update(self._main_game_window)
+            for tile in self._map.map_tiles:
+                offset = self._camera.get_offset()
                 tile.rect.centerx -= offset[0]
                 tile.rect.centery -= offset[1]
 
-            for chest in chests:
-                offset = camera.get_offset()
+            for chest in self._chests:
+                offset = self._camera.get_offset()
                 chest.rect.centerx -= offset[0]
                 chest.rect.centery -= offset[1]
                 chest.update(self._main_game_window)
-                if pygame.sprite.collide_rect(player, chest) and pygame.key.get_pressed()[pygame.K_e]:
-                    additional_potions = chest.open(player.is_key_in_inventory())
+                if pygame.sprite.collide_rect(self._player, chest) and pygame.key.get_pressed()[pygame.K_e]:
+                    additional_potions = chest.open(self._player.is_key_in_inventory())
                     if additional_potions is not None:
                         for additional_thing in additional_potions:
                             if additional_thing != 0:
-                                things.append(additional_thing)
+                                self._things.append(additional_thing)
 
-            for potion in things:
+            for potion in self._things:
                 potion.update(self._main_game_window)
-                offset = camera.get_offset()
+                offset = self._camera.get_offset()
                 potion.rect.centerx -= offset[0]
                 potion.rect.centery -= offset[1]
 
-                if pygame.sprite.collide_rect(player, potion) and pygame.key.get_pressed()[pygame.K_e]:
-                    player.append_thing_to_inventory(potion)
-                    things.remove(potion)
+                if pygame.sprite.collide_rect(self._player, potion) and pygame.key.get_pressed()[pygame.K_e]:
+                    self._player.append_thing_to_inventory(potion)
+                    self._things.remove(potion)
 
-            for neutral in neutrals:
-                if pygame.sprite.collide_rect(player, neutral) and pygame.key.get_pressed()[pygame.K_e]:
-                    quests.append(neutral.quest)
+            for neutral in self._neutrals:
+                if pygame.sprite.collide_rect(self._player, neutral) and pygame.key.get_pressed()[pygame.K_e]:
+                    self._quests.append(neutral.quest)
                     neutral.vision_quest_mark = False
 
-            offset = camera.get_offset()
-            for neutral in neutrals:
+            offset = self._camera.get_offset()
+            for neutral in self._neutrals:
                 neutral.update(self._main_game_window)
                 neutral.rect.centerx -= offset[0]
                 neutral.rect.centery -= offset[1]
 
-            for tree in trees:
+            for tree in self._trees:
                 tree.update(self._main_game_window)
-                offset = camera.get_offset()
+                offset = self._camera.get_offset()
                 tree.rect.centerx -= offset[0]
                 tree.rect.centery -= offset[1]
 
-            for shell in shells_player:
+            for shell in self._shells:
                 if shell:
                     shell.update(self._main_game_window)
-                    offset = camera.get_offset()
+                    offset = self._camera.get_offset()
                     shell.rect.centerx -= offset[0]
                     shell.rect.centery -= offset[1]
 
-            for enemy in enemies:
-                enemy.attack(player.rect.centerx, player.rect.centery)
-                offset = camera.get_offset()
+            for enemy in self._enemies:
+                enemy.attack(self._player.rect.centerx, self._player.rect.centery)
+                offset = self._camera.get_offset()
                 enemy.rect.centerx -= offset[0]
                 enemy.rect.centery -= offset[1]
                 enemy.update(self._main_game_window)
-                enemy.attack(player.rect.centerx, player.rect.centery)
+                enemy.attack(self._player.rect.centerx, self._player.rect.centery)
 
-            for enemy in enemies:
-                for shell in shells_player:
+            for enemy in self._enemies:
+                for shell in self._shells:
                     if shell:
                         if pygame.sprite.collide_rect(enemy, shell):
-                            shells_player.remove(shell)
-                            enemy.current_health -= player.amount_damage
+                            self._shells.remove(shell)
+                            enemy.current_health -= self._player.amount_damage
                             enemy.current_health -= shell.amount_additional_damage
 
-                            dx = float(player.rect.centerx - enemy.rect.centerx)
-                            dy = float(player.rect.centery - enemy.rect.centery)
+                            dx = float(self._player.rect.centerx - enemy.rect.centerx)
+                            dy = float(self._player.rect.centery - enemy.rect.centery)
                             length = math.sqrt(dx ** 2 + dy ** 2)
                             enemy.is_enemy_angry = True
                             enemy.show_aggression_to_attack_player(dx, dy, length)
@@ -517,24 +431,24 @@ class Game:
                             test_cur = enemy.current_health
                             test_max = enemy.max_amount_health
                             if enemy.current_health < 0:
-                                player.current_experience += enemy.experience_for_killing
+                                self._player.current_experience += enemy.experience_for_killing
 
-                                if enemy in enemies:
-                                    enemies.remove(enemy)
+                                if enemy in self._enemies:
+                                    self._enemies.remove(enemy)
                                 text = None
                                 test_cur = None
                                 test_max = None
 
-            camera.update(player)
-            player.update(self._main_game_window)
+            self._camera.update(self._player)
+            self._player.update(self._main_game_window)
 
-            for quest in quests:
-                if not enemies:
+            for quest in self._quests:
+                if not self._enemies:
                     quest.completed = True
-                    player.current_experience += quest.experience
-                    if quest.title not in names_done_quests:
-                        names_done_quests.append(quest.title)
-                    quests.remove(quest)
+                    self._player.current_experience += quest.experience
+                    if quest not in self._names_done_quests:
+                        self._names_done_quests.append(quest.title)
+                    self._quests.remove(quest)
 
             if text is not None:
                 Drawer.draw_bar(self._main_game_window, constants.GAME_WINDOW_WIDTH // 2, 10,
@@ -544,15 +458,17 @@ class Game:
                                  constants.GAME_WINDOW_WIDTH // 2,
                                  9)
 
-            Drawer.draw_text(self._main_game_window, player.name, 15, constants.WHITE_COLOR_TITLE_BLOCKS,
-                             player.rect.centerx,
-                             player.rect.centery + player.rect.height // 2 + 5)
-            Drawer.draw_bar(self._main_game_window, constants.GAME_WINDOW_WIDTH // 2, constants.GAME_WINDOW_HEIGHT * 0.86,
+            Drawer.draw_text(self._main_game_window, self._player.name, 15, constants.WHITE_COLOR_TITLE_BLOCKS,
+                             self._player.rect.centerx,
+                             self._player.rect.centery + self._player.rect.height // 2 + 5)
+            Drawer.draw_bar(self._main_game_window, constants.GAME_WINDOW_WIDTH // 2,
+                            constants.GAME_WINDOW_HEIGHT * 0.86,
                             constants.WHITE_COLOR_TITLE_BLOCKS,
-                            player.current_experience, player.experience_up_level, 310, 5, True)
-            Drawer.draw_bar(self._main_game_window, constants.GAME_WINDOW_WIDTH // 2 - 70, constants.GAME_WINDOW_HEIGHT - 70,
-                            constants.STAMINA_BAR_COLOR, player.current_stamina,
-                            player.max_stamina, 90, 14, True)
+                            self._player.current_experience, self._player.experience_up_level, 310, 5, True)
+            Drawer.draw_bar(self._main_game_window, constants.GAME_WINDOW_WIDTH // 2 - 70,
+                            constants.GAME_WINDOW_HEIGHT - 70,
+                            constants.STAMINA_BAR_COLOR, self._player.current_stamina,
+                            self._player.max_stamina, 90, 14, True)
 
             pygame.display.flip()  # for double buffering
             clock.tick(constants.FPS_LOCKING)
