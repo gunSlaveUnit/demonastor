@@ -159,7 +159,7 @@ def run_game(data_for_loading=None):
                     random.randint(-constants.GAME_WINDOW_HEIGHT, constants.GAME_WINDOW_HEIGHT))
         trees.append(tree)
 
-    camera = Camera((constants.GAME_WINDOW_WIDTH, constants.GAME_WINDOW_HEIGHT))
+    camera = Camera()
 
     things = []
 
