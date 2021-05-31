@@ -3,7 +3,7 @@ import random
 import pygame
 
 from healthpotion import HealthPotion
-from key import Key
+from Key import Key
 from manapotion import ManaPotion
 import Coin
 import GameEnums

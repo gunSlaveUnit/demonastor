@@ -28,7 +28,7 @@ from Player import Player
 from Camera import Camera
 from Chest import Chest
 from Drawer import Drawer
-from map import Map
+from Map import Map
 from tree import Tree
 
 
