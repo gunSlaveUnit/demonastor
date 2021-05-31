@@ -29,7 +29,7 @@ from Camera import Camera
 from Chest import Chest
 from Drawer import Drawer
 from Map import Map
-from tree import Tree
+from Tree import Tree
 
 
 class Game:
@@ -50,9 +50,11 @@ class Game:
         self._chests = self._create_chests()
         self._trees = [
             Tree(random.randint(-Constants.GAME_WINDOW_WIDTH, Constants.GAME_WINDOW_WIDTH),
-                 random.randint(-Constants.GAME_WINDOW_HEIGHT, Constants.GAME_WINDOW_HEIGHT)),
+                 random.randint(-Constants.GAME_WINDOW_HEIGHT, Constants.GAME_WINDOW_HEIGHT),
+                 'resources/images/trees/tree.png'),
             Tree(random.randint(-Constants.GAME_WINDOW_WIDTH, Constants.GAME_WINDOW_WIDTH),
-                 random.randint(-Constants.GAME_WINDOW_HEIGHT, Constants.GAME_WINDOW_HEIGHT)),
+                 random.randint(-Constants.GAME_WINDOW_HEIGHT, Constants.GAME_WINDOW_HEIGHT),
+                 'resources/images/trees/tree.png'),
         ]
         pygame.display.set_caption(Constants.GAME_WINDOW_TITLE)
         icon = pygame.image.load('resources/images/icons/icon.png')
