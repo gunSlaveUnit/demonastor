@@ -2,7 +2,7 @@ import random
 
 import pygame
 
-import bar
+import Bar
 import constants
 import fireball
 import game_enums
@@ -24,12 +24,10 @@ class Player(Character):
         self._experience_up_level = 1000 * pow(1.1, self._level)
         self._selected_attack = game_enums.AttackTypes.FIREBALL.value
         self._inventory = inventory.Inventory()
-        self._health_bar = bar.Bar(constants.GAME_WINDOW_WIDTH // 2 - 250,
-                                   constants.GAME_WINDOW_HEIGHT - 96,
-                                   game_enums.PlayerBarTypes.HEALTH.value)
-        self._mana_bar = bar.Bar(constants.GAME_WINDOW_WIDTH // 2 + 155,
-                                 constants.GAME_WINDOW_HEIGHT - 96,
-                                 game_enums.PlayerBarTypes.MANA.value)
+        self._health_bar = Bar.Bar(constants.GAME_WINDOW_WIDTH // 2 - 250,
+                                   constants.GAME_WINDOW_HEIGHT - 96, 'resources/images/bars/health_bar.png')
+        self._mana_bar = Bar.Bar(constants.GAME_WINDOW_WIDTH // 2 + 155,
+                                 constants.GAME_WINDOW_HEIGHT - 96, 'resources/images/bars/mana_bar.png')
         if saved_params is None:
             self._level = 1
             self._current_experience = 0
