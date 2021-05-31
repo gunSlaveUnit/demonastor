@@ -39,7 +39,6 @@ class Character(GameObject):
         self._last_attack_time = pygame.time.get_ticks()
         self._last_regeneration_time = pygame.time.get_ticks()
         self._last_changing_direction_time = pygame.time.get_ticks()
-        self._last_changing_image_time = pygame.time.get_ticks()
         self._amount_damage = 0
         self._speed_changing = 0
         self._speed_x = 0

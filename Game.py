@@ -56,6 +56,10 @@ class Game:
                  random.randint(-Constants.GAME_WINDOW_HEIGHT, Constants.GAME_WINDOW_HEIGHT),
                  'resources/images/trees/tree.png'),
         ]
+
+    @staticmethod
+    def _customize_window():
+        # pygame.display.toggle_fullscreen()
         pygame.display.set_caption(Constants.GAME_WINDOW_TITLE)
         icon = pygame.image.load('resources/images/icons/icon.png')
         pygame.display.set_icon(icon)
@@ -76,13 +80,6 @@ class Game:
                                     'resources/images/chests/closed_chest.png',
                                     is_chest_need_key=False))
         return chests
-
-    @staticmethod
-    def _customize_window():
-        # pygame.display.toggle_fullscreen()
-        pygame.display.set_caption(Constants.GAME_WINDOW_TITLE)
-        icon = pygame.image.load('resources/images/icons/icon.png')
-        pygame.display.set_icon(icon)
 
     def show_start_menu(self):
         # TODO: add mouse menu control

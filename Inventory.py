@@ -42,7 +42,7 @@ class Inventory:
                                       'resources/images/coins/bronze_coin.png',
                                       GameEnums.CoinTypes.BRONZE), 0, None]
         }
-        self._inventory_cells = list()
+        self._cells = list()
         self._index_cell_to_add_new_resource = 0
 
         self._start_cell_to_move_item = 0
@@ -56,7 +56,7 @@ class Inventory:
             for y in range(Constants.GAME_WINDOW_HEIGHT // 2 - self._height // 2,
                            Constants.GAME_WINDOW_HEIGHT // 2 - self._height // 2 + 7 * 40, 40):
                 cell = pygame.Rect(x, y, 40, 40)
-                self._inventory_cells.append(cell)
+                self._cells.append(cell)
 
     def append_resource(self, resource_to_add):
         if resource_to_add.resource_name in self._resources:
@@ -72,7 +72,7 @@ class Inventory:
                              self._inventory_rect, self._frame_thickness)
 
         def draw_inventory_cells():
-            for cell in self._inventory_cells:
+            for cell in self._cells:
                 x, y = cell.left, cell.top
                 pygame.draw.rect(surface, Constants.TEST_COLOR, (x, y, 40, 40))
                 pygame.draw.rect(surface, (0, 0, 0), (x, y, 40, 40), self._frame_thickness)
@@ -97,23 +97,23 @@ class Inventory:
             if clicked[0] and not is_left_mouse_button_hold:
                 start_coordinates = pygame.mouse.get_pos()
                 is_left_mouse_button_hold = True
-                for i in range(len(self._inventory_cells)):
-                    if (self._inventory_cells[i].left < start_coordinates[0] < self._inventory_cells[i].right
+                for i in range(len(self._cells)):
+                    if (self._cells[i].left < start_coordinates[0] < self._cells[i].right
                             and
-                            self._inventory_cells[i].top < start_coordinates[1] < self._inventory_cells[i].bottom):
+                            self._cells[i].top < start_coordinates[1] < self._cells[i].bottom):
                         self._start_cell_to_move_item = i
             if is_left_mouse_button_hold and not clicked[0]:
                 end_coordinates = pygame.mouse.get_pos()
                 is_left_mouse_button_hold = False
-                for i in range(len(self._inventory_cells)):
-                    if (self._inventory_cells[i].left < end_coordinates[0] < self._inventory_cells[i].right
+                for i in range(len(self._cells)):
+                    if (self._cells[i].left < end_coordinates[0] < self._cells[i].right
                             and
-                            self._inventory_cells[i].top < end_coordinates[1] < self._inventory_cells[i].bottom):
+                            self._cells[i].top < end_coordinates[1] < self._cells[i].bottom):
                         self._end_cell_to_move_item = i
                 for resource in self._resources.values():
                     if resource[2] == self._start_cell_to_move_item:
-                        pygame.draw.rect(surface, Constants.TEST_COLOR, (self._inventory_cells[resource[2]].left + 3,
-                                                                         self._inventory_cells[resource[2]].top + 3,
+                        pygame.draw.rect(surface, Constants.TEST_COLOR, (self._cells[resource[2]].left + 3,
+                                                                         self._cells[resource[2]].top + 3,
                                                                          34, 34))
                         resource[2] = self._end_cell_to_move_item
 
@@ -137,13 +137,13 @@ class Inventory:
             pygame.display.flip()
             for name, resource in self._resources.items():
                 if name != 'gold_coin' and name != 'silver_coin' and name != 'bronze_coin':
-                    resource[0].rect.centerx = self._inventory_cells[resource[2]].centerx
-                    resource[0].rect.centery = self._inventory_cells[resource[2]].centery
+                    resource[0].rect.centerx = self._cells[resource[2]].centerx
+                    resource[0].rect.centery = self._cells[resource[2]].centery
                     surface.blit(resource[0].image, resource[0].rect)
                     Drawer.draw_text(surface, str(resource[1]), 20,
                                      Constants.WHITE_COLOR_TITLE_BLOCKS,
-                                     self._inventory_cells[resource[2]].centerx + 10,
-                                     self._inventory_cells[resource[2]].centery + 5)
+                                     self._cells[resource[2]].centerx + 10,
+                                     self._cells[resource[2]].centery + 5)
             pygame.display.flip()
             clock.tick(Constants.FPS_LOCKING)
 

@@ -13,9 +13,6 @@ In this file the program is started
 # TODO: make collisions
 # TODO: we need to add exceptions
 
-# TODO: для сохранения мы можем просто пихать в качестве аргумента при создании объекта словарь
-# TODO: можно добавить скриншоты и запись видео
-
 # TODO: make an additional panel with some resources, for example, with potions
 
 # TODO: Several main tasks:

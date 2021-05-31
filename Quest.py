@@ -41,7 +41,77 @@ class Quest:
                   [
                        'resources/images/enemy/enemy_moving_down.png'
                   ]]
-                  )
+                  ),
+            Enemy(random.randint(0, Constants.GAME_WINDOW_WIDTH), random.randint(0, Constants.GAME_WINDOW_HEIGHT),
+                  [[
+                      'resources/images/enemy/enemy_moving_left.png'
+                  ],
+                      [
+                          'resources/images/enemy/enemy_moving_right.png'
+                      ],
+                      [
+                          'resources/images/enemy/enemy_moving_up.png'
+                      ],
+                      [
+                          'resources/images/enemy/enemy_moving_down.png'
+                      ]]
+                  ),
+            Enemy(random.randint(0, Constants.GAME_WINDOW_WIDTH), random.randint(0, Constants.GAME_WINDOW_HEIGHT),
+                  [[
+                      'resources/images/enemy/enemy_moving_left.png'
+                  ],
+                      [
+                          'resources/images/enemy/enemy_moving_right.png'
+                      ],
+                      [
+                          'resources/images/enemy/enemy_moving_up.png'
+                      ],
+                      [
+                          'resources/images/enemy/enemy_moving_down.png'
+                      ]]
+                  ),
+            Enemy(random.randint(0, Constants.GAME_WINDOW_WIDTH), random.randint(0, Constants.GAME_WINDOW_HEIGHT),
+                  [[
+                      'resources/images/enemy/enemy_moving_left.png'
+                  ],
+                      [
+                          'resources/images/enemy/enemy_moving_right.png'
+                      ],
+                      [
+                          'resources/images/enemy/enemy_moving_up.png'
+                      ],
+                      [
+                          'resources/images/enemy/enemy_moving_down.png'
+                      ]]
+                  ),
+            Enemy(random.randint(0, Constants.GAME_WINDOW_WIDTH), random.randint(0, Constants.GAME_WINDOW_HEIGHT),
+                  [[
+                      'resources/images/enemy/enemy_moving_left.png'
+                  ],
+                      [
+                          'resources/images/enemy/enemy_moving_right.png'
+                      ],
+                      [
+                          'resources/images/enemy/enemy_moving_up.png'
+                      ],
+                      [
+                          'resources/images/enemy/enemy_moving_down.png'
+                      ]]
+                  ),
+            Enemy(random.randint(0, Constants.GAME_WINDOW_WIDTH), random.randint(0, Constants.GAME_WINDOW_HEIGHT),
+                  [[
+                      'resources/images/enemy/enemy_moving_left.png'
+                  ],
+                      [
+                          'resources/images/enemy/enemy_moving_right.png'
+                      ],
+                      [
+                          'resources/images/enemy/enemy_moving_up.png'
+                      ],
+                      [
+                          'resources/images/enemy/enemy_moving_down.png'
+                      ]]
+                  ),
         ]
 
     @property
