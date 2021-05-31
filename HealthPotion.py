@@ -35,12 +35,6 @@ class HealthPotion(GameObject):
         elif volume == GameEnums.PotionVolume.HUGE.value:
             return 'Huge\nHealth\nPotion', 25, 35, 'huge_health_potion'
 
-    def update(self, surface, *args, **kwargs):
-        self._draw(surface)
-
-    def _draw(self, surface, *args, **kwargs):
-        surface.blit(self._image, self._rect)
-
     @property
     def regen_amount(self):
         return self._regen_amount

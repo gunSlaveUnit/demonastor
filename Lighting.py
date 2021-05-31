@@ -20,12 +20,6 @@ class Lighting(GameObject):
 
         self._amount_damage = random.randint(5, 10)
 
-    def update(self, surface, *args, **kwargs):
-        self._draw(surface)
-        self._move()
-
-        self._amount_damage = random.randint(5, 10)
-
     def _draw(self, surface, *args, **kwargs):
         if self._current_number_image_in_animation == self._amount_images_in_animation:
             self._current_number_image_in_animation = 0

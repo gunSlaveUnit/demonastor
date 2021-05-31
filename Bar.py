@@ -17,7 +17,6 @@ class Bar(GameObject):
         super().__init__(center_x, center_y, basic_image)
 
     def update(self, surface, *args, **kwargs):
-        # self.__draw(surface, player_current_characteristic, player_max_characteristic)
         self._draw(surface, args[0], args[1])
 
     def _draw(self, surface, *args, **kwargs):

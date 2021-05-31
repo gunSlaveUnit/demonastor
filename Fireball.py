@@ -30,15 +30,6 @@ class Fireball(GameObject):
 
         self._amount_damage = random.randint(1, 5)
 
-    def update(self, surface, *args, **kwargs):
-        self._draw(surface)
-        self._move()
-
-        self._amount_damage = random.randint(1, 5)
-
-    def _draw(self, surface, *args, **kwargs):
-        surface.blit(self._image, (self._rect.centerx, self._rect.centery))
-
     def _move(self):
         self._speed_x = random.randint(5, 10)
         self._speed_y = random.randint(5, 10)

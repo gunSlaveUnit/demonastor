@@ -94,13 +94,11 @@ class GameObject(Sprite):
         This method is just a hook in which to draw the animation of the object with interval or just the object.
         :return: None
         """
-        pass
+        surface.blit(self._image, self._rect)
 
-    def _move(self, *args, **kwargs):
+    def _move(self,):
         """
         This method is just a hook in which to move the object.
-        :param args:
-        :param kwargs:
         :return:
         """
         pass

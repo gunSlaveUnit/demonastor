@@ -26,7 +26,7 @@ class Map:
                 map_tile = MapTile.MapTile(init_x, init_y, 'resources/images/map/grass.png')
                 self._map_tiles.append(map_tile)
 
-    def update(self, surface):
+    def update(self, surface, *args, **kwargs):
         self._draw(surface)
 
     def _draw(self, surface):

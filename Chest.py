@@ -18,12 +18,6 @@ class Chest(GameObject):
         self._is_chest_opened = False
         self._sound_creaking = pygame.mixer.Sound('resources/sounds/chest_creak.wav')
 
-    def update(self, surface, *args, **kwargs):
-        self._draw(surface)
-
-    def _draw(self, surface, *args, **kwargs):
-        surface.blit(self._image, self._rect)
-
     def open(self, is_player_has_key):
         if not self._is_chest_opened:
             if not self._need_key:
@@ -96,7 +90,7 @@ class Chest(GameObject):
             if random_thing == 0:
                 thing = create_random_health_potion()
             if random_thing == 1:
-                thing = create_random_health_potion()
+                thing = create_random_mana_potion()
             if random_thing == 3:
                 thing = Coin.Coin(random_x, random_y,
                                   'resources/images/coins/gold_coin.png',
