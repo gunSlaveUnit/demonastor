@@ -63,7 +63,7 @@ class Game:
     @staticmethod
     def _create_chests():
         chests = []
-        for _ in range(random.randint(2, 5)):
+        for _ in range(random.randint(10, 20)):
             is_need_key = random.randint(0, 2)
             if is_need_key:
                 chests.append(Chest(random.randint(-Constants.GAME_WINDOW_WIDTH, Constants.GAME_WINDOW_WIDTH),
@@ -79,7 +79,7 @@ class Game:
 
     @staticmethod
     def _customize_window():
-        pygame.display.toggle_fullscreen()
+        # pygame.display.toggle_fullscreen()
         pygame.display.set_caption(Constants.GAME_WINDOW_TITLE)
         icon = pygame.image.load('resources/images/icons/icon.png')
         pygame.display.set_icon(icon)
@@ -384,14 +384,15 @@ class Game:
                                 self._things.append(additional_thing)
 
             for potion in self._things:
-                potion.update(self._main_game_window)
-                offset = self._camera.offset
-                potion.rect.centerx -= offset[0]
-                potion.rect.centery -= offset[1]
+                if potion:
+                    potion.update(self._main_game_window)
+                    offset = self._camera.offset
+                    potion.rect.centerx -= offset[0]
+                    potion.rect.centery -= offset[1]
 
-                if pygame.sprite.collide_rect(self._player, potion) and pygame.key.get_pressed()[pygame.K_e]:
-                    self._player.append_thing_to_inventory(potion)
-                    self._things.remove(potion)
+                    if pygame.sprite.collide_rect(self._player, potion) and pygame.key.get_pressed()[pygame.K_e]:
+                        self._player.append_thing_to_inventory(potion)
+                        self._things.remove(potion)
 
             for neutral in self._neutrals:
                 if pygame.sprite.collide_rect(self._player, neutral) and pygame.key.get_pressed()[pygame.K_e]:

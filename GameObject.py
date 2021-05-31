@@ -108,3 +108,7 @@ class GameObject(Sprite):
     @property
     def rect(self):
         return self._rect
+
+    @property
+    def image(self):
+        return self._image

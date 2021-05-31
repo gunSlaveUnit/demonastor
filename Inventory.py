@@ -110,7 +110,7 @@ class Inventory:
                             and
                             self._inventory_cells[i].top < end_coordinates[1] < self._inventory_cells[i].bottom):
                         self._end_cell_to_move_item = i
-                for resource in self.__resources.values():
+                for resource in self._resources.values():
                     if resource[2] == self._start_cell_to_move_item:
                         pygame.draw.rect(surface, Constants.TEST_COLOR, (self._inventory_cells[resource[2]].left + 3,
                                                                          self._inventory_cells[resource[2]].top + 3,
