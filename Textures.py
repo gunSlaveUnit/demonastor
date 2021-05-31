@@ -59,3 +59,10 @@ LIGHTING = [
     ['resources/images/shells/lighting/lightning_4.png'],
     ['resources/images/shells/lighting/lightning_5.png']
 ]
+
+WATERFALL = [
+    ['resources/images/waterfall/waterfall_1.png'],
+    ['resources/images/waterfall/waterfall_2.png'],
+    ['resources/images/waterfall/waterfall_3.png'],
+    ['resources/images/waterfall/waterfall_4.png']
+]
