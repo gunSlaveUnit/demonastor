@@ -59,10 +59,10 @@ class Inventory:
                 self._inventory_cells.append(cell)
 
     def append_resource(self, resource_to_add):
-        if resource_to_add.resource_name in self.__resources:
-            self.__resources[resource_to_add.resource_name][1] += 1
+        if resource_to_add.resource_name in self._resources:
+            self._resources[resource_to_add.resource_name][1] += 1
         else:
-            self.__resources[resource_to_add.resource_name] = \
+            self._resources[resource_to_add.resource_name] = \
                 [resource_to_add, 1, self._index_cell_to_add_new_resource]
             self._index_cell_to_add_new_resource += 1
 

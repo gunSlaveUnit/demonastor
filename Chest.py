@@ -64,6 +64,6 @@ class Chest(GameObject):
                                   'resources/images/coins/bronze_coin.png',
                                   GameEnums.CoinTypes.BRONZE)
             if random_thing == 6:
-                thing = Key(random_x, random_y)
+                thing = Key(random_x, random_y, basic_image='resources/images/chests/key.png')
             content_local.append(thing)
         return content_local

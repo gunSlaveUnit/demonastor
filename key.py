@@ -1,33 +1,17 @@
-import pygame
+from GameObject import GameObject
 
 
-class Key(pygame.sprite.Sprite):
-    def __init__(self, init_center_x, init_center_y):
-        super().__init__()
-        self.__image = pygame.image.load('resources/images/chests/key.png').convert()
-        self.__rect = self.__image.get_rect()
-        self.__rect.centerx = init_center_x
-        self.__rect.centery = init_center_y
-        self.__resource_name = 'key'
+class Key(GameObject):
+    def __init__(self, center_x, center_y, basic_image):
+        super().__init__(center_x, center_y, basic_image)
+        self._resource_name = 'key'
 
-    def update(self, surface):
-        self.__draw(surface)
+    def update(self, surface, *args, **kwargs):
+        self._draw(surface)
 
-    def __draw(self, surface):
-        surface.blit(self.__image, self.__rect)
-
-    @property
-    def rect(self):
-        return self.__rect
-
-    @rect.setter
-    def rect(self, new_value):
-        self.__rect = new_value
-
-    @property
-    def image(self):
-        return self.__image
+    def _draw(self, surface, *args, **kwargs):
+        surface.blit(self._image, self._rect)
 
     @property
     def resource_name(self):
-        return self.__resource_name
+        return self._resource_name
