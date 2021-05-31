@@ -20,13 +20,8 @@ class Camera:
         """
         Creates a camera following the player.
         """
-        self.__dx = 0
-        self.__dy = 0
-
-    def get_offset(self):
-        # game_object.get_rect().centerx -= self.__dx
-        # game_object.get_rect().centery -= self.__dy
-        return self.__dx, self.__dy
+        self._dx = 0
+        self._dy = 0
 
     def update(self, target):
         """
@@ -34,7 +29,11 @@ class Camera:
         :param target: player object with rect attribute. An object of the Sprite class.
         :return: None
         """
-        self.__dx = target.rect.centerx - constants.GAME_WINDOW_WIDTH // 2
-        self.__dy = target.rect.centery - constants.GAME_WINDOW_HEIGHT // 2
+        self._dx = target.rect.centerx - constants.GAME_WINDOW_WIDTH // 2
+        self._dy = target.rect.centery - constants.GAME_WINDOW_HEIGHT // 2
         target.rect.centerx = constants.GAME_WINDOW_WIDTH // 2
         target.rect.centery = constants.GAME_WINDOW_HEIGHT // 2
+
+    @property
+    def offset(self):
+        return self._dx, self._dy

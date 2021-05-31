@@ -25,7 +25,7 @@ import Textures
 import constants
 from Neutral import Neutral
 from Player import Player
-from camera import Camera
+from Camera import Camera
 from chest import Chest
 from drawer import Drawer
 from map import Map
@@ -355,12 +355,12 @@ class Game:
 
             self._map.update(self._main_game_window)
             for tile in self._map.map_tiles:
-                offset = self._camera.get_offset()
+                offset = self._camera.offset
                 tile.rect.centerx -= offset[0]
                 tile.rect.centery -= offset[1]
 
             for chest in self._chests:
-                offset = self._camera.get_offset()
+                offset = self._camera.offset
                 chest.rect.centerx -= offset[0]
                 chest.rect.centery -= offset[1]
                 chest.update(self._main_game_window)
@@ -373,7 +373,7 @@ class Game:
 
             for potion in self._things:
                 potion.update(self._main_game_window)
-                offset = self._camera.get_offset()
+                offset = self._camera.offset
                 potion.rect.centerx -= offset[0]
                 potion.rect.centery -= offset[1]
 
@@ -386,7 +386,7 @@ class Game:
                     self._quests.append(neutral.quest)
                     neutral.vision_quest_mark = False
 
-            offset = self._camera.get_offset()
+            offset = self._camera.offset
             for neutral in self._neutrals:
                 neutral.update(self._main_game_window)
                 neutral.rect.centerx -= offset[0]
@@ -394,20 +394,20 @@ class Game:
 
             for tree in self._trees:
                 tree.update(self._main_game_window)
-                offset = self._camera.get_offset()
+                offset = self._camera.offset
                 tree.rect.centerx -= offset[0]
                 tree.rect.centery -= offset[1]
 
             for shell in self._shells:
                 if shell:
                     shell.update(self._main_game_window)
-                    offset = self._camera.get_offset()
+                    offset = self._camera.offset
                     shell.rect.centerx -= offset[0]
                     shell.rect.centery -= offset[1]
 
             for enemy in self._enemies:
                 enemy.attack(self._player.rect.centerx, self._player.rect.centery)
-                offset = self._camera.get_offset()
+                offset = self._camera.offset
                 enemy.rect.centerx -= offset[0]
                 enemy.rect.centery -= offset[1]
                 enemy.update(self._main_game_window)
