@@ -52,11 +52,17 @@ class Chest(GameObject):
             if random_thing == 1:
                 thing = ManaPotion(random_x, random_y)
             if random_thing == 3:
-                thing = Coin.Coin(random_x, random_y, game_enums.CoinTypes.GOLD)
+                thing = Coin.Coin(random_x, random_y,
+                                  'resources/images/coins/gold_coin.png',
+                                  game_enums.CoinTypes.GOLD)
             if random_thing == 4:
-                thing = Coin.Coin(random_x, random_y, game_enums.CoinTypes.SILVER)
+                thing = Coin.Coin(random_x, random_y,
+                                  'resources/images/coins/silver_coin.png',
+                                  game_enums.CoinTypes.SILVER)
             if random_thing == 5:
-                thing = Coin.Coin(random_x, random_y, game_enums.CoinTypes.BRONZE)
+                thing = Coin.Coin(random_x, random_y,
+                                  'resources/images/coins/bronze_coin.png',
+                                  game_enums.CoinTypes.BRONZE)
             if random_thing == 6:
                 thing = Key(random_x, random_y)
             content_local.append(thing)

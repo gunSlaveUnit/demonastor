@@ -12,59 +12,46 @@ File contains a description of Fireball class
 import math
 import random
 
-import pygame
-
 import Constants
+from GameObject import GameObject
 
 
-class Fireball(pygame.sprite.Sprite):
-    def __init__(self, init_center_x, init_center_y, shooting_direction):
-        super().__init__()
-        self.__image = pygame.image.load('resources/images/shells/fireball.png').convert()
-        self.__rect = self.rect = self.__image.get_rect()
-        self.__rect.centerx = init_center_x
-        self.__rect.centery = init_center_y
+class Fireball(GameObject):
+    def __init__(self, center_x, center_y, basic_image, shooting_direction):
+        super().__init__(center_x, center_y, basic_image)
 
-        __length = math.sqrt(shooting_direction[0] ** 2 + shooting_direction[1] ** 2)
-        if __length == 0:
-            __length = 1
-        self.__direction = (shooting_direction[0] / __length, shooting_direction[1] / __length)
+        _length = math.sqrt(shooting_direction[0] ** 2 + shooting_direction[1] ** 2)
+        if _length == 0:
+            _length = 1
+        self._direction = (shooting_direction[0] / _length, shooting_direction[1] / _length)
 
-        self.__speed_x = random.randint(5, 10)
-        self.__speed_y = random.randint(5, 10)
-
-        self.__amount_damage = random.randint(1, 5)
-
-    def update(self, surface):
-        self.__draw(surface)
-        self.__move()
-
-        self.__amount_damage = random.randint(1, 5)
-
-    def __draw(self, surface):
-        surface.blit(self.__image, (self.__rect.centerx, self.__rect.centery))
-
-    def __move(self):
         self._speed_x = random.randint(5, 10)
         self._speed_y = random.randint(5, 10)
 
-        self.__rect.centerx += self.__direction[0] * self.__speed_x
-        self.__rect.centery += self.__direction[1] * self.__speed_x
+        self._amount_damage = random.randint(1, 5)
 
-        if self.__rect.bottom < 0 or \
-                self.__rect.left < 0 or \
-                self.__rect.top > Constants.GAME_WINDOW_HEIGHT or \
-                self.__rect.right > Constants.GAME_WINDOW_WIDTH:
+    def update(self, surface, *args, **kwargs):
+        self._draw(surface)
+        self._move()
+
+        self._amount_damage = random.randint(1, 5)
+
+    def _draw(self, surface, *args, **kwargs):
+        surface.blit(self._image, (self._rect.centerx, self._rect.centery))
+
+    def _move(self):
+        self._speed_x = random.randint(5, 10)
+        self._speed_y = random.randint(5, 10)
+
+        self._rect.centerx += self._direction[0] * self._speed_x
+        self._rect.centery += self._direction[1] * self._speed_x
+
+        if self._rect.bottom < 0 or \
+                self._rect.left < 0 or \
+                self._rect.top > Constants.GAME_WINDOW_HEIGHT or \
+                self._rect.right > Constants.GAME_WINDOW_WIDTH:
             self.kill()
 
     @property
     def amount_additional_damage(self):
-        return self.__amount_damage
-
-    @property
-    def rect(self):
-        return self.__rect
-
-    @rect.setter
-    def rect(self, new_value):
-        self.__rect = new_value
+        return self._amount_damage

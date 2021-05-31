@@ -88,6 +88,7 @@ class Player(Character):
             self._last_attack_time = now
             if self._selected_attack == game_enums.AttackTypes.FIREBALL.value:
                 shell = fireball.Fireball(self._rect.centerx, self._rect.centery,
+                                          'resources/images/shells/fireball.png',
                                           (float(pygame.mouse.get_pos()[0] - self._rect.centerx),
                                            float(pygame.mouse.get_pos()[1] - self._rect.centery)))
                 self._current_mana -= 4
