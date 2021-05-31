@@ -26,7 +26,7 @@ import constants
 from Neutral import Neutral
 from Player import Player
 from Camera import Camera
-from chest import Chest
+from Chest import Chest
 from drawer import Drawer
 from map import Map
 from tree import Tree
@@ -47,14 +47,7 @@ class Game:
         self._camera = Camera()
         self._shells = []
         self._things = []
-        self._chests = [
-            Chest(random.randint(-constants.GAME_WINDOW_WIDTH, constants.GAME_WINDOW_WIDTH),
-                  random.randint(-constants.GAME_WINDOW_HEIGHT, constants.GAME_WINDOW_HEIGHT),
-                  is_chest_need_key=False),
-            Chest(random.randint(-constants.GAME_WINDOW_WIDTH, constants.GAME_WINDOW_WIDTH),
-                  random.randint(-constants.GAME_WINDOW_HEIGHT, constants.GAME_WINDOW_HEIGHT),
-                  is_chest_need_key=True)
-        ]
+        self._chests = self._create_chests()
         self._trees = [
             Tree(random.randint(-constants.GAME_WINDOW_WIDTH, constants.GAME_WINDOW_WIDTH),
                  random.randint(-constants.GAME_WINDOW_HEIGHT, constants.GAME_WINDOW_HEIGHT)),
@@ -64,6 +57,23 @@ class Game:
         pygame.display.set_caption(constants.GAME_WINDOW_TITLE)
         icon = pygame.image.load('resources/images/icons/icon.png')
         pygame.display.set_icon(icon)
+
+    @staticmethod
+    def _create_chests():
+        chests = []
+        for _ in range(random.randint(2, 5)):
+            is_need_key = random.randint(0, 2)
+            if is_need_key:
+                chests.append(Chest(random.randint(-constants.GAME_WINDOW_WIDTH, constants.GAME_WINDOW_WIDTH),
+                                    random.randint(-constants.GAME_WINDOW_HEIGHT, constants.GAME_WINDOW_HEIGHT),
+                                    'resources/images/chests/chest_with_key.png',
+                                    is_chest_need_key=True))
+            else:
+                chests.append(Chest(random.randint(-constants.GAME_WINDOW_WIDTH, constants.GAME_WINDOW_WIDTH),
+                                    random.randint(-constants.GAME_WINDOW_HEIGHT, constants.GAME_WINDOW_HEIGHT),
+                                    'resources/images/chests/closed_chest.png',
+                                    is_chest_need_key=False))
+        return chests
 
     @staticmethod
     def _customize_window():
