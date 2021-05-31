@@ -13,7 +13,7 @@ The file describes a Map class
 import random
 
 import Constants
-import maptile
+import MapTile
 
 
 class Map:
@@ -23,7 +23,7 @@ class Map:
                             random.randint(500, 524)):
             for init_y in range(-Constants.GAME_WINDOW_HEIGHT * 2, Constants.GAME_WINDOW_HEIGHT * 2,
                                 random.randint(300, 340)):
-                map_tile = maptile.MapTile(init_x, init_y, 'resources/images/map/grass.png')
+                map_tile = MapTile.MapTile(init_x, init_y, 'resources/images/map/grass.png')
                 self._map_tiles.append(map_tile)
 
     def update(self, surface):
