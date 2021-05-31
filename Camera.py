@@ -12,7 +12,7 @@ calculated so that there is an illusion that the player is approaching them.
 # ! usr/bin/env python3
 # -*- coding: utf8 -*-
 
-import constants
+import Constants
 
 
 class Camera:
@@ -29,10 +29,10 @@ class Camera:
         :param target: player object with rect attribute. An object of the Sprite class.
         :return: None
         """
-        self._dx = target.rect.centerx - constants.GAME_WINDOW_WIDTH // 2
-        self._dy = target.rect.centery - constants.GAME_WINDOW_HEIGHT // 2
-        target.rect.centerx = constants.GAME_WINDOW_WIDTH // 2
-        target.rect.centery = constants.GAME_WINDOW_HEIGHT // 2
+        self._dx = target.rect.centerx - Constants.GAME_WINDOW_WIDTH // 2
+        self._dy = target.rect.centery - Constants.GAME_WINDOW_HEIGHT // 2
+        target.rect.centerx = Constants.GAME_WINDOW_WIDTH // 2
+        target.rect.centery = Constants.GAME_WINDOW_HEIGHT // 2
 
     @property
     def offset(self):

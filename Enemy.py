@@ -46,6 +46,8 @@ class Enemy(Character):
             self._move()
 
     def show_aggression_to_attack_player(self, dx, dy, length):
+        if length == 0:
+            length = 1
         direction_to_player = (dx / length, dy / length)
         if direction_to_player[0] < 0.0:
             self._current_direction_moving = self._DIRECTIONS_MOVING['LEFT']

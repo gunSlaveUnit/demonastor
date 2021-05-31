@@ -1,6 +1,6 @@
 import random
 
-import constants
+import Constants
 from Enemy import Enemy
 
 
@@ -14,9 +14,9 @@ class Quest:
         if location_border is None:
             self.__border = {
                 'LEFT': 0,
-                'RIGHT': constants.GAME_WINDOW_WIDTH,
+                'RIGHT': Constants.GAME_WINDOW_WIDTH,
                 'UP': 0,
-                'DOWN': constants.GAME_WINDOW_HEIGHT,
+                'DOWN': Constants.GAME_WINDOW_HEIGHT,
             }
         else:
             self.__border = location_border
@@ -27,7 +27,7 @@ class Quest:
 
     def __create_quest_objects(self):
         return [
-            Enemy(random.randint(0, constants.GAME_WINDOW_WIDTH), random.randint(0, constants.GAME_WINDOW_HEIGHT),
+            Enemy(random.randint(0, Constants.GAME_WINDOW_WIDTH), random.randint(0, Constants.GAME_WINDOW_HEIGHT),
                   [[
                       'resources/images/enemy/enemy_moving_left.png'
                   ],

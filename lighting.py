@@ -3,7 +3,7 @@ import random
 
 import pygame
 
-import constants
+import Constants
 
 
 class Lighting(pygame.sprite.Sprite):
@@ -56,8 +56,8 @@ class Lighting(pygame.sprite.Sprite):
 
         if self.__rect.bottom < 0 or \
                 self.__rect.left < 0 or \
-                self.__rect.top > constants.GAME_WINDOW_HEIGHT or \
-                self.__rect.right > constants.GAME_WINDOW_WIDTH:
+                self.__rect.top > Constants.GAME_WINDOW_HEIGHT or \
+                self.__rect.right > Constants.GAME_WINDOW_WIDTH:
             self.kill()
 
     @property

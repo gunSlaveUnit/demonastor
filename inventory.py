@@ -13,10 +13,10 @@ import sys
 
 import pygame
 
-import constants
+import Constants
 import game_enums
-import coin
-from drawer import Drawer
+import Coin
+from Drawer import Drawer
 
 
 class Inventory:
@@ -24,19 +24,22 @@ class Inventory:
         self.__width = 480
         self.__height = 320
         self.__frame_thickness = 3
-        self.__inventory_rect = pygame.Rect(constants.GAME_WINDOW_WIDTH // 2 - self.__width // 2,
-                                            constants.GAME_WINDOW_HEIGHT // 2 - self.__height // 2,
+        self.__inventory_rect = pygame.Rect(Constants.GAME_WINDOW_WIDTH // 2 - self.__width // 2,
+                                            Constants.GAME_WINDOW_HEIGHT // 2 - self.__height // 2,
                                             self.__width, self.__height)
 
         self.__resources = {
-            'gold_coin': [coin.Coin(constants.GAME_WINDOW_WIDTH // 2 - self.__width // 2 + 20,
-                                    constants.GAME_WINDOW_HEIGHT // 2 + self.__height // 2 - 20,
+            'gold_coin': [Coin.Coin(Constants.GAME_WINDOW_WIDTH // 2 - self.__width // 2 + 30,
+                                    Constants.GAME_WINDOW_HEIGHT // 2 + self.__height // 2,
+                                    'resources/images/coins/gold_coin.png',
                                     game_enums.CoinTypes.GOLD), 0, None],
-            'silver_coin': [coin.Coin(constants.GAME_WINDOW_WIDTH // 2 - 30,
-                                      constants.GAME_WINDOW_HEIGHT // 2 + self.__height // 2 - 20,
+            'silver_coin': [Coin.Coin(Constants.GAME_WINDOW_WIDTH // 2 - 20,
+                                      Constants.GAME_WINDOW_HEIGHT // 2 + self.__height // 2,
+                                      'resources/images/coins/silver_coin.png',
                                       game_enums.CoinTypes.SILVER), 0, None],
-            'bronze_coin': [coin.Coin(constants.GAME_WINDOW_WIDTH // 2 + self.__width // 2 - 70,
-                                      constants.GAME_WINDOW_HEIGHT // 2 + self.__height // 2 - 20,
+            'bronze_coin': [Coin.Coin(Constants.GAME_WINDOW_WIDTH // 2 + self.__width // 2 - 60,
+                                      Constants.GAME_WINDOW_HEIGHT // 2 + self.__height // 2,
+                                      'resources/images/coins/bronze_coin.png',
                                       game_enums.CoinTypes.BRONZE), 0, None]
         }
         self.__inventory_cells = list()
@@ -48,10 +51,10 @@ class Inventory:
         self.__create_inventory_cells()
 
     def __create_inventory_cells(self):
-        for x in range(constants.GAME_WINDOW_WIDTH // 2 - self.__width // 2,
-                       constants.GAME_WINDOW_WIDTH // 2 - self.__width // 2 + 12 * 40, 40):
-            for y in range(constants.GAME_WINDOW_HEIGHT // 2 - self.__height // 2,
-                           constants.GAME_WINDOW_HEIGHT // 2 - self.__height // 2 + 7 * 40, 40):
+        for x in range(Constants.GAME_WINDOW_WIDTH // 2 - self.__width // 2,
+                       Constants.GAME_WINDOW_WIDTH // 2 - self.__width // 2 + 12 * 40, 40):
+            for y in range(Constants.GAME_WINDOW_HEIGHT // 2 - self.__height // 2,
+                           Constants.GAME_WINDOW_HEIGHT // 2 - self.__height // 2 + 7 * 40, 40):
                 cell = pygame.Rect(x, y, 40, 40)
                 self.__inventory_cells.append(cell)
 
@@ -65,13 +68,13 @@ class Inventory:
 
     def draw_inventory(self, surface):
         def draw_outer_frame():
-            pygame.draw.rect(surface, constants.DARK_ORANGE_HIGHLIGHTED_MENU_ITEM,
+            pygame.draw.rect(surface, Constants.DARK_ORANGE_HIGHLIGHTED_MENU_ITEM,
                              self.__inventory_rect, self.__frame_thickness)
 
         def draw_inventory_cells():
             for cell in self.__inventory_cells:
                 x, y = cell.left, cell.top
-                pygame.draw.rect(surface, constants.TEST_COLOR, (x, y, 40, 40))
+                pygame.draw.rect(surface, Constants.TEST_COLOR, (x, y, 40, 40))
                 pygame.draw.rect(surface, (0, 0, 0), (x, y, 40, 40), self.__frame_thickness)
 
         draw_outer_frame()
@@ -109,8 +112,8 @@ class Inventory:
                         self.__end_cell_to_move_item = i
                 for resource in self.__resources.values():
                     if resource[2] == self.__start_cell_to_move_item:
-                        pygame.draw.rect(surface, constants.TEST_COLOR, (self.__inventory_cells[resource[2]].left+3,
-                                                                         self.__inventory_cells[resource[2]].top+3,
+                        pygame.draw.rect(surface, Constants.TEST_COLOR, (self.__inventory_cells[resource[2]].left + 3,
+                                                                         self.__inventory_cells[resource[2]].top + 3,
                                                                          34, 34))
                         resource[2] = self.__end_cell_to_move_item
 
@@ -119,17 +122,17 @@ class Inventory:
             self.__resources['bronze_coin'][0].update(surface)
 
             Drawer.draw_text(surface, str(self.__resources['gold_coin'][1]), 20,
-                             constants.WHITE_COLOR_TITLE_BLOCKS,
+                             Constants.WHITE_COLOR_TITLE_BLOCKS,
                              self.__resources['gold_coin'][0].rect.right + 10,
-                             self.__resources['gold_coin'][0].rect.top)
+                             self.__resources['gold_coin'][0].rect.top + 10)
             Drawer.draw_text(surface, str(self.__resources['silver_coin'][1]), 20,
-                             constants.WHITE_COLOR_TITLE_BLOCKS,
+                             Constants.WHITE_COLOR_TITLE_BLOCKS,
                              self.__resources['silver_coin'][0].rect.right + 10,
-                             self.__resources['silver_coin'][0].rect.top)
+                             self.__resources['silver_coin'][0].rect.top + 10)
             Drawer.draw_text(surface, str(self.__resources['bronze_coin'][1]), 20,
-                             constants.WHITE_COLOR_TITLE_BLOCKS,
+                             Constants.WHITE_COLOR_TITLE_BLOCKS,
                              self.__resources['bronze_coin'][0].rect.right + 10,
-                             self.__resources['bronze_coin'][0].rect.top)
+                             self.__resources['bronze_coin'][0].rect.top + 10)
 
             pygame.display.flip()
             for name, resource in self.__resources.items():
@@ -138,11 +141,11 @@ class Inventory:
                     resource[0].rect.centery = self.__inventory_cells[resource[2]].centery
                     surface.blit(resource[0].image, resource[0].rect)
                     Drawer.draw_text(surface, str(resource[1]), 20,
-                                     constants.WHITE_COLOR_TITLE_BLOCKS,
+                                     Constants.WHITE_COLOR_TITLE_BLOCKS,
                                      self.__inventory_cells[resource[2]].centerx + 10,
                                      self.__inventory_cells[resource[2]].centery + 5)
             pygame.display.flip()
-            clock.tick(constants.FPS_LOCKING)
+            clock.tick(Constants.FPS_LOCKING)
 
     def get_key_for_chest(self):
         return 'key' in self.__resources

@@ -1,6 +1,6 @@
 import pygame
 
-import constants
+import Constants
 
 
 class Drawer:
@@ -26,4 +26,4 @@ class Drawer:
         fill_rect = pygame.Rect(center_x - bar_length // 2, center_y, fill, bar_height)
         pygame.draw.rect(surface, color, fill_rect)
         if is_frame_need:
-            pygame.draw.rect(surface, constants.WHITE_COLOR_TITLE_BLOCKS, outline_rect, 1)
+            pygame.draw.rect(surface, Constants.WHITE_COLOR_TITLE_BLOCKS, outline_rect, 1)
