@@ -40,7 +40,7 @@ class Game:
         self._customize_window()
         self._player = None
         self._map = Map()
-        self._neutrals = [Neutral(100, 100, Textures.NEUTRAL_TEXTURES)]
+        self._neutrals = [Neutral(100, 100, Textures.NEUTRAL)]
         self._quests = []
         self._names_done_quests = []
         self._enemies = self._neutrals[0].quest.condition
@@ -316,7 +316,7 @@ class Game:
         self._player = Player(
             Constants.GAME_WINDOW_WIDTH // 2,
             Constants.GAME_WINDOW_HEIGHT // 2,
-            animation_images=Textures.PLAYER_TEXTURES,
+            animation_images=Textures.PLAYER,
             saved_params=data
         )
 

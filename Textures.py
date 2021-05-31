@@ -1,4 +1,4 @@
-PLAYER_TEXTURES = [
+PLAYER = [
     [
         'resources/images/player/player_left_moving_0.png',
         'resources/images/player/player_left_moving_1.png',
@@ -25,7 +25,7 @@ PLAYER_TEXTURES = [
     ]
 ]
 
-NEUTRAL_TEXTURES = [
+NEUTRAL = [
     [
         'resources/images/characters/neutral_left_0.png',
         'resources/images/characters/neutral_left_1.png',
@@ -50,4 +50,12 @@ NEUTRAL_TEXTURES = [
         'resources/images/characters/neutral_down_3.png',
         'resources/images/characters/neutral_down_2.png'
     ]
+]
+
+LIGHTING = [
+    ['resources/images/shells/lighting/lightning_1.png'],
+    ['resources/images/shells/lighting/lightning_2.png'],
+    ['resources/images/shells/lighting/lightning_3.png'],
+    ['resources/images/shells/lighting/lightning_4.png'],
+    ['resources/images/shells/lighting/lightning_5.png']
 ]

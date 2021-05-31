@@ -7,7 +7,8 @@ import Constants
 import Fireball
 import GameEnums
 import Inventory
-import lighting
+import Lighting
+import Textures
 from Character import Character
 
 
@@ -94,21 +95,36 @@ class Player(Character):
                 self._current_mana -= 4
                 return [shell]
             else:
-                shell_1 = lighting.Lighting(self._rect.centerx, self._rect.centery,
-                                            (float(pygame.mouse.get_pos()[0] - self._rect.centerx),
-                                             float(pygame.mouse.get_pos()[1] - self._rect.centery)))
-                shell_2 = lighting.Lighting(self._rect.centerx, self._rect.centery,
-                                            (float(pygame.mouse.get_pos()[0] - 50 - self._rect.centerx),
-                                             float(pygame.mouse.get_pos()[1] - 50 - self._rect.centery)))
-                shell_3 = lighting.Lighting(self._rect.centerx, self._rect.centery,
-                                            (float(pygame.mouse.get_pos()[0] - 50 - self._rect.centerx),
-                                             float(pygame.mouse.get_pos()[1] + 50 - self._rect.centery)))
-                shell_4 = lighting.Lighting(self._rect.centerx, self._rect.centery,
-                                            (float(pygame.mouse.get_pos()[0] + 50 - self._rect.centerx),
-                                             float(pygame.mouse.get_pos()[1] - 50 - self._rect.centery)))
-                shell_5 = lighting.Lighting(self._rect.centerx, self._rect.centery,
-                                            (float(pygame.mouse.get_pos()[0] + 50 - self._rect.centerx),
-                                             float(pygame.mouse.get_pos()[1] + 50 - self._rect.centery)))
+                shell_1 = Lighting.Lighting(self._rect.centerx, self._rect.centery,
+                                            animation_images=Textures.LIGHTING,
+                                            shooting_direction=(
+                                                float(pygame.mouse.get_pos()[0] - self._rect.centerx),
+                                                float(pygame.mouse.get_pos()[1] - self._rect.centery))
+                                            )
+                shell_2 = Lighting.Lighting(self._rect.centerx, self._rect.centery,
+                                            animation_images=Textures.LIGHTING,
+                                            shooting_direction=(
+                                                float(pygame.mouse.get_pos()[0] - 50 - self._rect.centerx),
+                                                float(pygame.mouse.get_pos()[1] - 50 - self._rect.centery))
+                                            )
+                shell_3 = Lighting.Lighting(self._rect.centerx, self._rect.centery,
+                                            animation_images=Textures.LIGHTING,
+                                            shooting_direction=(
+                                                float(pygame.mouse.get_pos()[0] - 50 - self._rect.centerx),
+                                                float(pygame.mouse.get_pos()[1] + 50 - self._rect.centery))
+                                            )
+                shell_4 = Lighting.Lighting(self._rect.centerx, self._rect.centery,
+                                            animation_images=Textures.LIGHTING,
+                                            shooting_direction=(
+                                                float(pygame.mouse.get_pos()[0] + 50 - self._rect.centerx),
+                                                float(pygame.mouse.get_pos()[1] - 50 - self._rect.centery))
+                                            )
+                shell_5 = Lighting.Lighting(self._rect.centerx, self._rect.centery,
+                                            animation_images=Textures.LIGHTING,
+                                            shooting_direction=(
+                                                float(pygame.mouse.get_pos()[0] + 50 - self._rect.centerx),
+                                                float(pygame.mouse.get_pos()[1] + 50 - self._rect.centery))
+                                            )
                 self._current_mana -= 20
                 return [shell_1, shell_2, shell_3, shell_4, shell_5]
         return []
