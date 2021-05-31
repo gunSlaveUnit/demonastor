@@ -6,26 +6,27 @@ from Enemy import Enemy
 
 class Quest:
     def __init__(self, player_level, quest_objects=None, location_border=None):
-        self.__player_level = player_level
+        self._player_level = player_level
         if quest_objects is None:
-            self.__condition = self.__create_quest_objects()
+            self._condition = self._create_quest_objects()
         else:
-            self.__condition = quest_objects
+            self._condition = quest_objects
         if location_border is None:
-            self.__border = {
+            self._border = {
                 'LEFT': 0,
                 'RIGHT': Constants.GAME_WINDOW_WIDTH,
                 'UP': 0,
                 'DOWN': Constants.GAME_WINDOW_HEIGHT,
             }
         else:
-            self.__border = location_border
-        self.__completed = False
-        self.__experience_for_ending = 200
+            self._border = location_border
+        self._completed = False
+        self._experience_for_ending = 200
 
-        self.__title = 'Beginning Of Killing'
+        self._title = 'Beginning Of Killing'
 
-    def __create_quest_objects(self):
+    @staticmethod
+    def _create_quest_objects():
         return [
             Enemy(random.randint(0, Constants.GAME_WINDOW_WIDTH), random.randint(0, Constants.GAME_WINDOW_HEIGHT),
                   [[
@@ -45,20 +46,20 @@ class Quest:
 
     @property
     def condition(self):
-        return self.__condition
+        return self._condition
 
     @property
     def experience(self):
-        return self.__experience_for_ending
+        return self._experience_for_ending
 
     @property
     def title(self):
-        return self.__title
+        return self._title
 
     @property
     def completed(self):
-        return self.__completed
+        return self._completed
 
     @completed.setter
     def completed(self, new_value):
-        self.__completed = new_value
+        self._completed = new_value

@@ -1,7 +1,7 @@
 import random
 
-import quest
-import quest_mark
+import Quest
+import QuestMark
 from Character import Character
 
 
@@ -27,8 +27,9 @@ class Neutral(Character):
         self._is_has_quest = True
         self._vision_quest_mark = True
         if self._is_has_quest:
-            self._quest = quest.Quest(self._level)
-            self._quest_mark = quest_mark.QuestMark(self._rect.centerx, self._rect.top - 10)
+            self._quest = Quest.Quest(self._level)
+            self._quest_mark = QuestMark.QuestMark(self._rect.centerx, self._rect.top - 10,
+                                                   'resources/images/quest/quest_mark.png')
 
     def update(self, surface, *args, **kwargs):
         self._regeneration()
