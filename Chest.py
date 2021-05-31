@@ -6,7 +6,7 @@ from healthpotion import HealthPotion
 from key import Key
 from manapotion import ManaPotion
 import Coin
-import game_enums
+import GameEnums
 from GameObject import GameObject
 
 
@@ -54,15 +54,15 @@ class Chest(GameObject):
             if random_thing == 3:
                 thing = Coin.Coin(random_x, random_y,
                                   'resources/images/coins/gold_coin.png',
-                                  game_enums.CoinTypes.GOLD)
+                                  GameEnums.CoinTypes.GOLD)
             if random_thing == 4:
                 thing = Coin.Coin(random_x, random_y,
                                   'resources/images/coins/silver_coin.png',
-                                  game_enums.CoinTypes.SILVER)
+                                  GameEnums.CoinTypes.SILVER)
             if random_thing == 5:
                 thing = Coin.Coin(random_x, random_y,
                                   'resources/images/coins/bronze_coin.png',
-                                  game_enums.CoinTypes.BRONZE)
+                                  GameEnums.CoinTypes.BRONZE)
             if random_thing == 6:
                 thing = Key(random_x, random_y)
             content_local.append(thing)

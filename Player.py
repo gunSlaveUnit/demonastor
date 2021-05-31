@@ -4,9 +4,9 @@ import pygame
 
 import Bar
 import Constants
-import fireball
-import game_enums
-import inventory
+import Fireball
+import GameEnums
+import Inventory
 import lighting
 from Character import Character
 
@@ -22,8 +22,8 @@ class Player(Character):
         self._last_attack_time = 250
         self._animation_interval = 150
         self._experience_up_level = 1000 * pow(1.1, self._level)
-        self._selected_attack = game_enums.AttackTypes.FIREBALL.value
-        self._inventory = inventory.Inventory()
+        self._selected_attack = GameEnums.AttackTypes.FIREBALL.value
+        self._inventory = Inventory.Inventory()
         self._health_bar = Bar.Bar(Constants.GAME_WINDOW_WIDTH // 2 - 250,
                                    Constants.GAME_WINDOW_HEIGHT - 96, 'resources/images/bars/health_bar.png')
         self._mana_bar = Bar.Bar(Constants.GAME_WINDOW_WIDTH // 2 + 155,
@@ -86,8 +86,8 @@ class Player(Character):
         now = pygame.time.get_ticks()
         if self._current_mana > 0 and now - self._last_attack_time > self._attack_interval:
             self._last_attack_time = now
-            if self._selected_attack == game_enums.AttackTypes.FIREBALL.value:
-                shell = fireball.Fireball(self._rect.centerx, self._rect.centery,
+            if self._selected_attack == GameEnums.AttackTypes.FIREBALL.value:
+                shell = Fireball.Fireball(self._rect.centerx, self._rect.centery,
                                           'resources/images/shells/fireball.png',
                                           (float(pygame.mouse.get_pos()[0] - self._rect.centerx),
                                            float(pygame.mouse.get_pos()[1] - self._rect.centery)))

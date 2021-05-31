@@ -62,10 +62,6 @@ class HealthPotion(Sprite):
         self.__rect = new_value
 
     @property
-    def image(self):
-        return self.__image
-
-    @property
     def regen_amount(self):
         return self.__regen_amount
 

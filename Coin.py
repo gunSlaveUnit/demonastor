@@ -1,6 +1,6 @@
 import pygame
 
-from game_enums import CoinTypes
+from GameEnums import CoinTypes
 from GameObject import GameObject
 
 
