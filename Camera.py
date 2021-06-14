@@ -36,4 +36,8 @@ class Camera:
 
     @property
     def offset(self):
+        """
+        The x and y distance to offset the sprite rectangle.
+        :return: (dx, dy)
+        """
         return self._dx, self._dy

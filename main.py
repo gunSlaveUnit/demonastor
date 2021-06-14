@@ -10,21 +10,6 @@ In this file the program is started
 # ! usr/bin/env python3
 # -*- coding: utf8 -*-
 
-# TODO: make collisions
-# TODO: we need to add exceptions
-
-# TODO: make an additional panel with some resources, for example, with potions
-
-# TODO: Several main tasks:
-# Map
-# Quests
-# Locations
-# New opponents
-# Skills
-
-# TODO: we need to get camera offset just only once, not so much
-
-
 import Game
 
 
