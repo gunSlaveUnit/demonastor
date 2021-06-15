@@ -323,21 +323,17 @@ class Game:
         test_cur = None
         test_max = None
 
-        time_to_count_attack = 0
         clock = pygame.time.Clock()
         is_game_exit = False
         while not is_game_exit:
-            delta = clock.tick(Constants.FPS_LOCKING)
             pygame.event.pump()
-            enemy_attack_interval = random.randint(250, 1000)
-            if time_to_count_attack < enemy_attack_interval:
-                time_to_count_attack += delta
 
             for enemy in self._enemies:
                 if pygame.sprite.collide_rect(self._player, enemy):
-                    if time_to_count_attack >= enemy_attack_interval:
-                        time_to_count_attack = 0
-                        self._player.current_health = self._player.current_health - enemy.amount_damage
+                    now = pygame.time.get_ticks()
+                    if now - enemy._last_attack_time > enemy._attack_interval:
+                        enemy._last_attack_time = now
+                        self._player.current_health -= enemy.amount_damage
                         if self._player.current_health < 1:
                             return self.game_over()
 
