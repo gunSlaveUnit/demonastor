@@ -164,7 +164,7 @@ class Game:
                          Constants.WHITE_COLOR_TITLE_BLOCKS,
                          Constants.GAME_WINDOW_WIDTH // 2, Constants.GAME_WINDOW_HEIGHT // 4)
 
-        items = ['Загрузить', 'Выход']
+        items = ['Load', 'Exit']
         handlers = ['self.show_game_loads()', 'exit(0)']
 
         def set_color_active_menu_item(index_active_menu_item, color, font_size):
@@ -481,7 +481,7 @@ class Game:
         pygame.quit()
 
     def game_over(self):
-        items = ['Последнее сохранение', 'Загрузить', 'Выйти']
+        items = ['Last Save', 'Load', 'Exit']
         handlers = ['load_game()', 'show_game_loads()', 'exit(0)']
         Drawer.draw_text(self._main_game_window, 'You died. Press <Enter> To Restart Or <Escape> To Exit', 30,
                          Constants.WHITE_COLOR_TITLE_BLOCKS,
