@@ -64,6 +64,14 @@ class Player(Character):
         self._speed_x = 0
         self._speed_y = 0
         key_state = pygame.key.get_pressed()
+
+        if key_state[pygame.K_LSHIFT]:
+            self._speed_changing = 6
+            self._animation_interval = 75
+        else:
+            self._speed_changing = 3
+            self._animation_interval = 150
+
         if key_state[pygame.K_a]:
             self._current_direction_moving = self._DIRECTIONS_MOVING['LEFT']
             self._speed_x = -self._speed_changing
