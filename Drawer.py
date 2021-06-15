@@ -6,8 +6,7 @@ import Constants
 class Drawer:
     @staticmethod
     def draw_text(surface, text, size, color, x, y):
-        font_name = pygame.font.match_font('resources/fonts/samson_font.ttf')
-        font = pygame.font.Font(font_name, size)
+        font = pygame.font.Font('resources/fonts/Samson.ttf', size)
         text_surface = font.render(text, True, color)
         text_rect = text_surface.get_rect()
         text_rect.midtop = (x, y)
