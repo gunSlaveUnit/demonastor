@@ -1,13 +1,12 @@
 import pygame
 
-import constants
+import Constants
 
 
 class Drawer:
     @staticmethod
     def draw_text(surface, text, size, color, x, y):
-        font_name = pygame.font.match_font('resources/fonts/samson_font.ttf')
-        font = pygame.font.Font(font_name, size)
+        font = pygame.font.Font('resources/fonts/Samson.ttf', size)
         text_surface = font.render(text, True, color)
         text_rect = text_surface.get_rect()
         text_rect.midtop = (x, y)
@@ -26,4 +25,4 @@ class Drawer:
         fill_rect = pygame.Rect(center_x - bar_length // 2, center_y, fill, bar_height)
         pygame.draw.rect(surface, color, fill_rect)
         if is_frame_need:
-            pygame.draw.rect(surface, constants.WHITE_COLOR_TITLE_BLOCKS, outline_rect, 1)
+            pygame.draw.rect(surface, Constants.WHITE_COLOR_TITLE_BLOCKS, outline_rect, 1)

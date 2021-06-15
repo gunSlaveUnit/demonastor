@@ -12,23 +12,16 @@ calculated so that there is an illusion that the player is approaching them.
 # ! usr/bin/env python3
 # -*- coding: utf8 -*-
 
-import constants
+import Constants
 
 
 class Camera:
-    def __init__(self, window_sizes):
+    def __init__(self):
         """
         Creates a camera following the player.
-        :param window_sizes: a tuple of the width and height of the window in pixels.
         """
-        self.__dx = 0
-        self.__dy = 0
-        self.__view_sizes = window_sizes
-
-    def get_offset(self):
-        # game_object.get_rect().centerx -= self.__dx
-        # game_object.get_rect().centery -= self.__dy
-        return self.__dx, self.__dy
+        self._dx = 0
+        self._dy = 0
 
     def update(self, target):
         """
@@ -36,7 +29,15 @@ class Camera:
         :param target: player object with rect attribute. An object of the Sprite class.
         :return: None
         """
-        self.__dx = target.rect.centerx - constants.GAME_WINDOW_WIDTH // 2
-        self.__dy = target.rect.centery - constants.GAME_WINDOW_HEIGHT // 2
-        target.rect.centerx = constants.GAME_WINDOW_WIDTH // 2
-        target.rect.centery = constants.GAME_WINDOW_HEIGHT // 2
+        self._dx = target.rect.centerx - Constants.GAME_WINDOW_WIDTH // 2
+        self._dy = target.rect.centery - Constants.GAME_WINDOW_HEIGHT // 2
+        target.rect.centerx = Constants.GAME_WINDOW_WIDTH // 2
+        target.rect.centery = Constants.GAME_WINDOW_HEIGHT // 2
+
+    @property
+    def offset(self):
+        """
+        The x and y distance to offset the sprite rectangle.
+        :return: (dx, dy)
+        """
+        return self._dx, self._dy
