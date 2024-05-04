@@ -1,7 +1,5 @@
 # Demonastor
 ![Common View](view.png)
-## Description
-Course project on programming, a simple game in the spirit of Diablo
 ## Features
 Implemented:
 * moving the character (the sprites also turn in the right direction)
